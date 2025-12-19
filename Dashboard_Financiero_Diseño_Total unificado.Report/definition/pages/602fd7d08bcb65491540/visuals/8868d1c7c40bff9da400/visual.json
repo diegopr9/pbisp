@@ -2,18 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "8868d1c7c40bff9da400",
   "position": {
-    "x": 877.20930232558146,
-    "y": 60.930232558139537,
+    "x": 877,
+    "y": 61,
     "z": 1000,
-    "height": 345.58139534883725,
-    "width": 663.25581395348843,
+    "height": 346,
+    "width": 659,
     "tabOrder": 1000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Values": {
+        "Rows": {
           "projections": [
             {
               "field": {
@@ -23,12 +23,13 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "cta_des"
+                  "Property": "Nivel2_Desc"
                 }
               },
-              "queryRef": "gd_financiero_general.cta_des",
-              "nativeQueryRef": "Cuentas",
-              "displayName": "Cuentas"
+              "queryRef": "gd_financiero_general.Nivel2_Desc",
+              "nativeQueryRef": "Cuentas Nivel 2",
+              "active": true,
+              "displayName": "Cuentas Nivel 2"
             },
             {
               "field": {
@@ -38,13 +39,82 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "cta_ida_n4"
+                  "Property": "Nivel3_Desc"
                 }
               },
-              "queryRef": "gd_financiero_general.cta_ida_n4",
-              "nativeQueryRef": "Cod 6 Dig",
-              "displayName": "Cod 6 Dig"
+              "queryRef": "gd_financiero_general.Nivel3_Desc",
+              "nativeQueryRef": "Cuentas Nivel 3",
+              "active": true,
+              "displayName": "Cuentas Nivel 3"
             },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel4_Desc"
+                }
+              },
+              "queryRef": "gd_financiero_general.Nivel4_Desc",
+              "nativeQueryRef": "Cuentas Nivel 4",
+              "active": true,
+              "displayName": "Cuentas Nivel 4"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel5_Desc"
+                }
+              },
+              "queryRef": "gd_financiero_general.Nivel5_Desc",
+              "nativeQueryRef": "Cuentas Nivel 5",
+              "active": true,
+              "displayName": "Cuentas Nivel 5"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel6_Desc"
+                }
+              },
+              "queryRef": "gd_financiero_general.Nivel6_Desc",
+              "nativeQueryRef": "Cuentas Nivel 6",
+              "active": false,
+              "displayName": "Cuentas Nivel 6"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel7_Desc"
+                }
+              },
+              "queryRef": "gd_financiero_general.Nivel7_Desc",
+              "nativeQueryRef": "Cuentas Nivel 7",
+              "active": false,
+              "displayName": "Cuentas Nivel 7"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
             {
               "field": {
                 "Measure": {
@@ -53,11 +123,11 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "Real Act_BG_1000"
+                  "Property": "Real Act_BG_1000 Visible"
                 }
               },
-              "queryRef": "gd_financiero_general.Real Act_BG_1000",
-              "nativeQueryRef": "Real Act",
+              "queryRef": "gd_financiero_general.Real Act_BG_1000 Visible",
+              "nativeQueryRef": "Real Act1",
               "displayName": "Real Act"
             },
             {
@@ -68,11 +138,11 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "Real Y-1_1000"
+                  "Property": "Real Y-1_1000 Visible"
                 }
               },
-              "queryRef": "gd_financiero_general.Real Y-1_1000",
-              "nativeQueryRef": "Real Y-1_1000",
+              "queryRef": "gd_financiero_general.Real Y-1_1000 Visible",
+              "nativeQueryRef": "Real Y-1",
               "displayName": "Real Y-1"
             },
             {
@@ -83,11 +153,11 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "YoY_BG_1000"
+                  "Property": "YoY_BG_1000 Visible"
                 }
               },
-              "queryRef": "gd_financiero_general.YoY_BG_1000",
-              "nativeQueryRef": "YoY_BG_1000",
+              "queryRef": "gd_financiero_general.YoY_BG_1000 Visible",
+              "nativeQueryRef": "YoY",
               "displayName": "YoY"
             },
             {
@@ -98,34 +168,113 @@
                       "Entity": "gd_financiero_general"
                     }
                   },
-                  "Property": "%YoY_BG"
+                  "Property": "%YoY_BG Visible"
                 }
               },
-              "queryRef": "gd_financiero_general.%YoY_BG",
-              "nativeQueryRef": "%YoY_BG",
+              "queryRef": "gd_financiero_general.%YoY_BG Visible",
+              "nativeQueryRef": "%YoY",
               "displayName": "%YoY"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "gd_financiero_general"
-                  }
-                },
-                "Property": "cta_ida_n4"
-              }
-            },
-            "direction": "Ascending"
-          }
-        ]
       }
     },
+    "expansionStates": [
+      {
+        "roles": [
+          "Rows"
+        ],
+        "levels": [
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel2_Desc"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel2_Desc"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel3_Desc"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel3_Desc"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel4_Desc"
+            ],
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel4_Desc"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel5_Desc"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Nivel5_Desc"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel6_Desc"
+            ],
+            "isCollapsed": true,
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "gd_financiero_general.Nivel7_Desc"
+            ],
+            "isCollapsed": true
+          }
+        ],
+        "root": {}
+      }
+    ],
     "objects": {
       "columnHeaders": [
         {
@@ -170,7 +319,7 @@
             "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'Left'"
+                  "Value": "'Auto'"
                 }
               }
             },
@@ -186,15 +335,7 @@
       ],
       "total": [
         {
-          "properties": {
-            "totals": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "grid": [
@@ -276,6 +417,86 @@
                   }
                 }
               }
+            },
+            "valuesOnRow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "bandedRowHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "blankRows": [
+        {
+          "properties": {
+            "showBlankRows": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTotals": [
+        {
+          "properties": {
+            "rowSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rowHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Auto'"
+                }
+              }
+            },
+            "showExpandCollapseButtons": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rowTotal": [
+        {
+          "properties": {
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
@@ -286,13 +507,41 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "339.2167483439852D"
+                  "Value": "54D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "gd_financiero_general.cta_des"
+            "metadata": "gd_financiero_general.YoY_BG_1000 Visible"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "398.8991862324652D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_financiero_general.Nivel2_Desc"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "63.926832083092904D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_financiero_general.%YoY_BG Visible"
           }
         }
       ]
@@ -447,7 +696,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "e378c250d101b1e810a9",
+        "name": "6f9e14b5daa32f2bcf46",
         "ordinal": 0,
         "field": {
           "Measure": {
@@ -456,14 +705,59 @@
                 "Entity": "gd_financiero_general"
               }
             },
-            "Property": "Real Act_BG_1000"
+            "Property": "Real Act_BG_1000 Visible"
           }
         },
         "type": "Advanced"
       },
       {
-        "name": "edae6f5e25f52ed9f836",
+        "name": "63c6faf249677f82d4de",
         "ordinal": 1,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Real Y-1_1000 Visible"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "be43f2cd283eab146892",
+        "ordinal": 2,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "YoY_BG_1000 Visible"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0920c35e209155243846",
+        "ordinal": 3,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "%YoY_BG Visible"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3faf13c9ebb257a8b937",
+        "ordinal": 4,
         "field": {
           "Column": {
             "Expression": {
@@ -471,14 +765,122 @@
                 "Entity": "gd_financiero_general"
               }
             },
-            "Property": "cta_ida_n4"
+            "Property": "Nivel2_Desc"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "g",
+              "Entity": "gd_financiero_general",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "g"
+                              }
+                            },
+                            "Property": "Nivel2_Desc"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'1 - ACTIVO'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'2 - PASIVOS'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'3 - PATRIMONIO'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'4 - EGRESOS'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'5 - INGRESOS'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'7 - CUENTAS DE ORDEN'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "747dbd4316088913ccb1",
+        "ordinal": 5,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Nivel3_Desc"
           }
         },
         "type": "Categorical"
       },
       {
-        "name": "364f9ca9022a77efaa4d",
-        "ordinal": 2,
+        "name": "051728aa6982cf4a96ed",
+        "ordinal": 6,
         "field": {
           "Column": {
             "Expression": {
@@ -486,7 +888,52 @@
                 "Entity": "gd_financiero_general"
               }
             },
-            "Property": "cta_des"
+            "Property": "Nivel4_Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a12a6336ad77b3124faf",
+        "ordinal": 7,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Nivel5_Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "370d0938c62a7dc9ba31",
+        "ordinal": 8,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Nivel6_Desc"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "01a4643f091b4ff5bd2c",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Nivel7_Desc"
           }
         },
         "type": "Categorical"

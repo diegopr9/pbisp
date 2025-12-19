@@ -37,15 +37,12 @@ table SelectorGrafico2
 
 	partition SelectorGrafico2 = calculated
 		mode: import
-		source = ```
-				
-				   
-				 {
+		source =
+				{
 				    ("BROKER", NAMEOF('gd_financiero_rt'[des_broker]), "BROKER"),
 				    ("CONTRATANTE", NAMEOF('gd_financiero_rt'[des_contratante]), "CONTRATANTE"),
-				    ("ASEGURADO", NAMEOF('gd_financiero_rt_final'[des_asegurado]), "ASEGURADO")
+				    ("ASEGURADO", NAMEOF('gd_financiero_rt'[des_asegurado]), "ASEGURADO")
 				}
-				```
 
 	annotation PBI_Id = 6c20c7e2da7f4b7e97dc74f9ba8b07b1
 

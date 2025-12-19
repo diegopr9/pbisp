@@ -30,7 +30,7 @@ table Tabla_KPI_PG
 				        {"%GASTOS PRIMA BRUTA", 1},
 				        {"RENTABILIDAD TÉCNICA", 2},
 				        {"RENTABILIDAD FINANCIERA", 3},
-				        {"SINIESTROS INC ACUM.", 4},
+				        {"SINIESTRALIDAD INCURRIDA", 4},
 				        {"%COSTO DE SINIESTROS", 5}
 				    }
 				)

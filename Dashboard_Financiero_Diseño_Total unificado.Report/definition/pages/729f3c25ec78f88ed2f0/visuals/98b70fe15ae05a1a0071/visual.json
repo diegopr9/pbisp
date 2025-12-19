@@ -91,14 +91,14 @@
                 }
               }
             },
-            "singleSelect": {
+            "strictSingleSelect": {
               "expr": {
                 "Literal": {
                   "Value": "true"
                 }
               }
             },
-            "strictSingleSelect": {
+            "singleSelect": {
               "expr": {
                 "Literal": {
                   "Value": "true"
@@ -1149,5 +1149,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "isHidden": true
 }

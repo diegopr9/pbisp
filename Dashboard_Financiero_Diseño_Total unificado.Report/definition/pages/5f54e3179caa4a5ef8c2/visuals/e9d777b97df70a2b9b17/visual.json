@@ -1,0 +1,279 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "e9d777b97df70a2b9b17",
+  "position": {
+    "x": 880.76923076923072,
+    "y": 417.30769230769232,
+    "z": 11000,
+    "height": 343.26923076923077,
+    "width": 659.61538461538464,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "deneb7E15AEF80B9E4D4F8E12924291ECE89A",
+    "query": {
+      "queryState": {
+        "dataset": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendario"
+                    }
+                  },
+                  "Property": "MesNombreAño"
+                }
+              },
+              "queryRef": "Calendario.MesNombreAño",
+              "nativeQueryRef": "MesNombreAño"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Activos_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Activos_BG1",
+              "nativeQueryRef": "Activos_BG1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Pasivos_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Pasivos_BG1",
+              "nativeQueryRef": "Pasivos_BG1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Patrimonio_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Patrimonio_BG1",
+              "nativeQueryRef": "Patrimonio_BG1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendario"
+                    }
+                  },
+                  "Property": "YYYY-MM"
+                }
+              },
+              "queryRef": "Calendario.YYYY-MM",
+              "nativeQueryRef": "YYYY-MM"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "stateManagement": [
+        {
+          "properties": {
+            "viewportHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "315.66923038776105D"
+                }
+              }
+            },
+            "viewportWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "649.6153846153846D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "vega": [
+        {
+          "properties": {
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'vegaLite'"
+                }
+              }
+            },
+            "jsonSpec": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\n  \"$schema\": \"https://vega.github.io/schema/vega-lite/v5.json\",\n  \"data\": { \"name\": \"dataset\" },\n\n  \"transform\": [\n    { \"fold\": [\"Activos_BG1\", \"Pasivos_BG1\", \"Patrimonio_BG1\"], \"as\": [\"Componente\", \"Valor\"] },\n    { \"calculate\": \"datum.Componente == ''Activos_BG1'' ? ''ACTIVOS'' : ''PASIVOS / PATRIMONIO''\", \"as\": \"Grupo\" },\n    { \"calculate\": \"datum.Componente == ''Activos_BG1'' ? ''ACTIVOS'' : (datum.Componente == ''Pasivos_BG1'' ? ''PASIVOS'' : ''PATRIMONIO'')\", \"as\": \"Etiqueta\" },\n    { \"calculate\": \"datum.Valor / 1000000\", \"as\": \"Valor_M\" },\n    { \"calculate\": \"format(datum.Valor_M, ''.0f'') + '' M''\", \"as\": \"Valor_M_txt\" },\n    { \"calculate\": \"datum.Valor / 2\", \"as\": \"Valor_mid\" },\n\n    { \"calculate\": \"substring(datum.MesNombreAño, 0, 3)\", \"as\": \"MesAbr\" },\n    { \"calculate\": \"toNumber(substring(datum.MesNombreAño, length(datum.MesNombreAño)-4, 4))\", \"as\": \"AnioNum\" },\n    { \"calculate\": \"indexof([''Ene'',''Feb'',''Mar'',''Abr'',''May'',''Jun'',''Jul'',''Ago'',''Sep'',''Oct'',''Nov'',''Dic''], datum.MesAbr) + 1\", \"as\": \"MesNum\" },\n    { \"calculate\": \"datum.AnioNum * 100 + datum.MesNum\", \"as\": \"OrdenYM\" },\n\n    { \"calculate\": \"datum.Etiqueta == ''PASIVOS'' ? 0 : (datum.Etiqueta == ''PATRIMONIO'' ? 1 : -1)\", \"as\": \"OrdenSegmento\" },\n\n    {\n      \"window\": [\n        { \"op\": \"sum\", \"field\": \"Valor\", \"as\": \"CumSum\" }\n      ],\n      \"sort\": [{ \"field\": \"OrdenSegmento\", \"order\": \"ascending\" }],\n      \"groupby\": [\"MesNombreAño\", \"Grupo\"],\n      \"frame\": [null, 0]\n    },\n    { \"calculate\": \"datum.CumSum - datum.Valor\", \"as\": \"Valor_start\" },\n    { \"calculate\": \"datum.Valor_start + datum.Valor / 2\", \"as\": \"Valor_center\" }\n  ],\n\n  \"layer\": [\n    {\n      \"mark\": { \"type\": \"bar\" },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"MesNombreAño\",\n          \"type\": \"ordinal\",\n          \"sort\": { \"field\": \"OrdenYM\", \"op\": \"min\", \"order\": \"ascending\" },\n          \"axis\": { \"title\": null, \"labelAngle\": 0 }\n        },\n        \"xOffset\": { \"field\": \"Grupo\" },\n        \"y\": {\n          \"field\": \"Valor\",\n          \"type\": \"quantitative\",\n          \"stack\": \"zero\",\n          \"axis\": { \"title\": null, \"labels\": false, \"ticks\": false, \"grid\": false }\n        },\n        \"order\": { \"field\": \"OrdenSegmento\" },\n        \"color\": {\n          \"field\": \"Etiqueta\",\n          \"type\": \"nominal\",\n          \"scale\": {\n            \"domain\": [\"ACTIVOS\", \"PASIVOS\", \"PATRIMONIO\"],\n            \"range\": [\"#0B1F70\", \"#9CB6FA\", \"#1FC4EC\"]\n          },\n          \"legend\": {\n            \"orient\": \"top\",\n            \"direction\": \"horizontal\",\n            \"title\": null,\n            \"anchor\": \"middle\",\n            \"labelFontSize\": 16,\n            \"labelColor\": \"#333333\",\n            \"symbolSize\": 160\n          }\n        },\n        \"tooltip\": [\n          { \"field\": \"MesNombreAño\", \"type\": \"ordinal\", \"title\": \"Mes\" },\n          { \"field\": \"Etiqueta\", \"type\": \"nominal\", \"title\": \"Cuenta\" },\n          { \"field\": \"Valor_M_txt\", \"type\": \"nominal\", \"title\": \"Valor\" }\n        ]\n      }\n    },\n\n    {\n      \"transform\": [{ \"filter\": \"datum.Etiqueta == ''ACTIVOS''\" }],\n      \"mark\": { \"type\": \"text\", \"fontSize\": 8, \"baseline\": \"middle\", \"align\": \"center\", \"fill\": \"white\" },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"MesNombreAño\",\n          \"type\": \"ordinal\",\n          \"sort\": { \"field\": \"OrdenYM\", \"op\": \"min\", \"order\": \"ascending\" }\n        },\n        \"xOffset\": { \"field\": \"Grupo\" },\n        \"y\": { \"field\": \"Valor_mid\", \"type\": \"quantitative\" },\n        \"text\": { \"field\": \"Valor_M_txt\", \"type\": \"nominal\" }\n      }\n    },\n\n    {\n      \"transform\": [{ \"filter\": \"datum.Etiqueta != ''ACTIVOS''\" }],\n      \"mark\": { \"type\": \"text\", \"fontSize\": 8, \"baseline\": \"middle\", \"align\": \"center\", \"fill\": \"black\" },\n      \"encoding\": {\n        \"x\": {\n          \"field\": \"MesNombreAño\",\n          \"type\": \"ordinal\",\n          \"sort\": { \"field\": \"OrdenYM\", \"op\": \"min\", \"order\": \"ascending\" }\n        },\n        \"xOffset\": { \"field\": \"Grupo\" },\n        \"y\": { \"field\": \"Valor_center\", \"type\": \"quantitative\" },\n        \"text\": { \"field\": \"Valor_M_txt\", \"type\": \"nominal\" }\n      }\n    }\n  ],\n\n  \"config\": {\n    \"view\": { \"stroke\": null },\n    \"axis\": { \"domain\": false }\n  }\n}'"
+                }
+              }
+            },
+            "jsonConfig": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{}'"
+                }
+              }
+            },
+            "isNewDialogOpen": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "enableTooltips": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableContextMenu": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "enableHighlight": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "enableSelection": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "selectionMaxDataPoints": {
+              "expr": {
+                "Literal": {
+                  "Value": "50D"
+                }
+              }
+            },
+            "version": {
+              "expr": {
+                "Literal": {
+                  "Value": "'6.4.1'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "developer": [
+        {
+          "properties": {
+            "version": {
+              "expr": {
+                "Literal": {
+                  "Value": "'1.8.2.0'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'CUENTAS DE B&G'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Arial Unicode MS'''"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#4A4949'"
+                    }
+                  }
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

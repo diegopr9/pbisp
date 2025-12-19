@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "8aced8a782bc99a47182",
   "position": {
-    "x": 11,
-    "y": 331,
+    "x": 13.846153846153845,
+    "y": 301.53846153846155,
     "z": 3000,
-    "height": 93,
-    "width": 145,
+    "height": 68.07692307692308,
+    "width": 140.38461538461539,
     "tabOrder": 3000
   },
   "visual": {
@@ -476,7 +476,7 @@
             "maxTiles": {
               "expr": {
                 "Literal": {
-                  "Value": "3L"
+                  "Value": "2L"
                 }
               }
             },
@@ -491,13 +491,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Cards'"
-                }
-              }
-            },
-            "autoGrid": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
                 }
               }
             }
@@ -1112,5 +1105,39 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ffe0d450ca09212eec8e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "tipo_riesgo"
+              }
+            },
+            "Property": "des_riesgo_mod"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }

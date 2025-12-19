@@ -36,17 +36,16 @@ table SelectorDesviaciones_PG
 				    "Concepto", STRING,
 				    "Tipo", STRING,
 				    {
-				        { 1 , "PPTO"          , "Total" },
-				        { 2 , "PRIMAS BRUTAS" , "Delta" },
-				        { 3 , "CESIÓN"        , "Delta" },
-				        { 4 , "DEVENGO"       , "Delta" },
-				        { 5 , "SINIESTROS"    , "Delta" },
-				        { 6 , "COMISIONES"    , "Delta" },
-				        { 7 , "OTROS"         , "Delta" },
-				        { 8 , "FINANCIEROS"   , "Delta" },
-				        { 9 , "GASTOS"        , "Delta" },
-				        { 10, "PROV"          , "Delta" },
-				        { 11, "PROYECTADO"    , "Total" }
+				
+				        { 1 , "PRIMAS BRUTAS" , "Delta" },
+				        { 2 , "CESIÓN"        , "Delta" },
+				        { 3 , "DEVENGO"       , "Delta" },
+				        { 4 , "SINIESTROS"    , "Delta" },
+				        { 5 , "COMISIONES"    , "Delta" },
+				        { 6 , "FINANCIEROS"   , "Delta" },
+				        { 7 , "GASTOS"        , "Delta" },
+				        { 8, "PROVISIONES"    , "Delta" },        
+				        { 9 , "OTROS"         , "Delta" }
 				    }
 				)
 				

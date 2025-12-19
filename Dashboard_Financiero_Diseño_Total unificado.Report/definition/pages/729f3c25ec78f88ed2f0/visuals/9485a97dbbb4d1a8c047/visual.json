@@ -3,10 +3,10 @@
   "name": "9485a97dbbb4d1a8c047",
   "position": {
     "x": 0,
-    "y": 59.227918831487045,
+    "y": 56.435643564356383,
     "z": 14000,
-    "height": 421,
-    "width": 1365,
+    "height": 474.25742574257424,
+    "width": 1365.3465346534654,
     "tabOrder": 14000
   },
   "visual": {
@@ -23,13 +23,13 @@
                       "Entity": "gd_financiero_pq"
                     }
                   },
-                  "Property": "des_broker"
+                  "Property": "des_tipo_riesgo"
                 }
               },
-              "queryRef": "gd_financiero_pq.des_broker",
-              "nativeQueryRef": "Broker",
+              "queryRef": "gd_financiero_pq.des_tipo_riesgo",
+              "nativeQueryRef": "Tipo Riesgo",
               "active": true,
-              "displayName": "Broker"
+              "displayName": "Tipo Riesgo"
             },
             {
               "field": {
@@ -39,12 +39,12 @@
                       "Entity": "gd_financiero_pq"
                     }
                   },
-                  "Property": "cod_poliza"
+                  "Property": "cta_des"
                 }
               },
-              "queryRef": "gd_financiero_pq.cod_poliza",
-              "nativeQueryRef": "cod_poliza",
-              "active": false
+              "queryRef": "gd_financiero_pq.cta_des",
+              "nativeQueryRef": "cta_des",
+              "active": true
             }
           ],
           "fieldParameters": [
@@ -60,8 +60,7 @@
                 }
               },
               "index": 0,
-              "length": 1,
-              "sortDirection": "Ascending"
+              "length": 1
             }
           ]
         },
@@ -224,90 +223,20 @@
         "sort": [
           {
             "field": {
-              "Column": {
+              "Measure": {
                 "Expression": {
                   "SourceRef": {
                     "Entity": "gd_financiero_pq"
                   }
                 },
-                "Property": "cod_poliza"
+                "Property": "2_Ppto_PQ"
               }
             },
-            "direction": "Ascending"
-          },
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "gd_financiero_pq"
-                  }
-                },
-                "Property": "des_broker"
-              }
-            },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ]
       }
     },
-    "expansionStates": [
-      {
-        "roles": [
-          "Rows"
-        ],
-        "levels": [
-          {
-            "queryRefs": [
-              "gd_financiero_pq.des_broker"
-            ],
-            "isCollapsed": true,
-            "identityKeys": [
-              {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "gd_financiero_pq"
-                    }
-                  },
-                  "Property": "des_broker"
-                }
-              }
-            ],
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "gd_financiero_pq.cod_poliza"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          }
-        ],
-        "root": {
-          "children": [
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "' AFFINITY CIA. LTDA. AGENCIA ASESORA PRODUCTORA DE SEGUROS'"
-                  }
-                }
-              ]
-            },
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "' ASERTEC S.A. AGENCIA ASESORA PRODUCTORA DE SEGUROS'"
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      }
-    ],
     "objects": {
       "columnHeaders": [
         {
@@ -927,7 +856,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "401.6559184522571D"
+                  "Value": "400D"
                 }
               }
             }
@@ -947,7 +876,7 @@
             }
           },
           "selector": {
-            "metadata": "gd_financiero_pq.des_tipo_riesgo"
+            "metadata": "gd_financiero_pq.des_poliza"
           }
         },
         {
@@ -955,13 +884,27 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "140D"
+                  "Value": "400D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "gd_financiero_pq.des_poliza"
+            "metadata": "gd_financiero_pq.des_sponsor"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "400D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_financiero_pq.des_tipo_riesgo"
           }
         }
       ],

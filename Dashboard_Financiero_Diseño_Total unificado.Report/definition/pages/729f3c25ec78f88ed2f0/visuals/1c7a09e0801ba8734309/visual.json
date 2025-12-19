@@ -73,7 +73,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'''gd_financiero_pq''[des_broker]'"
+                                "Value": "'''gd_financiero_pq''[des_tipo_riesgo]'"
                               }
                             }
                           ]
@@ -101,7 +101,7 @@
                                 "0": [
                                   {
                                     "Literal": {
-                                      "Value": "'''gd_financiero_pq''[des_broker]'"
+                                      "Value": "'''gd_financiero_pq''[des_tipo_riesgo]'"
                                     }
                                   }
                                 ]
@@ -125,7 +125,7 @@
                         },
                         "valueMap": [
                           {
-                            "0": "Broker"
+                            "0": "Tipo Riesgo"
                           }
                         ]
                       }

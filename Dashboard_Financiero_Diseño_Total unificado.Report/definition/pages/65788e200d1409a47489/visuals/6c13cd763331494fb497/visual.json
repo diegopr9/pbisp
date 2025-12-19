@@ -267,6 +267,17 @@
           "selector": {
             "id": "1979b1750da9a377aa96"
           }
+        },
+        {
+          "properties": {
+            "showHiddenPages": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
         }
       ]
     },

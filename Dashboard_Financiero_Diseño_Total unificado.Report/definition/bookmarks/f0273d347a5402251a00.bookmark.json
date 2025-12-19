@@ -3,8 +3,9 @@
   "displayName": "RT FINANCIERO",
   "name": "f0273d347a5402251a00",
   "options": {
-    "targetVisualNames": [],
-    "suppressData": true
+    "targetVisualNames": [
+      "93877ad2c6643ede59bd"
+    ]
   },
   "explorationState": {
     "version": "1.11",
@@ -22,7 +23,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "d6a33cfa9c045242427c",
+                  "name": "39a4044775df1dfcfc45",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -31,7 +32,7 @@
                           "Entity": "gd_financiero_rt"
                         }
                       },
-                      "Property": "des_tipo_ramo"
+                      "Property": "Ramo_RT"
                     }
                   },
                   "howCreated": 0
@@ -39,24 +40,104 @@
               ]
             },
             "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rt"
+                        }
+                      },
+                      "Property": "Ramo_RT"
+                    }
+                  }
+                ]
+              }
             }
           },
           "18487a946c487380308b": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "1b7c9d442edae4444c87",
+                  "name": "16a04ff0ce9d93045140",
                   "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "grupo",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "g"
+                                        }
+                                      },
+                                      "Property": "des_grupo_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "'Worksite'"
+                                      }
+                                    }
+                                  ],
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "grupo"
                         }
                       },
-                      "Property": "des_grupo"
+                      "Property": "des_grupo_mod"
                     }
                   },
                   "howCreated": 0
@@ -64,8 +145,38 @@
               ]
             },
             "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "grupo"
+                        }
+                      },
+                      "Property": "des_grupo_mod"
+                    }
+                  }
+                ]
+              }
             }
           },
           "8aced8a782bc99a47182": {
@@ -74,6 +185,49 @@
                 {
                   "name": "ffe0d450ca09212eec8e",
                   "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "t",
+                        "Entity": "tipo_riesgo",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "t"
+                                        }
+                                      },
+                                      "Property": "des_riesgo_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Column": {
                       "Expression": {
@@ -84,28 +238,43 @@
                       "Property": "des_riesgo_mod"
                     }
                   },
-                  "howCreated": 1
-                },
-                {
-                  "name": "1393c6482d7ab0682ecd",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_tipo_riesgo"
-                    }
-                  },
                   "howCreated": 0
                 }
               ]
             },
             "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "tipo_riesgo"
+                        }
+                      },
+                      "Property": "des_riesgo_mod"
+                    }
+                  }
+                ]
+              }
             }
           },
           "eb951d290cb5d232b7e4": {
@@ -114,6 +283,52 @@
                 {
                   "name": "2e308957e4ad05617404",
                   "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "gd_financiero_rt",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "g"
+                                    }
+                                  },
+                                  "Property": "des_agrupacion_mod"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Grupo'"
+                                  }
+                                }
+                              ],
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'No Grupo'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Column": {
                       "Expression": {
@@ -124,28 +339,43 @@
                       "Property": "des_agrupacion_mod"
                     }
                   },
-                  "howCreated": 1
-                },
-                {
-                  "name": "251f2ee1c24ec2ac4e6a",
-                  "type": "Categorical",
-                  "expression": {
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
                           "Entity": "gd_financiero_rt"
                         }
                       },
-                      "Property": "des_grupo_comercial"
+                      "Property": "des_agrupacion_mod"
                     }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
+                  }
+                ]
+              }
             }
           },
           "de27e2dbed01decc0d69": {
@@ -154,6 +384,49 @@
                 {
                   "name": "9da6b5232c33b4e2279e",
                   "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "a",
+                        "Entity": "agencia",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "a"
+                                        }
+                                      },
+                                      "Property": "des_agencia_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Column": {
                       "Expression": {
@@ -164,19 +437,102 @@
                       "Property": "des_agencia_mod"
                     }
                   },
-                  "howCreated": 1
-                },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "agencia"
+                        }
+                      },
+                      "Property": "des_agencia_mod"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "294aef1380806082c712": {
+            "filters": {
+              "byExpr": [
                 {
-                  "name": "8d995305113125f25b78",
+                  "name": "c5de5b03055313289766",
                   "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "canal",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "c"
+                                        }
+                                      },
+                                      "Property": "des_canal_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
                   "expression": {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "canal"
                         }
                       },
-                      "Property": "des_agencia"
+                      "Property": "des_canal_mod"
                     }
                   },
                   "howCreated": 0
@@ -184,8 +540,38 @@
               ]
             },
             "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "canal"
+                        }
+                      },
+                      "Property": "des_canal_mod"
+                    }
+                  }
+                ]
+              }
             }
           },
           "4cfd3e89d6806e9d0840": {
@@ -207,7 +593,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "60b262a180f20e38769e",
+                  "name": "7537ef1fa5ad4b298d47",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -222,7 +608,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "fc55fe2ca8a99ba27157",
+                  "name": "aa413e63785d0f5679df",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -237,7 +623,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "111b88da8a37fa5226ae",
+                  "name": "43c610a6a17ef90942fe",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -252,7 +638,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "ab8a0849436cb25c3ccf",
+                  "name": "aa7ce51f8b445b5e4f38",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -267,7 +653,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f3a23c284f70ae0262b0",
+                  "name": "d670d74558979b5da42b",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -282,7 +668,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "643072202a9ebece9752",
+                  "name": "071a1b892133f8a4d557",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -297,7 +683,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "a0963b6d4f7e103fafe7",
+                  "name": "7e0193b41e0edf7f859e",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -312,7 +698,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "50c5b89bdefbc7a336c4",
+                  "name": "5d91b471c0ef4c9e82d4",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -327,7 +713,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e29ffd6ed0c9d73e3572",
+                  "name": "4d4135350cb3b631dd72",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -342,7 +728,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "c2594c8adc8bb4147cd3",
+                  "name": "635825935336d3509778",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -357,7 +743,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "19d4b3c4c73f5b19d359",
+                  "name": "8afe0381741066c46c58",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -372,7 +758,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "5ba9ddab101bccb2f9b8",
+                  "name": "f5b8b38c1a3ace5b8e92",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -387,7 +773,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b6012a37dd84b57e1dcb",
+                  "name": "b1693d9fe756dd1201ef",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -402,7 +788,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "28db07d4de8880e71183",
+                  "name": "2cbc73313e89eeab9c79",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -417,7 +803,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "1ae4e79834bfd360ff26",
+                  "name": "82558c5db9b50d3314fd",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -432,52 +818,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "5e52342768d0ec3f40b2",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "Comisiones Ganadas RT"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "d9deccdb078f8a915a40",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "Neto Comisiones RT"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "c3f7444d118b17215d90",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "RESULTADO TÉCNICO RT"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "06d22792d0ec236f9266",
+                  "name": "b8f4f72aa0c77535b626",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -492,7 +833,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "69ff754a415b1dcb0ab1",
+                  "name": "7dd15e0b664c45f648e2",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -507,7 +848,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "94afc78b18b92f46b5b9",
+                  "name": "35a6e389acf99ec04f38",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -517,6 +858,51 @@
                         }
                       },
                       "Property": "Otros Costos de Adquisición"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "081481924b8f7eff77ac",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rt"
+                        }
+                      },
+                      "Property": "Comisiones Ganadas RT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a83ad2b2e80af4a98b6b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rt"
+                        }
+                      },
+                      "Property": "Neto Comisiones RT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a621b96582e8382cc642",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rt"
+                        }
+                      },
+                      "Property": "RESULTADO TÉCNICO RT"
                     }
                   },
                   "howCreated": 0
@@ -606,7 +992,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "b664985b7125b2f3c11a",
+                  "name": "a8e3096e0801b539d4ae",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -700,7 +1086,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "2b61ceca17aeebf7d612",
+                  "name": "c3b038085a8c4e8fce75",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -794,7 +1180,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "f37cfa295f38d6746fa7",
+                  "name": "bb029a97c6a7989f184f",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -888,7 +1274,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "cececbaf56ac4088f3c7",
+                  "name": "ee88734684f9f6e15db6",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -982,7 +1368,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "0b585a254b940f46b71c",
+                  "name": "930f6e82e00b0f58b805",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1022,7 +1408,246 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "9a450b54e50c99c10e10",
+                  "name": "663d60e376e72644955c",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "grupo",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "g"
+                                        }
+                                      },
+                                      "Property": "des_grupo_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ],
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "'Worksite'"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "grupo"
+                        }
+                      },
+                      "Property": "des_grupo_mod"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bbea05ea59d3298d3048",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "a",
+                        "Entity": "agencia",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "a"
+                                        }
+                                      },
+                                      "Property": "des_agencia_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "agencia"
+                        }
+                      },
+                      "Property": "des_agencia_mod"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "503c7783705167d56e02",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "canal",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "c"
+                                        }
+                                      },
+                                      "Property": "des_canal_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "canal"
+                        }
+                      },
+                      "Property": "des_canal_mod"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c6a176b70517910b16e1",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "t",
+                        "Entity": "tipo_riesgo",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "t"
+                                        }
+                                      },
+                                      "Property": "des_riesgo_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "tipo_riesgo"
+                        }
+                      },
+                      "Property": "des_riesgo_mod"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "eb98dc5641f801f16d19",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1037,7 +1662,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f9bfeefc1466c58b5828",
+                  "name": "2a4c2c0b07fb2a18bd40",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1052,7 +1677,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "6eca195d3dc5c1f7a2c4",
+                  "name": "08a7d948a24d7528de45",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1067,7 +1692,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f30feb919f0e070b4eb8",
+                  "name": "3141d426448d2d676b7f",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1077,66 +1702,6 @@
                         }
                       },
                       "Property": "Ramo_RT"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "689130a76d7f63c89405",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_agencia"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "323805887035a01de111",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_canal"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "5fff306c5105e1dcf3e0",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_tipo_riesgo"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "389a097828ffc92a08fd",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_grupo"
                     }
                   },
                   "howCreated": 0
@@ -1146,73 +1711,6 @@
             "singleVisual": {
               "visualType": "lineClusteredColumnComboChart",
               "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_agencia"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_canal"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "Ramo_RT"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_tipo_riesgo"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_grupo"
-                    }
-                  }
-                }
-              ],
               "activeProjections": {
                 "Category": [
                   {
@@ -1233,20 +1731,20 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "agencia"
                         }
                       },
-                      "Property": "des_agencia"
+                      "Property": "des_agencia_mod"
                     }
                   },
                   {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "canal"
                         }
                       },
-                      "Property": "des_canal"
+                      "Property": "des_canal_mod"
                     }
                   },
                   {
@@ -1263,20 +1761,20 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "tipo_riesgo"
                         }
                       },
-                      "Property": "des_tipo_riesgo"
+                      "Property": "des_riesgo_mod"
                     }
                   },
                   {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "grupo"
                         }
                       },
-                      "Property": "des_grupo"
+                      "Property": "des_grupo_mod"
                     }
                   }
                 ],
@@ -1339,37 +1837,109 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "594e5d92c4c6529e858b",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
+                  "name": "d17fccbde15fb7f8d4c4",
+                  "type": "TopN",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "subquery",
+                        "Expression": {
+                          "Subquery": {
+                            "Query": {
+                              "Version": 2,
+                              "From": [
+                                {
+                                  "Name": "b",
+                                  "Entity": "broker",
+                                  "Type": 0
+                                },
+                                {
+                                  "Name": "g",
+                                  "Entity": "gd_financiero_rt",
+                                  "Type": 0
+                                }
+                              ],
+                              "Select": [
+                                {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Source": "b"
+                                      }
+                                    },
+                                    "Property": "des_broker"
+                                  },
+                                  "Name": "field"
+                                }
+                              ],
+                              "OrderBy": [
+                                {
+                                  "Direction": 2,
+                                  "Expression": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "g"
+                                        }
+                                      },
+                                      "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
+                                    }
+                                  }
+                                }
+                              ],
+                              "Top": 5
+                            }
+                          }
+                        },
+                        "Type": 2
                       },
-                      "Property": "GRA_%CUMPLI RESULTADO TÉCNICO RT"
-                    }
+                      {
+                        "Name": "b",
+                        "Entity": "broker",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "b"
+                                    }
+                                  },
+                                  "Property": "des_broker"
+                                }
+                              }
+                            ],
+                            "Table": {
+                              "SourceRef": {
+                                "Source": "subquery"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
                   },
-                  "howCreated": 0
-                },
-                {
-                  "name": "bfac7bd1e99699887998",
-                  "type": "Categorical",
                   "expression": {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "broker"
                         }
                       },
-                      "Property": "des_contratante"
+                      "Property": "des_broker"
                     }
                   },
                   "howCreated": 0
                 },
                 {
-                  "name": "05d077b67e88c7490fc9",
+                  "name": "060aab1984e752c11ff6",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1384,22 +1954,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "0ecd79ee52a507897db1",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "Top9 + Otros (ROBUSTO)"
-                    }
-                  },
-                  "howCreated": 1
-                },
-                {
-                  "name": "e467ae6f313b39908612",
+                  "name": "baaf6c98c0d51e28cdee",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1414,31 +1969,16 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f7ecff325d62bbc1d84a",
-                  "type": "Categorical",
+                  "name": "6801dd38271730f9fb80",
+                  "type": "Advanced",
                   "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt_final"
-                        }
-                      },
-                      "Property": "des_asegurado"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "a85bb2d032d89bfc628f",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
+                    "Measure": {
                       "Expression": {
                         "SourceRef": {
                           "Entity": "gd_financiero_rt"
                         }
                       },
-                      "Property": "des_broker"
+                      "Property": "GRA_%CUMPLI RESULTADO TÉCNICO RT"
                     }
                   },
                   "howCreated": 0
@@ -1450,41 +1990,15 @@
               "objects": {},
               "orderBy": [
                 {
-                  "Direction": 1,
+                  "Direction": 2,
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt_final"
-                        }
-                      },
-                      "Property": "des_asegurado"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
+                    "Measure": {
                       "Expression": {
                         "SourceRef": {
                           "Entity": "gd_financiero_rt"
                         }
                       },
-                      "Property": "des_broker"
-                    }
-                  }
-                },
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_contratante"
+                      "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
                     }
                   }
                 }
@@ -1495,10 +2009,10 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt_final"
+                          "Entity": "broker"
                         }
                       },
-                      "Property": "des_asegurado"
+                      "Property": "des_broker"
                     }
                   }
                 ]
@@ -1509,30 +2023,10 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "gd_financiero_rt_final"
-                        }
-                      },
-                      "Property": "des_asegurado"
-                    }
-                  },
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
+                          "Entity": "broker"
                         }
                       },
                       "Property": "des_broker"
-                    }
-                  },
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "gd_financiero_rt"
-                        }
-                      },
-                      "Property": "des_contratante"
                     }
                   }
                 ],
@@ -1585,376 +2079,10 @@
                       }
                     },
                     "index": 0,
-                    "length": 3
+                    "length": 1
                   }
                 ]
               }
-            }
-          },
-          "78d399c837e0aa2e56bc": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "8d9c186fc715782d4109": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
-          "03487d735ade76954545": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "2d09da9dea16f3f40b4f",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SelectorGrafico2"
-                        }
-                      },
-                      "Property": "SelectorGrafico2"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
-            }
-          },
-          "d3dea85898676e5ae8c8": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "e28d08e680aad9eb68f6",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SelectorGrafico1"
-                        }
-                      },
-                      "Property": "Parámetro"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "advancedSlicerVisual",
-              "objects": {}
-            }
-          },
-          "c4561a054aa25b7bb910": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "1b2054d2541d01b801c2",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "MesNombreAño"
-                    }
-                  },
-                  "howCreated": 1
-                },
-                {
-                  "name": "15a37df0da7bd2f757cc",
-                  "type": "Advanced",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "Año"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "edd009e6fc7ae4daee00",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "NombreMes"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "general": [
-                    {
-                      "properties": {
-                        "filter": {
-                          "filter": {
-                            "Version": 2,
-                            "From": [
-                              {
-                                "Name": "c",
-                                "Entity": "Calendario",
-                                "Type": 0
-                              }
-                            ],
-                            "Where": [
-                              {
-                                "Condition": {
-                                  "In": {
-                                    "Expressions": [
-                                      {
-                                        "Column": {
-                                          "Expression": {
-                                            "SourceRef": {
-                                              "Source": "c"
-                                            }
-                                          },
-                                          "Property": "Año"
-                                        }
-                                      },
-                                      {
-                                        "Column": {
-                                          "Expression": {
-                                            "SourceRef": {
-                                              "Source": "c"
-                                            }
-                                          },
-                                          "Property": "NombreMes"
-                                        }
-                                      }
-                                    ],
-                                    "Values": [
-                                      [
-                                        {
-                                          "Literal": {
-                                            "Value": "2025L"
-                                          }
-                                        },
-                                        {
-                                          "Literal": {
-                                            "Value": "'febrero'"
-                                          }
-                                        }
-                                      ]
-                                    ]
-                                  }
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ],
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Dropdown'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ],
-                  "selection": [
-                    {
-                      "properties": {
-                        "strictSingleSelect": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "true"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "Año"
-                    }
-                  },
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "NombreMes"
-                    }
-                  }
-                ]
-              },
-              "filterExpressionMetadata": {
-                "expressions": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "Año"
-                    }
-                  },
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Property": "NombreMes"
-                    }
-                  }
-                ],
-                "cachedValueItems": [
-                  {
-                    "identities": [
-                      {
-                        "scopeId": {
-                          "Comparison": {
-                            "ComparisonKind": 0,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Entity": "Calendario"
-                                  }
-                                },
-                                "Property": "Año"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "2025L"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "scopeId": {
-                          "Comparison": {
-                            "ComparisonKind": 0,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Entity": "Calendario"
-                                  }
-                                },
-                                "Property": "NombreMes"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "'febrero'"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    ],
-                    "valueMap": {
-                      "0": "2025",
-                      "1": "febrero"
-                    }
-                  }
-                ]
-              },
-              "expansionStates": [
-                {
-                  "roles": [
-                    "Values"
-                  ],
-                  "levels": [
-                    {
-                      "queryRefs": [
-                        "Calendario.Año"
-                      ],
-                      "isCollapsed": true,
-                      "identityKeys": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Entity": "Calendario"
-                              }
-                            },
-                            "Property": "Año"
-                          }
-                        }
-                      ],
-                      "isPinned": true
-                    },
-                    {
-                      "queryRefs": [
-                        "Calendario.NombreMes"
-                      ],
-                      "isCollapsed": true,
-                      "isPinned": true
-                    }
-                  ],
-                  "root": {
-                    "identityValues": null,
-                    "children": [
-                      {
-                        "identityValues": [
-                          {
-                            "Literal": {
-                              "Value": "2025L"
-                            }
-                          }
-                        ],
-                        "isToggled": true
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          },
-          "b79093e42c7829068066": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
             }
           }
         }

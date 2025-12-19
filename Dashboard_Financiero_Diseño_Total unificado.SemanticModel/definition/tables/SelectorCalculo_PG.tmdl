@@ -31,7 +31,8 @@ table SelectorCalculo_PG
 				        {"Ppto",2},
 				        {"% Cumpl.",3},
 				        {"Real Y-1",4},
-				        {"%YoY",5}
+				        {"%YoY",5},
+				        {"Desv",6}
 				    }
 				)
 

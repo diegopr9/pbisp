@@ -29,8 +29,9 @@ table SelectorCalculo_PT
 				    {
 				        {"REAL ACT",1},
 				        {"REAL Y-1",2},
-				        {"YoY",3},
-				        {"%YoY",4}
+				        {"REAL Y-2",3},
+				        {"YoY",4},
+				        {"%YoY",5}
 				    }
 				)
 

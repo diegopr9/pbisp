@@ -53,7 +53,7 @@
               },
               "queryRef": "Calendario.Año Jerarquía.Mes2",
               "nativeQueryRef": "Año Jerarquía Mes2",
-              "active": false
+              "active": true
             }
           ]
         }
@@ -92,7 +92,20 @@
             "isPinned": true
           }
         ],
-        "root": {}
+        "root": {
+          "children": [
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "2025L"
+                  }
+                }
+              ],
+              "isToggled": true
+            }
+          ]
+        }
       }
     ],
     "objects": {

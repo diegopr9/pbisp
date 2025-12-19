@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "de27e2dbed01decc0d69",
   "position": {
-    "x": 9.09090909090909,
-    "y": 524.5454545454545,
+    "x": 13.761467889908255,
+    "y": 440.82568807339447,
     "z": 5000,
-    "height": 118.18181818181817,
-    "width": 147.27272727272725,
+    "height": 118.348623853211,
+    "width": 139.90825688073394,
     "tabOrder": 5000
   },
   "visual": {
@@ -476,7 +476,7 @@
             "maxTiles": {
               "expr": {
                 "Literal": {
-                  "Value": "5L"
+                  "Value": "4L"
                 }
               }
             },
@@ -1105,5 +1105,39 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "9da6b5232c33b4e2279e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "agencia"
+              }
+            },
+            "Property": "des_agencia_mod"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }

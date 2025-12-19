@@ -3,11 +3,11 @@
   "name": "87be803ee77e844007e0",
   "position": {
     "x": 13,
-    "y": 236,
-    "z": 1000,
-    "height": 71,
+    "y": 230,
+    "z": 2000,
+    "height": 74,
     "width": 141,
-    "tabOrder": 1000
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -72,7 +72,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Resultado Técnico'"
+                                "Value": "'PRIMAS BRUTAS'"
                               }
                             }
                           ]

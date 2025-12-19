@@ -1,10 +1,15 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
   "name": "602fd7d08bcb65491540",
-  "displayName": "B&G",
+  "displayName": "B&G_ANT",
   "displayOption": "FitToPage",
   "height": 768,
   "width": 1550,
+  "pageBinding": {
+    "name": "3c5794439ca59db0feb7",
+    "type": "Default",
+    "parameters": []
+  },
   "objects": {
     "background": [
       {
@@ -73,8 +78,22 @@
           }
         }
       }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "183L"
+              }
+            }
+          }
+        }
+      }
     ]
   },
+  "visibility": "HiddenInViewMode",
   "visualInteractions": [
     {
       "source": "77e0c720006526cd3d8c",

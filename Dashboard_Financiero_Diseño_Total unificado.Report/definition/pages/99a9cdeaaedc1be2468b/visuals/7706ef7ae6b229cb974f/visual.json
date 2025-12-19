@@ -1,0 +1,1305 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "7706ef7ae6b229cb974f",
+  "position": {
+    "x": 175.83324919507734,
+    "y": 161.36595653978617,
+    "z": 11000,
+    "height": 426.22869899819386,
+    "width": 692.20431012239317,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SelectorCalculo_PT"
+                    }
+                  },
+                  "Property": "TipoCalculo"
+                }
+              },
+              "queryRef": "SelectorCalculo.TipoCalculo",
+              "nativeQueryRef": "TipoCalculo",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Capital Adecuado por Primas"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Capital Adecuado por Primas",
+              "nativeQueryRef": "Capital Adecuado por Primas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Cap. Ade. Por Carga Media De Siniestralidad"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Cap. Ade. Por Carga Media De Siniestralidad",
+              "nativeQueryRef": "Cap. Ade. Por Carga Media De Siniestralidad1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Cap. Ade. Factor De Corrección Por Concentración"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Cap. Ade. Factor De Corrección Por Concentración",
+              "nativeQueryRef": "Cap. Ade. Factor De Corrección Por Concentración"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Cap. Ade. Riesgo De Crédito Por Reaseguro"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Cap. Ade. Riesgo De Crédito Por Reaseguro",
+              "nativeQueryRef": "Cap. Ade. Riesgo De Crédito Por Reaseguro"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "REQUERIMIENTO DE CAPITAL ADECUADO"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.REQUERIMIENTO DE CAPITAL ADECUADO",
+              "nativeQueryRef": "REQUERIMIENTO DE CAPITAL ADECUADO"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Capital Pagado"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Capital Pagado",
+              "nativeQueryRef": "Capital Pagado"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Capital Operativo"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Capital Operativo",
+              "nativeQueryRef": "Capital Operativo"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Reserva Legal"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Reserva Legal",
+              "nativeQueryRef": "Reserva Legal"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Aportes De Accionistas"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Aportes De Accionistas",
+              "nativeQueryRef": "Aportes De Accionistas"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Resultados Del Ejercicio"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Resultados Del Ejercicio",
+              "nativeQueryRef": "Resultados Del Ejercicio"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Utilidad retenida (capacitaciones)"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Utilidad Retenidas Para Futuras Capitalizaciones",
+              "nativeQueryRef": "Utilidad retenida (capacitaciones)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Dividendos Acción"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Dividendos Acción",
+              "nativeQueryRef": "Dividendos Acción"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Reserva Desviación De Siniestralidad Y Catastrófica"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Reserva Desviación De Siniestralidad Y Catastrófica",
+              "nativeQueryRef": "Reserva Desviación De Siniestralidad Y Catastrófica"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "PATRIMONIO TÉCNICO PRIMARIO"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.PATRIMONIO TÉCNICO PRIMARIO",
+              "nativeQueryRef": "PATRIMONIO TÉCNICO PRIMARIO"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Utilidad Ret. Futuras Capitalizaciones"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Utilidad Ret. Futuras Capitalizaciones",
+              "nativeQueryRef": "Utilidad Ret. Futuras Capitalizaciones"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Otras (Pts)"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Otras (Pts)",
+              "nativeQueryRef": "Otras (Pts)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "45% Reserva Legal Pts"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.45% Reserva Legal Pts",
+              "nativeQueryRef": "45% Reserva Legal Pts"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Resultados Acumulados Utilidades"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Resultados Acumulados Utilidades",
+              "nativeQueryRef": "Resultados Acumulados Utilidades"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "Resultado Del Ejercicio (Pts)"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.Resultado Del Ejercicio (Pts)",
+              "nativeQueryRef": "Resultado Del Ejercicio (Pts)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "PATRIMONIO TÉCNICO SECUNDARIO"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.PATRIMONIO TÉCNICO SECUNDARIO",
+              "nativeQueryRef": "PATRIMONIO TÉCNICO SECUNDARIO"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_grupo_contable2"
+                    }
+                  },
+                  "Property": "TOTAL PATRIMONIO TÉCNICO"
+                }
+              },
+              "queryRef": "gd_grupo_contable2.TOTAL PATRIMONIO TÉCNICO",
+              "nativeQueryRef": "TOTAL PATRIMONIO TÉCNICO"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#094D8F'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            },
+            "titleAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTotals": [
+        {
+          "properties": {
+            "perRowLevel": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "rowSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "rowSubtotalsPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "Column"
+          }
+        }
+      ],
+      "columnTotal": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridVertical": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "gridVerticalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rowHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showExpandCollapseButtons": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "bandedRowHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "valuesOnRow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "rowTotal": [
+        {
+          "properties": {
+            "applyToHeaders": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "styleValues": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "styleSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "styleTotal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.Real Act BG tem"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#094D8F'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.REQUERIMIENTO DE CAPITAL ADECUADO"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#094D8F'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.PATRIMONIO TÉCNICO SECUNDARIO"
+          }
+        },
+        {
+          "properties": {
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#094D8F'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.PATRIMONIO TÉCNICO PRIMARIO"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 4,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "styleHeader": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.TOTAL PATRIMONIO TÉCNICO"
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "126.16279069767442D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Indicadores_Dax.Y-1"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "133D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.Real Act BG tem"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "133D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.Ppto BG tem"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "133D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.Real Y-1_PG tem"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "80.97824661573121D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.% Cumpl. PG"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "81D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.%YoY PG"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "273D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Tabla_KPI_PT.KPI_des_PT"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "62D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "SelectorCalculo_PT"
+                          }
+                        },
+                        "Property": "TipoCalculo"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'%YoY'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "92.2596237917022D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "SelectorCalculo_PT"
+                          }
+                        },
+                        "Property": "TipoCalculo"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'YoY'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "106.96200120936814D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "SelectorCalculo_PT"
+                          }
+                        },
+                        "Property": "TipoCalculo"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'REAL ACT'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "97.18566866874745D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "SelectorCalculo_PT"
+                          }
+                        },
+                        "Property": "TipoCalculo"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'REAL Y-1'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "323D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_grupo_contable2.Capital Adecuado por Primas"
+          }
+        }
+      ],
+      "blankRows": [
+        {
+          "properties": {
+            "showBlankRows": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'PATRIMONIO TÉCNICO'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.4
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Arial Unicode MS'''"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "870b0975bf902dc6b5ba",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SelectorCalculo_PT"
+              }
+            },
+            "Property": "TipoCalculo"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "s",
+              "Entity": "SelectorCalculo_PT",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "s"
+                          }
+                        },
+                        "Property": "TipoCalculo"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'REAL ACT'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'REAL Y-1'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'YoY'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'%YoY'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

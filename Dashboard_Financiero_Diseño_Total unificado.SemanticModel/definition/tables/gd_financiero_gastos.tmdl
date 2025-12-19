@@ -1,0 +1,1217 @@
+table gd_financiero_gastos
+	lineageTag: a0fc4016-2a38-40ba-a3c9-ed0e7d88025c
+
+	measure 'Real Act_GT' = ```
+			
+			VAR PeriodoSeleccionado = 
+			    MAXX(
+			        VALUES( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Normalizo a primer día del mes
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior = EDATE( MesActual_Inicio, -12 )
+			VAR AnioAnterior    = YEAR( PeriodoAnterior )
+			VAR MesAnterior     = MONTH( PeriodoAnterior )
+			
+			-- === FILTROS ACTUALES (solo FILTER + DATEVALUE) ===
+			VAR FiltroPeriodoMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			    )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			VAR FiltroAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			-- === FILTROS ANTERIORES ===
+			VAR FiltroPeriodoAnteriorMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			    )
+			
+			VAR FiltroPeriodoAnteriorAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR FiltroPeriodoAnteriorAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor] )
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData] )
+			
+			/* === GASTOS === */
+			VAR SumColumna_val_saldo =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_saldo_mes] ),
+			                         FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_saldo_mes] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_saldo_mes] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			
+			VAR REAL_ACT = SumColumna_val_saldo/1000
+			
+			
+			RETURN
+			REAL_ACT
+			```
+		formatString: #,0
+		lineageTag: e20fbb41-47d8-472d-8215-b630bb6870ab
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Ppto_GT = ```
+			
+			VAR PeriodoSeleccionado = 
+			    MAXX(
+			        VALUES( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Normalizo a primer día del mes
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior = EDATE( MesActual_Inicio, -12 )
+			VAR AnioAnterior    = YEAR( PeriodoAnterior )
+			VAR MesAnterior     = MONTH( PeriodoAnterior )
+			
+			-- === FILTROS ACTUALES (solo FILTER + DATEVALUE) ===
+			VAR FiltroPeriodoMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			    )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			VAR FiltroAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			-- === FILTROS ANTERIORES ===
+			VAR FiltroPeriodoAnteriorMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			    )
+			
+			VAR FiltroPeriodoAnteriorAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR FiltroPeriodoAnteriorAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor] )
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData] )
+			
+			/* === GASTOS === */
+			VAR SumColumna_val_saldo =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                         FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			
+			VAR Ppto_GT = SumColumna_val_saldo/1000
+			
+			
+			RETURN
+			Ppto_GT
+			```
+		formatString: #,0
+		lineageTag: 493dbecb-2e9f-4710-b9b1-b7104bac5991
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure FechaMaxCargaTexto_GT =
+			
+			VAR FechaMax =
+			    CALCULATE (
+			        MAX ( gd_financiero_gastos[fec_periodo_fecha_G] ),
+			        ALL ( gd_financiero_gastos )
+			    )
+			VAR MesAbrevRaw = FORMAT ( FechaMax, "MMM" )         -- abreviado
+			VAR MesSinPunto  = SUBSTITUTE ( MesAbrevRaw, ".", "" )
+			VAR MesCap       = UPPER ( LEFT ( MesSinPunto, 1 ) ) &
+			                   LOWER ( MID ( MesSinPunto, 2, LEN ( MesSinPunto ) - 1 ) )
+			VAR Mes3         = LEFT ( MesCap, 3 )                 -- asegura "Dic", "Sep", etc.
+			RETURN
+			    IF ( ISBLANK ( FechaMax ), BLANK (), Mes3 & " " & FORMAT ( FechaMax, "yyyy" ) )
+		lineageTag: 5855489c-fad6-42bc-a69e-d598adc1890b
+
+	measure 'Dif Real Vs Ppto GT' = [Real Act_GT] - [Ppto_GT]
+		formatString: #,0
+		lineageTag: d0f65d45-5e47-45c9-9a67-5d7a2bd2b7f4
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '% Cumplimiento GT' = COALESCE(DIVIDE(ROUND([Real Act_GT],0),ROUND([Ppto_GT],0),0),0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: ab6ebff4-1181-4189-95ff-8ef2d4a27d0b
+
+	measure Ppto_GT_test = ```
+			
+			VAR PeriodoSeleccionado = 
+			    MAXX(
+			        VALUES( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Normalizo a primer día del mes
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior = EDATE( MesActual_Inicio, -12 )
+			VAR AnioAnterior    = YEAR( PeriodoAnterior )
+			VAR MesAnterior     = MONTH( PeriodoAnterior )
+			
+			-- === FILTROS ACTUALES (solo FILTER + DATEVALUE) ===
+			VAR FiltroPeriodoMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			    )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			VAR FiltroAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			-- === FILTROS ANTERIORES ===
+			VAR FiltroPeriodoAnteriorMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			    )
+			
+			VAR FiltroPeriodoAnteriorAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR FiltroPeriodoAnteriorAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor] )
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData] )
+			
+			/* === GASTOS === */
+			VAR SumColumna_val_saldo =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                         FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_presupuesto] ),
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_gastos[val_forecast] ),
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			
+			VAR Ppto_GT = SumColumna_val_saldo
+			
+			
+			RETURN
+			Ppto_GT
+			```
+		lineageTag: 983f0587-71c5-4663-9884-7633e04dd0ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ppto_GT1 =
+			
+			VAR PeriodoSeleccionado =
+			    COALESCE(
+			        SELECTEDVALUE( 'Calendario'[Date] ),
+			        CALCULATE( MAX( 'Calendario'[Date] ), ALL( 'Calendario' ) )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Valores por defecto para evitar BLANK cuando no hay selección en slicers
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData],  "Presupuesto" )
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor], "Mensualizado" )
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    TipoData = "Real",
+			        SWITCH(
+			            TRUE(),
+			            TipoValor = "Anualizado",   COALESCE( SUM( gd_financiero_gastos[val_presupuesto_anualizado] ), 0 ),
+			            TipoValor = "Mensualizado", COALESCE( SUM( gd_financiero_gastos[val_presupuesto] ), 0 ),
+			            TipoValor = "Acumulado",    COALESCE( SUM( gd_financiero_gastos[val_presupuesto_acumulado] ), 0 ),
+			            0  -- default si el tipo de valor no coincide
+			        ),
+			    TipoData = "Presupuesto",
+			        SWITCH(
+			            TRUE(),
+			            TipoValor = "Anualizado",   COALESCE( SUM( gd_financiero_gastos[val_presupuesto_anualizado] ), 0 ),
+			            TipoValor = "Mensualizado", COALESCE( SUM( gd_financiero_gastos[val_presupuesto] ), 0 ),
+			            TipoValor = "Acumulado",    COALESCE( SUM( gd_financiero_gastos[val_presupuesto_acumulado] ), 0 ),
+			            0
+			        ),
+			    TipoData = "Forecast",
+			        SWITCH(
+			            TRUE(),
+			            TipoValor = "Anualizado",   COALESCE( SUM( gd_financiero_gastos[val_presupuesto_anualizado] ), 0 ),
+			            TipoValor = "Mensualizado", COALESCE( SUM( gd_financiero_gastos[val_presupuesto] ), 0 ),
+			            TipoValor = "Acumulado",    COALESCE( SUM( gd_financiero_gastos[val_presupuesto_acumulado] ), 0 ),
+			            0
+			        ),
+			    0  --    0  -- default si TipoData no coincide
+			)
+		lineageTag: 07a98938-f0da-440d-b217-90a79290bacd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Primas Brutas_GT' = ```
+			
+			VAR PeriodoSeleccionado = 
+			    MAXX(
+			        VALUES( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Normalizo a primer día del mes
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior = EDATE( MesActual_Inicio, -12 )
+			VAR AnioAnterior    = YEAR( PeriodoAnterior )
+			VAR MesAnterior     = MONTH( PeriodoAnterior )
+			
+			-- === FILTROS ACTUALES (solo FILTER + DATEVALUE) ===
+			VAR FiltroPeriodoMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			    )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			VAR FiltroAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			-- === FILTROS ANTERIORES ===
+			VAR FiltroPeriodoAnteriorMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			    )
+			
+			VAR FiltroPeriodoAnteriorAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR FiltroPeriodoAnteriorAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor] )
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData] )
+			
+			/* === Primas Brutas === */
+			VAR SumColumna_PrimasBrutas =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			VAR SumColumna_PrimasBrutas_Ppto =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			VAR SumColumna_PrimasBrutas_1 =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_saldo_mes] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_presupuesto] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_grupo_contable2[val_forecast] ),
+			                        gd_grupo_contable2[des_cuenta] = "Primas Brutas",
+			                        FiltroPeriodoAnteriorAcumulado
+			                    )
+			            )
+			    )
+			
+			VAR REAL_ACT = SumColumna_PrimasBrutas
+			VAR REAL_Y_1 = SumColumna_PrimasBrutas_1
+			VAR Ppto     = SumColumna_PrimasBrutas_Ppto
+			
+			RETURN
+			 COALESCE( DIVIDE( REAL_ACT, 1000, 0 ), 0 )
+			
+			```
+		lineageTag: da085340-734c-419a-ae55-41773ecc1a84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure provisiones_gts = ```
+			
+			VAR PeriodoSeleccionado = 
+			    MAXX(
+			        VALUES( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] )
+			    )
+			VAR AnioActual = YEAR( PeriodoSeleccionado )
+			VAR MesActual  = MONTH( PeriodoSeleccionado )
+			
+			-- Normalizo a primer día del mes
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior = EDATE( MesActual_Inicio, -12 )
+			VAR AnioAnterior    = YEAR( PeriodoAnterior )
+			VAR MesAnterior     = MONTH( PeriodoAnterior )
+			
+			-- === FILTROS ACTUALES (solo FILTER + DATEVALUE) ===
+			VAR FiltroPeriodoMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			    )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			VAR FiltroAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			
+			-- === FILTROS ANTERIORES ===
+			VAR FiltroPeriodoAnteriorMensualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
+			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			    )
+			
+			VAR FiltroPeriodoAnteriorAcumulado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR FiltroPeriodoAnteriorAnualizado =
+			    FILTER (
+			        ALL ( Calendario ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    )
+			
+			VAR TipoValor = SELECTEDVALUE( SelectorValor[TipoValor] )
+			VAR TipoData  = SELECTEDVALUE( SelectorData[TipoData] )
+			
+			/* === Primas Brutas === */
+			VAR SumColumna_prov =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			VAR SumColumna_prov_Ppto =
+			    SWITCH (
+			        TipoData,
+			        "Real",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Presupuesto",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            ),
+			        "Forecast",
+			            SWITCH (
+			                TipoValor,
+			                "Anualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAnualizado
+			                    ),
+			                "Mensualizado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroPeriodoMensualizado
+			                    ),
+			                "Acumulado",
+			                    CALCULATE (
+			                        SUM ( gd_financiero_resultado[val_saldo] ),
+			                        gd_financiero_resultado[id_cuenta_contable] = "25900858",
+			                        FiltroAcumulado
+			                    )
+			            )
+			    )
+			
+			
+			VAR REAL_ACT = SumColumna_prov
+			
+			
+			RETURN
+			COALESCE( DIVIDE( REAL_ACT, 1000, 0 ), 0 )
+			```
+		lineageTag: f70707b2-b2d8-4399-881c-aa3e6ed41260
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Medida
+		lineageTag: 4b3b6702-745b-49be-9a69-a756f155947b
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	measure GTO/PROD_G = [Real Act_GT]/[Primas Brutas_GT]
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: MEDIDAS
+		lineageTag: 97bc88e0-95ca-4c7d-b90b-89650433ec3a
+
+	measure %provision = DIVIDE([provisiones_gts],[Ppto_GT],0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: cf1b468a-a28b-4418-90f2-f4bd0a600201
+
+	column fec_periodo
+		dataType: string
+		lineageTag: d80436e9-d16c-4bc6-8003-ed1d792110a3
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_empresa
+		dataType: string
+		lineageTag: bcb2503a-7bd3-4378-b263-ebf281fdfd55
+		summarizeBy: none
+		sourceColumn: id_empresa
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: e67f6ffc-fbcc-4e44-85c8-ee5b840343fe
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 8ebccda4-c748-4c33-a254-a5925d3ec153
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column fec_periodo_entero_G =
+			
+			VALUE(gd_financiero_gastos[fec_periodo] & "01")
+		lineageTag: c7103f7e-7f70-4a11-829e-a856f800b44a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_fecha_G = ```
+			
+			DATE(
+			    LEFT(gd_financiero_gastos[fec_periodo], 4),            
+			    MID(gd_financiero_gastos[fec_periodo], 5, 2),          
+			    1                                               
+			)
+			```
+		formatString: General Date
+		lineageTag: 605e8e6b-aa6e-4f19-8c0a-db42da93eda6
+		summarizeBy: none
+
+		variation Variación
+			isDefault
+			relationship: 745f0c13-0b1c-4ea6-8d69-68ee6755df44
+			defaultHierarchy: LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_cuenta_contable
+		dataType: string
+		lineageTag: e03cdf58-3f8f-435e-a922-bee90bcfd8f0
+		summarizeBy: none
+		sourceColumn: des_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_nivel_cuenta
+		dataType: string
+		lineageTag: 4b301ac2-a82b-4bb7-8124-32332a7f02c3
+		summarizeBy: none
+		sourceColumn: cod_nivel_cuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_anualizado
+		dataType: double
+		lineageTag: 64efb537-1995-47c1-b51f-d3a61c8f2dae
+		summarizeBy: sum
+		sourceColumn: val_saldo_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes_acumulado
+		dataType: double
+		lineageTag: c9fae1f5-b5e7-4df4-ad26-14f2ad622e7a
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto
+		dataType: double
+		lineageTag: 79bdf898-4fd0-4917-a31e-003e3d8cf3fa
+		summarizeBy: sum
+		sourceColumn: val_presupuesto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast
+		dataType: double
+		lineageTag: 8b3624a5-59c7-4b05-8cf9-287863a1f886
+		summarizeBy: sum
+		sourceColumn: val_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance
+		dataType: double
+		lineageTag: 7fe46d4b-db11-45da-b5fc-c0abb42e9d9c
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes
+		dataType: double
+		lineageTag: f5b241dc-344e-40c2-ad92-e6d8eca26331
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado
+		dataType: double
+		lineageTag: f9175432-cbab-4177-abc0-e2a0776cff2d
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_anualizado
+		dataType: double
+		lineageTag: e748d2ac-9357-4b3e-bbd1-13b5036c7bd5
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_acumulado
+		dataType: double
+		lineageTag: c470cd93-aefa-4180-b4ff-d8724ce05f48
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_acumulado
+		dataType: double
+		lineageTag: b0da061a-052b-4f7e-abab-b5b620ff9439
+		summarizeBy: sum
+		sourceColumn: val_forecast_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column particion
+		dataType: string
+		lineageTag: 84b593bd-09f6-4f29-86ee-9c637afee562
+		summarizeBy: none
+		sourceColumn: particion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gd_financiero_gastos = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    gd_financiero_gastos_schgold_ctlfinanciero = Origen{[Item="gd_financiero_gastos",Schema="schgold",Catalog="ctlfinanciero"]}[Data]
+				in
+				    gd_financiero_gastos_schgold_ctlfinanciero
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

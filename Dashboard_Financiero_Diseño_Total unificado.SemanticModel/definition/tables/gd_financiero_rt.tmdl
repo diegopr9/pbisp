@@ -3,208 +3,230 @@ table gd_financiero_rt
 
 	measure 'Prima Emitida' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
-			    )
-			--- === CAPTURA DE SELECCIONES ===
-			VAR TipoValor   = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoCalculo = SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo])
-			
-			--- === CÁLCULOS DINÁMICOS SEGÚN SELECCIÓN DE VALOR ===
-			
-			-- 1. Cálculo de REAL ACTUAL (Basado en SelectorValor)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroPeriodoMensualizado),
-			        "ACUMULADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroAcumulado) - 
-			           CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroAcumulado),
-			        "ANUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroAnualizado),
-			        0
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-- 2. Cálculo de REAL AÑO ANTERIOR (Basado en SelectorValor)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"51"}, FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n2] IN {"45"}, FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
 			
-			-- 3. Presupuesto (Asumiendo que sigue la lógica mensualizada o según tu definición)
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Prima Emitida", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Prima Emitida", FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Prima Emitida", FiltroAnualizado),
-			        0
-			    )
 			
-			--- === RETORNO FINAL (Selector de Cálculo) ===
+			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
+			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
+			----------------------------------------------------------------------------------
+			/* === Primas Emitidas === */
+			VAR SumColumna_PrimasEmitidas_51 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "51",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_PrimasEmitidas_45 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "45",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_PrimasEmitidas_51_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] = "Prima Emitida",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_PrimasEmitidas_45_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "45",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_PrimasEmitidas_51_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "51",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			VAR SumColumna_PrimasEmitidas_45_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "45",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_PrimasEmitidas_51-SumColumna_PrimasEmitidas_45
+			VAR REAL_Y_1 = SumColumna_PrimasEmitidas_51_Y1-SumColumna_PrimasEmitidas_45_Y1
+			VAR Ppto = SumColumna_PrimasEmitidas_51_Ppto
 			RETURN
-			    SWITCH (
-			        TipoCalculo,
-			        "Real Act", COALESCE(DIVIDE(REAL_ACT, 1000, 0), 0),
-			        "Ppto",     COALESCE(DIVIDE(Ppto, 1000, 0), 0),
-			        "% Cumpl.", COALESCE((DIVIDE(REAL_ACT, Ppto, 0) * 100), 0),
-			        "Real Y-1", COALESCE(DIVIDE(REAL_Y_1, 1000, 0), 0),
-			        "%YoY",     COALESCE((DIVIDE(REAL_ACT - REAL_Y_1, REAL_Y_1, 0) * 100), 0)
-			    )
+			SWITCH (
+			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
+			    "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
+			    "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
+			    "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
+			    "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
+			    "%YoY" ,COALESCE((DIVIDE(REAL_ACT-REAL_Y_1,REAL_Y_1,0)*100),0)
+			)
+			
 			```
 		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 48b7d704-44f0-4a8b-812d-7e28bed83eee
 
+		annotation PBI_FormatHint = {"isDecimal":true}
+
 	measure 'Coaseguros Cedidos RT' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			--- === CAPTURA DE SELECCIONES ===
+			
+			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Coaseguros Cedidos === */
+			VAR SumColumna_CoasegurosCedidos_4403 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4403",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
+			VAR SumColumna_CoasegurosCedidos_4403_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] = "Coaseguros Cedidos",                        
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- REAL ACTUAL (Cuenta 4403 con signo invertido)
-			VAR SumColumna_CoasegurosCedidos_4403 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR SumColumna_CoasegurosCedidos_4403_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Coaseguros Cedidos", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Coaseguros Cedidos", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Coaseguros Cedidos", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR SumColumna_CoasegurosCedidos_4403_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroPeriodoAnteriorMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] = "4403", FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
-			
-			
+			VAR SumColumna_CoasegurosCedidos_4403_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                       --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4403",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_CoasegurosCedidos_4403
@@ -214,7 +236,7 @@ table gd_financiero_rt
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
 			    "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
-			    "Ppto",COALESCE(DIVIDE(-Ppto,1000,0),0),
+			    "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
 			    "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
 			    "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
 			    "%YoY" ,COALESCE((DIVIDE(REAL_ACT-REAL_Y_1,REAL_Y_1,0)*100),0)
@@ -228,95 +250,95 @@ table gd_financiero_rt
 
 	measure 'Cesión Primas Reaseguros' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
 			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Cesión Primas Reaseguros === */
-			
-			
-			-- REAL ACTUAL (Cuentas 4401, 4402 con signo invertido)
-			VAR SumColumna_CesionPrimasReaseguros = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroAnualizado ),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR SumColumna_CesionPrimasReaseguros_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Cesión Primas Reaseguros", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Cesión Primas Reaseguros", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Cesión Primas Reaseguros", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR SumColumna_CesionPrimasReaseguros_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n3] IN { "4401","4402" }, FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
-			
-			
+			VAR SumColumna_CesionPrimasReaseguros =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4401","4402"},
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_CesionPrimasReaseguros_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] = "Cesión Primas Reaseguros",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_CesionPrimasReaseguros_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4401","4402"},
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_CesionPrimasReaseguros
@@ -326,11 +348,12 @@ table gd_financiero_rt
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
 			    "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
-			    "Ppto",COALESCE(DIVIDE(-Ppto,1000,0),0),
+			    "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
 			    "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
 			    "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
 			    "%YoY" ,COALESCE((DIVIDE(REAL_ACT-REAL_Y_1,REAL_Y_1,0)*100),0)
 			)
+			
 			```
 		formatString: #,0
 		displayFolder: Medidas
@@ -338,7 +361,7 @@ table gd_financiero_rt
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'PRIMA NETA RETENIDA' = [Prima Emitida] + ([Coaseguros Cedidos RT]+[Cesión Primas Reaseguros])
+	measure 'PRIMA NETA RETENIDA' = [Prima Emitida] - ([Coaseguros Cedidos RT]+[Cesión Primas Reaseguros])
 		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 970c05d5-4814-4ee2-81a6-c1b6ed56bb63
@@ -347,93 +370,97 @@ table gd_financiero_rt
 
 	measure 'Costo Excesos de Pérdida' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
 			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* ===  Costo Excesos de Pérdida === */
+			VAR SumColumna_CostoExcesosdePerdida =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "43",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- REAL ACTUAL (Cuenta 43 con signo invertido)
-			VAR SumColumna_CostoExcesosdePerdida = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroAnualizado ),
-			        0
-			    )
+			VAR SumColumna_CostoExcesosdePerdida_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] = "Costo Excesos de Pérdida",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- PRESUPUESTO
-			VAR SumColumna_CostoExcesosdePerdida_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Costo Excesos de Pérdida", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Costo Excesos de Pérdida", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Costo Excesos de Pérdida", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR SumColumna_CostoExcesosdePerdida_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroPeriodoAnteriorMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "43", FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
-			
+			VAR SumColumna_CostoExcesosdePerdida_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "43",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_CostoExcesosdePerdida
@@ -458,115 +485,123 @@ table gd_financiero_rt
 
 	measure 'Reserva Técnica Neta' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
 			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Reserva Técnica Neta === */
+			VAR SumColumna_ReservaTecnicaNeta =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaTecnicaNeta_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaTecnicaNeta_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			-------------------
+			VAR SumColumna_ReservaTecnicaNeta_G2 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaTecnicaNeta_G2_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaTecnicaNeta_G2_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			                    
 			
-			-----------------------------------------------------------
-			
-			-- REAL ACTUAL (Reserva Neta - Reserva G2)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO (Reserva Ppto - Reserva G2 Ppto)
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Tecnica Neta PyG", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Tecnica Neta PyG", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Reserva Tecnica Neta PyG", FiltroAnualizado),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"5701","5702"}, FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4801","4802"}, FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
-			
-			
-			
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_ReservaTecnicaNeta - SumColumna_ReservaTecnicaNeta_G2
+			VAR REAL_Y_1 = SumColumna_ReservaTecnicaNeta_Y1 - SumColumna_ReservaTecnicaNeta_G2_Y1
+			VAR Ppto = SumColumna_ReservaTecnicaNeta_Ppto - SumColumna_ReservaTecnicaNeta_G2_Ppto
 			RETURN
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
@@ -584,12 +619,7 @@ table gd_financiero_rt
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'PRIMA DEVENGADA' =
-			
-			
-			[PRIMA NETA RETENIDA]+[Costo Excesos de Pérdida]+[Reserva Técnica Neta]
-			
-			--[PRIMA NETA RETENIDA]-[Constitución RRC Devengado]
+	measure 'PRIMA DEVENGADA' = [PRIMA NETA RETENIDA]-([Costo Excesos de Pérdida]-[Reserva Técnica Neta])
 		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 1d70be2b-6c60-4baa-a3ed-405747d44889
@@ -598,94 +628,97 @@ table gd_financiero_rt
 
 	measure 'Siniestros pagados RT' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
 			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* ===  Siniestros pagados === */
+			VAR SumColumna_Siniestrospagados =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "46",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			--------------------------------
+			VAR SumColumna_Siniestrospagados_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[cta_des_n2] = "Siniestros pagados",
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			                    -- REAL ACTUAL (Cuenta 46 con signo invertido por QA)
-			VAR SumColumna_Siniestrospagados = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR SumColumna_Siniestrospagados_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Siniestros Pagados PyG", gd_financiero_rt[tipo_valor] = "VP", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Siniestros Pagados PyG", gd_financiero_rt[tipo_valor] = "VP", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Siniestros Pagados PyG", gd_financiero_rt[tipo_valor] = "VP", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1) - Aplicado *-1 para consistencia con QA
-			VAR SumColumna_Siniestrospagados_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroPeriodoAnteriorMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ) * -1, gd_financiero_rt[id_cuenta_contable_n2] = "46", FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
+			VAR SumColumna_Siniestrospagados_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "46",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_Siniestrospagados
@@ -710,59 +743,67 @@ table gd_financiero_rt
 
 	measure 'Recuperaciones y Salvamentos de Siniestro' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
 			
 			
 			
@@ -770,35 +811,29 @@ table gd_financiero_rt
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* ===  Recuperaciones y Salvamentos de Siniestro === */
+			VAR SumColumna_RecuperacionesSalvamentosSiniestro =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "53",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
+			VAR SumColumna_RecuperacionesSalvamentosSiniestro_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Recuperaciones y Salvamentos de Siniestro",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "53",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- REAL ACTUAL (Cuenta 52)
-			VAR SumColumna_RecuperacionesSalvamentosSiniestro = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR SumColumna_RecuperacionesSalvamentosSiniestro_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Recuperación y Salvamentos PyG", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Recuperación y Salvamentos PyG", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Recuperación y Salvamentos PyG", FiltroAnualizado ),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR SumColumna_RecuperacionesSalvamentosSiniestro_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroPeriodoAnteriorMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "53", FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
-			
+			VAR SumColumna_RecuperacionesSalvamentosSiniestro_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "53",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_RecuperacionesSalvamentosSiniestro
@@ -823,102 +858,120 @@ table gd_financiero_rt
 
 	measure 'Ajuste Reserva de Siniestros' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
+			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Ajuste Reserva de Siniestros === */
-			-- REAL ACTUAL (570301 - 480301)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Ajuste Reserva de Siniestros PyG", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Ajuste Reserva de Siniestros PyG", FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Ajuste Reserva de Siniestros PyG", FiltroAnualizado),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570301", FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480301", FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
+			VAR SumColumna_AjusteReservaSiniestros_570301 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570301",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_AjusteReservaSiniestros_480301 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480301",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_AjusteReservaSiniestros_570301_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Ajuste Reserva de Siniestros",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570301",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_AjusteReservaSiniestros_480301_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Ajuste Reserva de Siniestros",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480301",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_AjusteReservaSiniestros_570301_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570301",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			VAR SumColumna_AjusteReservaSiniestros_480301_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480301",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_AjusteReservaSiniestros_570301-SumColumna_AjusteReservaSiniestros_480301
+			VAR REAL_Y_1 = SumColumna_AjusteReservaSiniestros_570301_Y1-SumColumna_AjusteReservaSiniestros_480301_Y1
+			VAR Ppto = SumColumna_AjusteReservaSiniestros_570301_Ppto - SumColumna_AjusteReservaSiniestros_480301_Ppto
 			RETURN
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
@@ -930,7 +983,7 @@ table gd_financiero_rt
 			)
 			
 			```
-		formatString: 0
+		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 9be589d6-c84c-42a9-b665-fb6e041b5b1f
 
@@ -938,102 +991,120 @@ table gd_financiero_rt
 
 	measure 'IBNR RT' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
+			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* ===IBNR === */
-			-- REAL ACTUAL (570302 - 480302)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "IBNR", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "IBNR", FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "IBNR", FiltroAnualizado),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "570302", FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n4] = "480302", FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
+			VAR SumColumna_IBNR_570302 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570302",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_IBNR_480302 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480302",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_IBNR_570302_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "IBNR",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570302",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_IBNR_480302_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "IBNR",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480302",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_IBNR_570302_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "570302",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			VAR SumColumna_IBNR_480302_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n4] = "480302",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_IBNR_570302 - SumColumna_IBNR_480302
+			VAR REAL_Y_1 = SumColumna_IBNR_570302_Y1 - SumColumna_IBNR_480302_Y1
+			VAR Ppto = SumColumna_IBNR_570302_Ppto - SumColumna_IBNR_480302_Ppto
 			RETURN
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
@@ -1045,19 +1116,13 @@ table gd_financiero_rt
 			)
 			
 			```
-		formatString: 0
+		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 22b367e0-6c10-4e43-ad26-c04d00fa7523
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'COSTO DE SINIESTRO' = ```
-			
-			 --46-53+480301-570301+480302-570302
-			  [Siniestros pagados RT]+ ([Recuperaciones y Salvamentos de Siniestro]) + ([Ajuste Reserva de Siniestros])+ [IBNR RT]
-			
-			 
-			```
+	measure 'COSTO DE SINIESTRO' = -([Siniestros pagados RT]-[Recuperaciones y Salvamentos de Siniestro]-[Ajuste Reserva de Siniestros]-[IBNR RT])
 		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: 9d5359da-fe5d-4ac9-87a2-07b8c8666c13
@@ -1066,59 +1131,67 @@ table gd_financiero_rt
 
 	measure 'Reserva Insuficiencia de Prima' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
 			
 			
 			
@@ -1126,50 +1199,52 @@ table gd_financiero_rt
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Reserva Insuficiencia de Prima === */
-			-- REAL ACTUAL (5705 - 4805)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO (5705 Ppto - 4805 Ppto)
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroAnualizado),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5705", FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4805", FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
+			VAR SumColumna_ReservaInsuficienciaPrima_5705 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5705",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaInsuficienciaPrima_4805 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4805",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaInsuficienciaPrima_5705_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva Insuficiencia de Prima",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5705",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaInsuficienciaPrima_4805_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva Insuficiencia de Prima",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4805",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaInsuficienciaPrima_5705_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5705",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			VAR SumColumna_ReservaInsuficienciaPrima_4805_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                       --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4805",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_ReservaInsuficienciaPrima_5705-SumColumna_ReservaInsuficienciaPrima_4805
+			VAR REAL_Y_1 = SumColumna_ReservaInsuficienciaPrima_5705_Y1-SumColumna_ReservaInsuficienciaPrima_4805_Y1
+			VAR Ppto = SumColumna_ReservaInsuficienciaPrima_5705_Ppto - SumColumna_ReservaInsuficienciaPrima_4805_Ppto
 			RETURN
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
@@ -1188,109 +1263,120 @@ table gd_financiero_rt
 
 	measure 'Reserva desviación de siniestralidad/Catastrófica' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
+			
 			
 			
 			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
 			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* === Reserva desviación de siniestralidad/Catastrófica === */
-			-- REAL ACTUAL (5704 - 4804)
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO (5704 Ppto - 4804 Ppto)
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroPeriodoMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroAnualizado),
-			        0
-			    )
-			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroPeriodoAnteriorMensualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroPeriodoAnteriorAcumulado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "5704", FiltroPeriodoAnteriorAnualizado) - 
-			            CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4804", FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4804",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5704",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva desviación de siniestralidad/Catastrófica",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4804",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        --gd_financiero_rt[cta_des_n2] = "Reserva desviación de siniestralidad/Catastrófica",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5704",
+			                        FiltroPeriodoMensualizado
+			                    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "4804",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			VAR SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n3] = "5704",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804 - SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704
+			VAR REAL_Y_1 = SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804_Y1 - SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704_Y1
+			VAR Ppto = SumColumna_ReservaDesviacionSiniestralidadCatastrofica_4804_Ppto - SumColumna_ReservaDesviacionSiniestralidadCatastrofica_5704_Ppto
 			RETURN
 			SWITCH (
 			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
@@ -1309,104 +1395,202 @@ table gd_financiero_rt
 
 	measure 'Com. Uso de Red' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
-			VAR AnioActual = YEAR(PeriodoSeleccionado)
-			VAR MesActual  = MONTH(PeriodoSeleccionado)
-			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
-			
-			-- Periodo anterior (12 meses atrás)
-			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
-			VAR AnioAnterior    = YEAR(PeriodoAnterior)
-			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			VAR PeriodoSeleccionado =
+			    MAX ( Calendario[MesNombreAño] )
+			VAR AnioActual =
+			    YEAR ( PeriodoSeleccionado )
+			VAR MesActual =
+			    MONTH ( PeriodoSeleccionado ) -- Normalizo a primer día del mes por seguridad
+			VAR MesActual_Inicio =
+			    DATE ( AnioActual, MesActual, 1 ) -- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior =
+			    EDATE ( MesActual_Inicio, -12 )
+			VAR AnioAnterior =
+			    YEAR ( PeriodoAnterior )
+			VAR MesAnterior =
+			    MONTH ( PeriodoAnterior ) -- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH ( Calendario[MesNombreAño] ) = MesActual
 			    )
-			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioActual, 1, 1 ),
+			        EOMONTH ( MesActual_Inicio, 0 )
 			    )
-			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
-			    )
-			
-			-----FILTROS ANTERIORES
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,
+			        -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
+			    ) -- === FILTROS ANTERIORES (CORREGIDOS) ===
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
-			    )
-			
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
+			    ) -- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
-			    )
-			
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioAnterior, 1, 1 ),
+			        EOMONTH ( PeriodoAnterior, 0 )
+			    ) -- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,
+			        -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
-			VAR TipoValor   = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoCalculo = SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo])
-			
-			
-			--- === 3. LÓGICA DE CÁLCULO (REAL Y Y-1) ===
-			-- Suma de n5 + n6 según tus variables base
-			VAR CalculoReal = 
-			    VAR Detalle_n5 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n5] IN {"42010102","42010103","42010202","42010203"})
-			    VAR Detalle_n6 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n6] IN {
-			        "4201030302","4201030303","4201030502","4201030503","4201030902","4201030903",
-			        "4201031002","4201031003","4201031302","4201031303","4201031402","4201031403",
-			        "4201031802","4201031803","4201032902","4201032903","4201033002","4201033003"
-			    })
-			    RETURN Detalle_n5 + Detalle_n6
-			
-			-- REAL ACTUAL
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroAnualizado),
-			        0
+			VAR TipoValor =
+			    SELECTEDVALUE ( SelectorValor[TipoValor] )
+			VAR TipoData =
+			    SELECTEDVALUE ( SelectorData[TipoData] ) ----------------------------------------------------------------------------------
+			/* === Com. Uso de Red === */
+			VAR SumColumna_ComUsoRed_n6 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable]
+			            IN {
+			                "4201030302",
+			                "4201030303",
+			                "4201030502",
+			                "4201030503",
+			                "4201030902",
+			                "4201030903",
+			                "4201031002",
+			                "4201031003",
+			                "4201031302",
+			                "4201031303",
+			                "4201031402",
+			                "4201031403",
+			                "4201031802",
+			                "4201031803",
+			                "4201032902",
+			                "4201032903",
+			                "4201033002",
+			                "4201033003"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
-			
-			-- REAL AÑO ANTERIOR
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroPeriodoAnteriorAnualizado),
-			        0
+			VAR SumColumna_ComUsoRed_n6_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable]
+			            IN {
+			                "4201030302",
+			                "4201030303",
+			                "4201030502",
+			                "4201030503",
+			                "4201030902",
+			                "4201030903",
+			                "4201031002",
+			                "4201031003",
+			                "4201031302",
+			                "4201031303",
+			                "4201031402",
+			                "4201031403",
+			                "4201031802",
+			                "4201031803",
+			                "4201032902",
+			                "4201032903",
+			                "4201033002",
+			                "4201033003"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
-			
-			-- PRESUPUESTO
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] IN { "Com. Uso de Red", "pct_cad" }, FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] IN { "Com. Uso de Red", "pct_cad" }, FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] IN { "Com. Uso de Red", "pct_cad" }, FiltroAnualizado),
-			        0
+			VAR SumColumna_ComUsoRed_n6_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable]
+			            IN {
+			                 "4201030302",
+			                "4201030303",
+			                "4201030502",
+			                "4201030503",
+			                "4201030902",
+			                "4201030903",
+			                "4201031002",
+			                "4201031003",
+			                "4201031302",
+			                "4201031303",
+			                "4201031402",
+			                "4201031403",
+			                "4201031802",
+			                "4201031803",
+			                "4201032902",
+			                "4201032903",
+			                "4201033002",
+			                "4201033003"            
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			--------------------
+			    VAR SumColumna_ComUsoRed_n5 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102",
+			                "42010103",
+			                "42010202",
+			                "42010203"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
+			VAR SumColumna_ComUsoRed_n5_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102",
+			                "42010103",
+			                "42010202",
+			                "42010203"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComUsoRed_n5_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102",
+			                "42010103",
+			                "42010202",
+			                "42010203"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			VAR SumColumna_PrimasEmitidas_C_UR_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] IN{ "Com. Uso de Red","pct_cad"},
+			                        FiltroPeriodoMensualizado
+			                    ) 
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_ComUsoRed_n5 + SumColumna_ComUsoRed_n6
+			VAR REAL_Y_1 = SumColumna_ComUsoRed_n5_Y1 +SumColumna_ComUsoRed_n6_Y1
+			VAR Ppto = SumColumna_PrimasEmitidas_C_UR_Ppto
 			RETURN
 			    SWITCH (
 			        SELECTEDVALUE ( SelectorCalculo_PG[TipoCalculo] ),
-			        "Real Act", COALESCE(DIVIDE(-REAL_ACT,1000,0),0),
+			        "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
 			        "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
 			        "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
 			        "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
@@ -1422,99 +1606,136 @@ table gd_financiero_rt
 
 	measure 'Otros Costos de Adquisición' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
-			VAR AnioActual = YEAR(PeriodoSeleccionado)
-			VAR MesActual  = MONTH(PeriodoSeleccionado)
-			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
-			
-			-- Periodo anterior (12 meses atrás)
-			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
-			VAR AnioAnterior    = YEAR(PeriodoAnterior)
-			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			VAR PeriodoSeleccionado =
+			    MAX ( Calendario[MesNombreAño] )
+			VAR AnioActual =
+			    YEAR ( PeriodoSeleccionado )
+			VAR MesActual =
+			    MONTH ( PeriodoSeleccionado ) -- Normalizo a primer día del mes por seguridad
+			VAR MesActual_Inicio =
+			    DATE ( AnioActual, MesActual, 1 ) -- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior =
+			    EDATE ( MesActual_Inicio, -12 )
+			VAR AnioAnterior =
+			    YEAR ( PeriodoAnterior )
+			VAR MesAnterior =
+			    MONTH ( PeriodoAnterior ) -- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH ( Calendario[MesNombreAño] ) = MesActual
 			    )
-			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioActual, 1, 1 ),
+			        EOMONTH ( MesActual_Inicio, 0 )
 			    )
-			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
-			    )
-			
-			-----FILTROS ANTERIORES
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,
+			        -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
+			    ) -- === FILTROS ANTERIORES (CORREGIDOS) ===
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
-			    )
-			
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
+			    ) -- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
-			    )
-			
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioAnterior, 1, 1 ),
+			        EOMONTH ( PeriodoAnterior, 0 )
+			    ) -- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,
+			        -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
-			VAR TipoValor   = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoCalculo = SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo])
+			VAR TipoValor =
+			    SELECTEDVALUE ( SelectorValor[TipoValor] )
+			VAR TipoData =
+			    SELECTEDVALUE ( SelectorData[TipoData] ) ----------------------------------------------------------------------------------
 			
 			/* === Otros Costos de Adquisición === */
-			-- Suma de n3 (4202) + n5 (específicas)
-			VAR CalculoReal = 
-			    VAR Base_n3 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] = "4202")
-			    VAR Extra_n5 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n5] IN {"42049010","42049003","42049012","42049030","42049004","42049005","42049011"})
-			    RETURN Base_n3 + Extra_n5
-			
-			-- REAL ACTUAL
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroAnualizado),
-			        0
+			VAR SumColumna_OtrosCostosAdquisicion =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4202"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
-			
-			-- REAL AÑO ANTERIOR
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroPeriodoAnteriorAnualizado),
-			        0
+			VAR SumColumna_OtrosCostosAdquisicion_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4202"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
-			
-			-- PRESUPUESTO (Suma de Ppto según cta_des_n2)
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas", FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas", FiltroAnualizado),
-			        0
+			VAR SumColumna_OtrosCostosAdquisicion_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4202"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			------------------------------------------------------
+			VAR SumColumna_OtrosCostosAdquisicion_G2 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42049010","42049003","42049012","42049030","42049004","42049005","42049011"
+			            },
+			        FiltroPeriodoMensualizado
 			    )
+			VAR SumColumna_OtrosCostosAdquisicion_G2_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42049010","42049003","42049012","42049030","42049004","42049005","42049011"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_OtrosCostosAdquisicion_G2_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			       -- gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42049010","42049003","42049012","42049030","42049004","42049005","42049011"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_OtrosCostosAdquisicion + SumColumna_OtrosCostosAdquisicion_G2
+			VAR REAL_Y_1 = SumColumna_OtrosCostosAdquisicion_Y1 + SumColumna_OtrosCostosAdquisicion_G2_Y1
+			VAR Ppto = SumColumna_OtrosCostosAdquisicion_Ppto + SumColumna_OtrosCostosAdquisicion_G2_Ppto
 			RETURN
 			    SWITCH (
 			        SELECTEDVALUE ( SelectorCalculo_PG[TipoCalculo] ),
-			        "Real Act", COALESCE(DIVIDE(-REAL_ACT,1000,0),0),
+			        "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
 			        "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
 			        "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
 			        "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
@@ -1530,106 +1751,181 @@ table gd_financiero_rt
 
 	measure 'Com. Bróker' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
-			VAR AnioActual = YEAR(PeriodoSeleccionado)
-			VAR MesActual  = MONTH(PeriodoSeleccionado)
-			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
-			
-			-- Periodo anterior (12 meses atrás)
-			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
-			VAR AnioAnterior    = YEAR(PeriodoAnterior)
-			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			VAR PeriodoSeleccionado =
+			    MAX ( Calendario[MesNombreAño] )
+			VAR AnioActual =
+			    YEAR ( PeriodoSeleccionado )
+			VAR MesActual =
+			    MONTH ( PeriodoSeleccionado ) -- Normalizo a primer día del mes por seguridad
+			VAR MesActual_Inicio =
+			    DATE ( AnioActual, MesActual, 1 ) -- Periodo anterior = 12 meses atrás (mismo día del mes)
+			VAR PeriodoAnterior =
+			    EDATE ( MesActual_Inicio, -12 )
+			VAR AnioAnterior =
+			    YEAR ( PeriodoAnterior )
+			VAR MesAnterior =
+			    MONTH ( PeriodoAnterior ) -- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH ( Calendario[MesNombreAño] ) = MesActual
 			    )
-			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioActual, 1, 1 ),
+			        EOMONTH ( MesActual_Inicio, 0 )
 			    )
-			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
-			    )
-			
-			-----FILTROS ANTERIORES
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,
+			        -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
+			    ) -- === FILTROS ANTERIORES (CORREGIDOS) ===
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
-			    )
-			
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
+			    ) -- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
-			    )
-			
+			    DATESBETWEEN (
+			        Calendario[MesNombreAño],
+			        DATE ( AnioAnterior, 1, 1 ),
+			        EOMONTH ( PeriodoAnterior, 0 )
+			    ) -- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD (
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,
+			        -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
-			VAR TipoValor   = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoCalculo = SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo])
+			VAR TipoValor =
+			    SELECTEDVALUE ( SelectorValor[TipoValor] )
+			VAR TipoData =
+			    SELECTEDVALUE ( SelectorData[TipoData] ) ----------------------------------------------------------------------------------
 			
 			/* === Com. Bróker === */
-			-- Nota: La lógica es (Total n3) - (Detalle n5 + Detalle n6)
-			
-			-- Función interna para calcular la expresión según un filtro de tiempo dado
-			VAR CalculoReal = 
-			    VAR Total_n3 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n3] IN {"4201"})
-			    VAR Detalle_n5 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n5] IN {"42010102","42010103","42010202","42010203"})
-			    VAR Detalle_n6 = CALCULATE(SUM(gd_financiero_rt[val_saldo_con_signo]), gd_financiero_rt[id_cuenta_contable_n6] IN {
-			        "4201030302","4201030303","4201030502","4201030503","4201030902","4201030903",
-			        "4201031002","4201031003","4201031302","4201031303","4201031402","4201031403",
-			        "4201031802","4201031803","4201032902","4201032903","4201033002","4201033003"
-			    })
-			    RETURN Total_n3 - (Detalle_n5 + Detalle_n6)
-			
-			-- REAL ACTUAL
-			VAR REAL_ACT = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroAnualizado),
-			        0
+			VAR SumColumna_ComBroker =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4201"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4201"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n3]
+			            IN {
+			                "4201"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			------------------------------------------------------
+			VAR SumColumna_ComBroker_n5 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102","42010103","42010202","42010203"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_n5_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102","42010103","42010202","42010203"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_n5_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n5]
+			            IN {
+			                "42010102","42010103","42010202","42010203"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
+			    ) 
+			    ---------------------------------
+			    VAR SumColumna_ComBroker_n6 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n6]
+			            IN {
+			                "4201030302","4201030303","4201030502","4201030503","4201030902","4201030903",
+			                "4201031002","4201031003","4201031302","4201031303","4201031402","4201031403",
+			                "4201031802","4201031803","4201032902","4201032903","4201033002","4201033003"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_n6_Ppto =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_presupuesto] ),
+			        --gd_financiero_rt[cta_des_n2] = "Comisiones Pagadas",
+			        gd_financiero_rt[id_cuenta_contable_n6]
+			            IN {
+			                 "4201030302","4201030303","4201030502","4201030503","4201030902","4201030903",
+			                "4201031002","4201031003","4201031302","4201031303","4201031402","4201031403",
+			                "4201031802","4201031803","4201032902","4201032903","4201033002","4201033003"
+			            },
+			        FiltroPeriodoMensualizado
+			    )
+			VAR SumColumna_ComBroker_n6_Y1 =
+			    CALCULATE (
+			        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			        --gd_financiero_rt[asegurado] = "SA",
+			        gd_financiero_rt[id_cuenta_contable_n6]
+			            IN {
+			                "4201030302","4201030303","4201030502","4201030503","4201030902","4201030903",
+			                "4201031002","4201031003","4201031302","4201031303","4201031402","4201031403",
+			                "4201031802","4201031803","4201032902","4201032903","4201033002","4201033003"
+			            },
+			        FiltroPeriodoAnteriorMensualizado
 			    )
 			
-			-- REAL AÑO ANTERIOR
-			VAR REAL_Y_1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(CalculoReal, FiltroPeriodoAnteriorMensualizado),
-			        "ACUMULADO",    CALCULATE(CalculoReal, FiltroPeriodoAnteriorAcumulado),
-			        "ANUALIZADO",   CALCULATE(CalculoReal, FiltroPeriodoAnteriorAnualizado),
-			        0
-			    )
-			
-			-- PRESUPUESTO
-			VAR Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Com. Bróker", FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Com. Bróker", FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM(gd_financiero_rt[val_presupuesto]), gd_financiero_rt[tipo_valor] = "VP", gd_financiero_rt[cta_des_n2] = "Com. Bróker", FiltroAnualizado),
-			        0
-			    )
+			VAR SumColumna_PrimasEmitidas_C_Brokers_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        gd_financiero_rt[cta_des_n2] = "Com. Bróker",
+			                        FiltroPeriodoMensualizado
+			                    )
+			/* === Fórmula base === */
+			VAR REAL_ACT = SumColumna_ComBroker - ( SumColumna_ComBroker_n5+SumColumna_ComBroker_n6 )
+			VAR REAL_Y_1 = SumColumna_ComBroker_Y1 -( SumColumna_ComBroker_n5_Y1 + SumColumna_ComBroker_n6_Y1 )
+			VAR Ppto = SumColumna_PrimasEmitidas_C_Brokers_Ppto
 			RETURN
 			    SWITCH (
 			        SELECTEDVALUE ( SelectorCalculo_PG[TipoCalculo] ),
-			        "Real Act", COALESCE(DIVIDE(-REAL_ACT,1000,0),0),
+			        "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
 			        "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
 			        "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
 			        "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
@@ -1652,89 +1948,97 @@ table gd_financiero_rt
 
 	measure 'Comisiones Ganadas RT' = ```
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
 			VAR AnioActual = YEAR(PeriodoSeleccionado)
 			VAR MesActual  = MONTH(PeriodoSeleccionado)
+			
+			-- Normalizo a primer día del mes por seguridad
 			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
 			
-			-- Periodo anterior (12 meses atrás)
+			-- Periodo anterior = 12 meses atrás (mismo día del mes)
 			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
 			VAR AnioAnterior    = YEAR(PeriodoAnterior)
 			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
+			
+			-- === FILTROS ACTUALES ===
 			VAR FiltroPeriodoMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
+			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
+			            && MONTH (Calendario[MesNombreAño] ) = MesActual
 			    )
 			
 			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioActual, 1, 1),
+			        EOMONTH(MesActual_Inicio, 0)
 			    )
 			
 			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
+			        -12,
+			        MONTH
 			    )
 			
-			-----FILTROS ANTERIORES
+			-- === FILTROS ANTERIORES (CORREGIDOS) ===
+			
+			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
 			VAR FiltroPeriodoAnteriorMensualizado =
 			    FILTER (
 			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioAnterior
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesAnterior
+			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
+			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
 			    )
 			
+			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
 			VAR FiltroPeriodoAnteriorAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioAnterior, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESBETWEEN(
+			        Calendario[MesNombreAño],
+			        DATE(AnioAnterior, 1, 1),
+			        EOMONTH(PeriodoAnterior, 0)
 			    )
 			
+			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
 			VAR FiltroPeriodoAnteriorAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( PeriodoAnterior, -12 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( PeriodoAnterior, 0 )
+			    DATESINPERIOD(
+			        Calendario[MesNombreAño],
+			        PeriodoAnterior,    -- fin de la ventana (incluido)
+			        -12,
+			        MONTH
 			    )
-			--- === CAPTURA DE SELECCIONES ===
-			VAR TipoValor   = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoCalculo = SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo])
+			
+			
+			
+			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
+			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
 			----------------------------------------------------------------------------------
 			/* ===  Comisiones Ganadas === */
-			-- REAL ACTUAL (Cuenta 52)
-			VAR SumColumna_ComisionesGanadas = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroAnualizado ),
-			        0
-			    )
+			VAR SumColumna_ComisionesGanadas =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "52",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- PRESUPUESTO
-			VAR SumColumna_ComisionesGanadas_Ppto = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Comisiones Ganadas", gd_financiero_rt[tipo_valor] = "VP", FiltroPeriodoMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Comisiones Ganadas", gd_financiero_rt[tipo_valor] = "VP", FiltroAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_presupuesto] ), gd_financiero_rt[cta_des_n2] = "Comisiones Ganadas", gd_financiero_rt[tipo_valor] = "VP", FiltroAnualizado ),
-			        0
-			    )
+			VAR SumColumna_ComisionesGanadas_Ppto =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_presupuesto] ),
+			                        gd_financiero_rt[cta_des_n2] = "Comisiones Ganadas",
+			                        gd_financiero_rt[tipo_valor] = "VP",
+			                        FiltroPeriodoMensualizado
+			                    )
 			
-			-- REAL AÑO ANTERIOR (Y-1)
-			VAR SumColumna_ComisionesGanadas_Y1 = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroPeriodoAnteriorMensualizado ),
-			        "ACUMULADO",    CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroPeriodoAnteriorAcumulado ),
-			        "ANUALIZADO",   CALCULATE ( SUM ( gd_financiero_rt[val_saldo_con_signo] ), gd_financiero_rt[id_cuenta_contable_n2] = "52", FiltroPeriodoAnteriorAnualizado ),
-			        0
-			    )
+			VAR SumColumna_ComisionesGanadas_Y1 =
+			CALCULATE (
+			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
+			                        --gd_financiero_rt[asegurado] = "SA",
+			                        gd_financiero_rt[id_cuenta_contable_n2] = "52",
+			                        FiltroPeriodoAnteriorMensualizado
+			                    )
 			
 			/* === Fórmula base === */
 			VAR REAL_ACT = SumColumna_ComisionesGanadas
@@ -1757,7 +2061,7 @@ table gd_financiero_rt
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'Neto Comisiones RT' = [Comisiones Ganadas RT] + [Comisiones Pagadas RT]
+	measure 'Neto Comisiones RT' = [Comisiones Ganadas RT] - [Comisiones Pagadas RT]
 		formatString: #,0
 		displayFolder: Medidas
 		lineageTag: d36f1fdc-d2b0-4fa0-bf47-801d076aabd0
@@ -1771,106 +2075,37 @@ table gd_financiero_rt
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'KPI RESULTADO TÉCNICO RT' = [GRA_%CUMPLI RESULTADO TÉCNICO RT]
+	measure 'KPI RESULTADO TÉCNICO RT' = [Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica] + [Comisiones Pagadas RT]+[Comisiones Ganadas RT]+[Neto Comisiones RT]
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Medidas
 		lineageTag: 7dfdac40-50f1-4708-981a-055b4b0d750e
 
 	measure 'GRA_PPTO RESULTADO TÉCNICO RT' =
 			
-			
-			IF (
-			    ISINSCOPE ( 'gd_financiero_rt_final'[des_asegurado] ),
-			    0,
-			    CALCULATE ([PRIMA DEVENGADA] + [COSTO DE SINIESTRO]+[Neto Comisiones RT] +[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica],
-			        SelectorCalculo_PG[TipoCalculo] = "Ppto"
-			    )
-			)
-			
-			
-			--CALCULATE(
-			--[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica] + [Comisiones Pagadas RT]+[Comisiones Ganadas RT]+[Neto Comisiones RT],SelectorCalculo_PG[TipoCalculo]="Ppto")
-		formatString: #,0
+			CALCULATE(
+			[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica] + [Comisiones Pagadas RT]+[Comisiones Ganadas RT]+[Neto Comisiones RT],SelectorCalculo_PG[TipoCalculo]="Ppto")
 		displayFolder: Medidas
 		lineageTag: 6291d88b-5547-4474-a084-6f43028b724a
 
-		annotation PBI_FormatHint = {"isDecimal":true}
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'GRA_REAL_ACT RESULTADO TÉCNICO RT' = ```
+	measure 'GRA_REAL_ACT RESULTADO TÉCNICO RT' =
 			
-			VAR PeriodoSeleccionado = MAX(Calendario[Date])
-			VAR AnioActual = YEAR(PeriodoSeleccionado)
-			VAR MesActual  = MONTH(PeriodoSeleccionado)
-			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
-			
-			-- Periodo anterior (12 meses atrás)
-			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
-			VAR AnioAnterior    = YEAR(PeriodoAnterior)
-			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			--- === DEFINICIÓN DE FILTROS (Lógica de tiempo) ===
-			VAR FiltroPeriodoMensualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( DATEVALUE( Calendario[MesNombreAño] ) ) = AnioActual
-			            && MONTH ( DATEVALUE( Calendario[MesNombreAño] ) ) = MesActual
-			    )
-			
-			VAR FiltroAcumulado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
-			    )
-			
-			VAR FiltroAnualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        DATEVALUE( Calendario[MesNombreAño] ) >  EDATE( MesActual_Inicio, -12 )   -- últimos 12 meses
-			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
-			    )
-			
-			    --------------------
-			VAR ResultadoTecnico =
-			
-			    CALCULATE(
-			
-			        [PRIMA DEVENGADA] + [COSTO DE SINIESTRO]+[Neto Comisiones RT] +[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica],
-			
-			        SelectorCalculo_PG[TipoCalculo] ="Real Act")
-			
-			--- === 2. CAPTURA DE SELECTORES ===
-			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR PrimaAsegurado = 
-			    SWITCH( TipoValor,
-			        "MENSUALIZADO", CALCULATE(SUM('gd_financiero_rt_final'[val_prima_emitida]), FiltroPeriodoMensualizado),
-			        "ACUMULADO",    CALCULATE(SUM('gd_financiero_rt_final'[val_prima_emitida]), FiltroAcumulado),
-			        "ANUALIZADO",   CALCULATE(SUM('gd_financiero_rt_final'[val_prima_emitida]), FiltroAnualizado),
-			        0
-			    ) / 1000
-			
-			
-			
-			
-			RETURN
-			
-			IF(
-			
-			    ISINSCOPE('gd_financiero_rt_final'[des_asegurado]),
-			
-			    PrimaAsegurado,ResultadoTecnico
-			   )
-			```
-		formatString: #,0.00
+			CALCULATE(
+			[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica] + [Comisiones Pagadas RT]+[Comisiones Ganadas RT]+[Neto Comisiones RT],SelectorCalculo_PG[TipoCalculo]="Real Act")
 		displayFolder: Medidas
 		lineageTag: 44e123c6-6d89-4475-9b25-2aa0d16e780e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'GRA_%CUMPLI RESULTADO TÉCNICO RT' =
 			
 			CALCULATE(
-			DIVIDE([GRA_REAL_ACT RESULTADO TÉCNICO RT],[GRA_PPTO RESULTADO TÉCNICO RT]),SelectorCalculo_PG[TipoCalculo]="% Cumpl.")
-		formatString: 0.0\ %;-0.0\ %;0.0\ %
+			[Reserva Insuficiencia de Prima] + [Reserva desviación de siniestralidad/Catastrófica] + [Comisiones Pagadas RT]+[Comisiones Ganadas RT]+[Neto Comisiones RT],SelectorCalculo_PG[TipoCalculo]="% Cumpl.")
 		displayFolder: Medidas
 		lineageTag: 13de1872-2f4d-4583-8f3b-0afcb8bd58ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Título RESULTADO TÉCNICO GRA1' = ```
 			"RESULTADO TÉCNICO POR " & IF(
@@ -1999,217 +2234,44 @@ table gd_financiero_rt
 		displayFolder: Medidas
 		lineageTag: fe42fb8b-aa5d-45fc-8cab-ea779c3950c8
 
-	measure 'Valor Grafica' = ```
+	measure 'Rank Dinámico' = ```
 			
-			[GRA_REAL_ACT RESULTADO TÉCNICO RT]
-			
-			```
-		displayFolder: Medidas
-		lineageTag: f12c7938-54c4-4100-8878-0496bffc6c0f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Top9 + Otros (ROBUSTO)' = ```
-			
-			VAR RankingActual =
+			VAR RankBroker =
 			    RANKX(
-			        ALLSELECTED( SelectorGrafico2 ),
-			        [Valor Grafica],
+			        ALLSELECTED(gd_financiero_rt[des_broker]),
+			        [GRA_REAL_ACT RESULTADO TÉCNICO RT],
 			        ,
 			        DESC,
 			        DENSE
 			    )
-			
-			VAR Top9 =
-			    IF(
-			        RankingActual <= 9,
-			        [Valor Grafica]
+			VAR RankAsegurado =
+			    RANKX(
+			        ALLSELECTED(gd_financiero_rt[des_asegurado]),
+			        [GRA_REAL_ACT RESULTADO TÉCNICO RT],
+			        ,
+			        DESC,
+			        DENSE
 			    )
-			
-			VAR Otros =
-			    CALCULATE(
-			        [Valor Grafica],
-			        FILTER(
-			            ALLSELECTED( SelectorGrafico2 ),
-			            RANKX(
-			                ALLSELECTED( SelectorGrafico2 ),
-			                [Valor Grafica],
-			                ,
-			                DESC,
-			                DENSE
-			            ) > 9
-			        )
+			VAR RankContratante =
+			    RANKX(
+			        ALLSELECTED(gd_financiero_rt[des_contratante]),
+			        [GRA_REAL_ACT RESULTADO TÉCNICO RT],
+			        ,
+			        DESC,
+			        DENSE
 			    )
-			
 			RETURN
 			SWITCH(
-			    SELECTEDVALUE( TopN_Eje[Categoria] ),
-			    "TOP", Top9,
-			    "OTROS", Otros
+			    TRUE(),
+			    ISINSCOPE(gd_financiero_rt[des_broker]),           RankBroker,
+			    ISINSCOPE(gd_financiero_rt[des_asegurado]),     RankAsegurado,
+			    ISINSCOPE(gd_financiero_rt[des_contratante]), RankContratante
 			)
 			
 			```
+		formatString: 0
 		displayFolder: Medidas
-		lineageTag: 296280d6-1e1d-4796-801a-235bd7cf85ca
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Eje Top 9 + Otros' = ```
-			
-			VAR Ranking =
-			    RANKX(
-			        ALLSELECTED( SelectorGrafico2 ),
-			        [Valor Grafica],
-			        ,
-			        DESC,
-			        DENSE
-			    )
-			
-			RETURN
-			IF(
-			    Ranking <= 9,
-			    SELECTEDVALUE( SelectorGrafico2[SelectorGrafico2] ),
-			    "OTROS"
-			)
-			
-			```
-		displayFolder: Medidas
-		lineageTag: f05909ca-aebc-474d-877e-bf1c7114c5aa
-
-	measure 'Constitución RRC Devengado' = ```
-			
-			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
-			VAR AnioActual = YEAR(PeriodoSeleccionado)
-			VAR MesActual  = MONTH(PeriodoSeleccionado)
-			
-			-- Normalizo a primer día del mes por seguridad
-			VAR MesActual_Inicio = DATE(AnioActual, MesActual, 1)
-			
-			-- Periodo anterior = 12 meses atrás (mismo día del mes)
-			VAR PeriodoAnterior = EDATE(MesActual_Inicio, -12)
-			VAR AnioAnterior    = YEAR(PeriodoAnterior)
-			VAR MesAnterior     = MONTH(PeriodoAnterior)
-			
-			-- === FILTROS ACTUALES ===
-			VAR FiltroPeriodoMensualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( Calendario[MesNombreAño] ) = AnioActual
-			            && MONTH (Calendario[MesNombreAño] ) = MesActual
-			    )
-			
-			VAR FiltroAcumulado =
-			    DATESBETWEEN(
-			        Calendario[MesNombreAño],
-			        DATE(AnioActual, 1, 1),
-			        EOMONTH(MesActual_Inicio, 0)
-			    )
-			
-			VAR FiltroAnualizado =
-			    DATESINPERIOD(
-			        Calendario[MesNombreAño],
-			        MesActual_Inicio,   -- fin de la ventana (mes actual, incluido)
-			        -12,
-			        MONTH
-			    )
-			
-			-- === FILTROS ANTERIORES (CORREGIDOS) ===
-			
-			-- 1) Mensualizado anterior: exactamente el mes 12m atrás
-			VAR FiltroPeriodoAnteriorMensualizado =
-			    FILTER (
-			        ALL ( Calendario[MesNombreAño] ),
-			        YEAR ( Calendario[MesNombreAño] ) = AnioAnterior
-			            && MONTH ( Calendario[MesNombreAño] ) = MesAnterior
-			    )
-			
-			-- 2) Acumulado anterior (YTD hasta el mes anterior): 
-			VAR FiltroPeriodoAnteriorAcumulado =
-			    DATESBETWEEN(
-			        Calendario[MesNombreAño],
-			        DATE(AnioAnterior, 1, 1),
-			        EOMONTH(PeriodoAnterior, 0)
-			    )
-			
-			-- 3) Anualizado anterior: últimos 12 meses terminando en PeriodoAnterior
-			VAR FiltroPeriodoAnteriorAnualizado =
-			    DATESINPERIOD(
-			        Calendario[MesNombreAño],
-			        PeriodoAnterior,    -- fin de la ventana (incluido)
-			        -12,
-			        MONTH
-			    )
-			
-			
-			
-			VAR TipoValor = SELECTEDVALUE(SelectorValor[TipoValor])
-			VAR TipoData  = SELECTEDVALUE(SelectorData[TipoData])
-			----------------------------------------------------------------------------------
-			/* === Reserva Técnica Neta === */
-			VAR SumColumna_ReservaTecnicaNeta =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
-			                        --gd_financiero_rt[asegurado] = "SA",
-			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
-			                        FiltroPeriodoMensualizado
-			                    )
-			VAR SumColumna_ReservaTecnicaNeta_Ppto =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_presupuesto] ),
-			                        gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta",
-			                       -- gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
-			                        FiltroPeriodoMensualizado
-			                    )
-			VAR SumColumna_ReservaTecnicaNeta_Y1 =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
-			                        --gd_financiero_rt[asegurado] = "SA",
-			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "5701","5702"},
-			                        FiltroPeriodoAnteriorMensualizado
-			                    )
-			-------------------
-			VAR SumColumna_ReservaTecnicaNeta_G2 =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
-			                        --gd_financiero_rt[asegurado] = "SA",
-			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
-			                        FiltroPeriodoMensualizado
-			                    )
-			VAR SumColumna_ReservaTecnicaNeta_G2_Ppto =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_presupuesto] ),
-			                        gd_financiero_rt[cta_des_n2] = "Reserva Técnica Neta",
-			                       -- gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
-			                        FiltroPeriodoMensualizado
-			                    )
-			VAR SumColumna_ReservaTecnicaNeta_G2_Y1 =
-			CALCULATE (
-			                        SUM ( gd_financiero_rt[val_saldo_con_signo] ),
-			                        --gd_financiero_rt[asegurado] = "SA",
-			                        gd_financiero_rt[id_cuenta_contable_n3] IN{ "4801","4802"},
-			                        FiltroPeriodoAnteriorMensualizado
-			                    )
-			                    
-			
-			/* === Fórmula base === */
-			VAR REAL_ACT =  SumColumna_ReservaTecnicaNeta_G2-SumColumna_ReservaTecnicaNeta 
-			VAR REAL_Y_1 = SumColumna_ReservaTecnicaNeta_G2_Y1-SumColumna_ReservaTecnicaNeta_Y1
-			VAR Ppto = SumColumna_ReservaTecnicaNeta_Ppto - SumColumna_ReservaTecnicaNeta_G2_Ppto
-			RETURN
-			SWITCH (
-			    SELECTEDVALUE(SelectorCalculo_PG[TipoCalculo]),
-			    "Real Act", COALESCE(DIVIDE(REAL_ACT,1000,0),0),
-			    "Ppto",COALESCE(DIVIDE(Ppto,1000,0),0),
-			    "% Cumpl.",COALESCE((DIVIDE(REAL_ACT,Ppto,0)*100),0),
-			    "Real Y-1", COALESCE(DIVIDE(REAL_Y_1,1000,0), 0 ),
-			    "%YoY" ,COALESCE((DIVIDE(REAL_ACT-REAL_Y_1,REAL_Y_1,0)*100),0)
-			)
-			
-			```
-		displayFolder: Medidas
-		lineageTag: ba5203b1-86b1-4ce9-af24-05291a0a9226
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		lineageTag: 9ceb8b48-2ae0-4166-9ad6-87f0fbe9fd9c
 
 	column fec_periodo
 		dataType: string
@@ -2552,7 +2614,7 @@ table gd_financiero_rt
 
 	column val_presupuesto
 		dataType: double
-		formatString: #,0
+		formatString: 0
 		lineageTag: df21a327-3181-4c55-8e48-68ede8ddd0cd
 		summarizeBy: sum
 		sourceColumn: val_presupuesto
@@ -2582,11 +2644,9 @@ table gd_financiero_rt
 				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", null),
 				    ctlfinanciero_Database = Origen{[Name="ctlfinanciero",Kind="Database"]}[Data],
 				    schgold_Schema = ctlfinanciero_Database{[Name="schgold",Kind="Schema"]}[Data],
-				    gd_financiero_rt_Table = schgold_Schema{[Name="gd_financiero_rt",Kind="Table"]}[Data],
-				    #"Filas filtradas" = Table.SelectRows(gd_financiero_rt_Table, each true),
-				    #"Valor reemplazado" = Table.ReplaceValue(#"Filas filtradas","SIN INFORMACION","SIN INFORMACIÓN",Replacer.ReplaceText,{"des_grupo_comercial"})
+				    gd_financiero_rt_Table = schgold_Schema{[Name="gd_financiero_rt",Kind="Table"]}[Data]
 				in
-				    #"Valor reemplazado"
+				    gd_financiero_rt_Table
 
 	annotation PBI_NavigationStepName = Navegación
 

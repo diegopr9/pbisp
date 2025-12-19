@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "4cfd3e89d6806e9d0840",
   "position": {
-    "x": 177.27272727272725,
-    "y": 238.18181818181816,
-    "z": 6000,
-    "height": 562.72727272727263,
-    "width": 796.36363636363626,
-    "tabOrder": 6000
+    "x": 174,
+    "y": 223,
+    "z": 7000,
+    "height": 534,
+    "width": 797,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "pivotTable",
@@ -150,8 +150,8 @@
                 }
               },
               "queryRef": "gd_financiero_rt.Siniestros pagados RT",
-              "nativeQueryRef": "(-) Siniestros pagados",
-              "displayName": "(-) Siniestros pagados"
+              "nativeQueryRef": "Siniestros pagados",
+              "displayName": "Siniestros pagados"
             },
             {
               "field": {
@@ -255,8 +255,8 @@
                 }
               },
               "queryRef": "gd_financiero_rt.Comisiones Pagadas RT",
-              "nativeQueryRef": "(-) Comisiones Pagadas",
-              "displayName": "(-) Comisiones Pagadas"
+              "nativeQueryRef": "Comisiones Pagadas",
+              "displayName": "Comisiones Pagadas"
             },
             {
               "field": {
@@ -270,8 +270,7 @@
                 }
               },
               "queryRef": "gd_financiero_rt.Com. Bróker",
-              "nativeQueryRef": "Com. Bróker",
-              "displayName": "Com. Bróker"
+              "nativeQueryRef": "Com. Bróker"
             },
             {
               "field": {

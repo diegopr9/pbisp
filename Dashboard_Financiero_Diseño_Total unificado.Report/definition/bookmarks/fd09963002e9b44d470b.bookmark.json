@@ -19,6 +19,74 @@
               "objects": {}
             }
           },
+          "b4fde505707c564bbb3e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "37b74740ead44be4ce43",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
           "f2a634c9dd314002c896": {
             "filters": {
               "byExpr": [
@@ -219,7 +287,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "6e112a62af02b3bb528d",
+                  "name": "2d20b5aa682245f599be",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -529,6 +597,104 @@
               }
             }
           },
+          "d6024c809bb30e06c50c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c5de5b03055313289766",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "canal",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "c"
+                                        }
+                                      },
+                                      "Property": "des_canal_mod"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "canal"
+                        }
+                      },
+                      "Property": "des_canal_mod"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "canal"
+                        }
+                      },
+                      "Property": "des_canal_mod"
+                    }
+                  }
+                ]
+              }
+            }
+          },
           "f9e95866c78b88307025": {
             "filters": {
               "byExpr": [
@@ -591,7 +757,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "418df8c1e9c770abb728",
+                  "name": "16b3e2d7fa7162d50e12",
                   "type": "Advanced",
                   "expression": {
                     "Column": {
@@ -606,7 +772,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b4c5c310b88b9f6b69fd",
+                  "name": "9647540c26ad84b5eeff",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -725,7 +891,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "3c582b89374d10529034",
+                  "name": "a7feef9c9c960082a03b",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -740,7 +906,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "3e5f29c65c124510e1dd",
+                  "name": "d463b075e18dee2980ea",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -755,7 +921,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e13338047ce2a9ee541b",
+                  "name": "aeed7118178a33748dbe",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -770,7 +936,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "297fd477b7629a6b36a5",
+                  "name": "bb78323ea1891540a970",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -785,7 +951,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "d61e135ed4e3aeda22f6",
+                  "name": "eff1857dcaa753ceb43c",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -800,7 +966,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "6bafc31d59e8d30cdad2",
+                  "name": "53133e62ca2399929f9c",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -852,6 +1018,12 @@
             }
           },
           "a01b73a12cd2c6e82189": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "edabd134d8031712c84a": {
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {}

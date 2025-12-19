@@ -1,0 +1,186 @@
+table 'Eje TopN con Otros'
+	lineageTag: 04eb9c18-caf2-414d-bb05-5c5c1627ad90
+
+	measure '% Cumplimiento GT1' = DIVIDE(ROUND([Real Act_GT (Top9 + Otros)],0),ROUND([Ppto_GT (Top9 + Otros)],0),0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 19445f81-6773-41df-b84b-8ce3f71c168d
+
+	measure '%Participación Real GT1' =
+			
+			DIVIDE ( [Real Act_GT (Top9 + Otros)], [Total Real Act (ctx)_GT] )
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: e5293816-ed30-44fc-8fed-7ea8be2f065f
+
+	measure 'Dif Real Vs Ppto GT_1' = [Real Act_GT (Top9 + Otros)]- [Ppto_GT (Top9 + Otros)]
+		formatString: #,0
+		lineageTag: cc4e9851-9eef-4ca7-ab4a-4a8e0e7e8fd8
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Ppto_GT (Top9 + Otros)' =
+			
+			VAR TopNValue     = 9
+			VAR CategoriaSel  = SELECTEDVALUE( 'Eje TopN con Otros'[Categoria] )
+			VAR InScopeCat    = ISINSCOPE( 'Eje TopN con Otros'[Categoria] )
+			
+			-- Lista de cuentas bajo filtros actuales (respeta slicers)
+			VAR AccountsAll =
+			    SUMMARIZE(
+			        ALLSELECTED( gd_financiero_gastos[des_cuenta_contable] ),
+			        gd_financiero_gastos[des_cuenta_contable]
+			    )
+			
+			-- Top9 según la medida de REAL (para no alterar la lógica de Real)
+			VAR TopNTable =
+			    TOPN(
+			        TopNValue,
+			        AccountsAll,
+			        [Real Act_GT],   -- Importante: categorización basada en REAL
+			        DESC
+			    )
+			
+			-- "Otros" = complemento de Top9 de REAL
+			VAR OthersTable =
+			    EXCEPT( AccountsAll, TopNTable )
+			
+			VAR EsOtros =
+			    CategoriaSel = "Otros"
+			
+			-- ¿La cuenta actual pertenece al Top9?
+			VAR EsCuentaTopN =
+			    CONTAINS(
+			        TopNTable,
+			        gd_financiero_gastos[des_cuenta_contable],
+			        CategoriaSel
+			    )
+			
+			-- Agregados para total
+			VAR TopN_Ppto   = CALCULATE( [Ppto_GT],   KEEPFILTERS( TopNTable ) )
+			VAR Otros_Ppto  = CALCULATE( [Ppto_GT],   KEEPFILTERS( OthersTable ) )
+			
+			RETURN
+			IF(
+			    NOT InScopeCat || ISBLANK( CategoriaSel ),
+			    -- TOTAL: Top9 + Otros (de Ppto)
+			    TopN_Ppto + Otros_Ppto,
+			    -- FILA:
+			    IF(
+			        EsOtros,
+			        Otros_Ppto,   -- “Otros” suma el complemento
+			        IF(
+			            EsCuentaTopN,
+			                       CALCULATE(
+			                ROUND([Ppto_GT],0),
+			                TREATAS( { CategoriaSel }, gd_financiero_gastos[des_cuenta_contable] )
+			            ),
+			            BLANK()    -- oculta cuentas que no están en Top9
+			        )
+			    )
+			)
+		formatString: #,0
+		lineageTag: e9b1a261-bb01-45f4-b19a-2d138d8f637f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Real Act_GT (Top9 + Otros)' =
+			
+			VAR TopNValue     = 9
+			VAR CategoriaSel  = SELECTEDVALUE( 'Eje TopN con Otros'[Categoria] )
+			
+			-- ¿Estamos en el contexto de fila (categoría en el eje) o en total?
+			VAR InScopeCategoria = ISINSCOPE( 'Eje TopN con Otros'[Categoria] )
+			
+			-- Lista de cuentas bajo los filtros actuales (respeta slicers)
+			VAR AccountsAll =
+			    SUMMARIZE(
+			        ALLSELECTED( gd_financiero_gastos[des_cuenta_contable] ),
+			        gd_financiero_gastos[des_cuenta_contable]
+			    )
+			
+			-- TopN por la medida [Real Act_GT], descendente
+			VAR TopNTable =
+			    TOPN(
+			        TopNValue,
+			        AccountsAll,
+			        [Real Act_GT],
+			        DESC
+			    )
+			
+			-- "Otros" = complemento del TopN
+			VAR OthersTable =
+			    EXCEPT( AccountsAll, TopNTable )
+			
+			-- ¿La categoría actual es "Otros"?
+			VAR EsOtros = CategoriaSel = "Otros"
+			
+			-- ¿La categoría actual es una cuenta del TopN?
+			VAR EsCuentaTopN =
+			    CONTAINS(
+			        TopNTable,
+			        gd_financiero_gastos[des_cuenta_contable],
+			        CategoriaSel
+			    )
+			
+			-- Agregados para usar en total
+			VAR TopNMeasure =
+			    CALCULATE( [Real Act_GT], KEEPFILTERS( TopNTable ) )
+			
+			VAR OtherMeasure =
+			    CALCULATE( [Real Act_GT], KEEPFILTERS( OthersTable ) )
+			
+			RETURN
+			IF(
+			    NOT InScopeCategoria || ISBLANK( CategoriaSel ),
+			    -- TOTAL: TopN + Otros
+			    TopNMeasure + OtherMeasure,
+			    -- FILA:
+			    IF(
+			        EsOtros,
+			        -- Fila "Otros": suma de las cuentas fuera del Top 9
+			        OtherMeasure,
+			        -- Fila cuenta: solo si pertenece al Top 9, caso contrario BLANK para ocultarla
+			        IF(
+			            EsCuentaTopN,
+			            CALCULATE(
+			                               ROUND([Real Act_GT],0),
+			                TREATAS( { CategoriaSel }, gd_financiero_gastos[des_cuenta_contable] )
+			            ),
+			            BLANK()
+			        )
+			    )
+			)
+		formatString: #,0
+		lineageTag: 0bd2ee64-55ad-47be-a8e0-c4fd11a70211
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Total Real Act (ctx)_GT' =
+			
+			CALCULATE ( [Real Act_GT (Top9 + Otros)], ALLSELECTED ( 'Eje TopN con Otros'[Categoria] ) )
+		lineageTag: 41f8a886-0392-4839-b4ec-98da23d35eef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Categoria
+		lineageTag: 49e65039-cefe-487c-af02-f7bbace56450
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Categoria]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Eje TopN con Otros' = calculated
+		mode: import
+		source =
+				
+				UNION(
+				    SELECTCOLUMNS(
+				        DISTINCT( gd_financiero_gastos[des_cuenta_contable] ),
+				               "Categoria", gd_financiero_gastos[des_cuenta_contable]
+				    ),
+				    DATATABLE( "Categoria", STRING, { { "OTROS" } } )
+				
+				)
+
+	annotation PBI_Id = aab2a395756e470e94aef176067e93d6
+

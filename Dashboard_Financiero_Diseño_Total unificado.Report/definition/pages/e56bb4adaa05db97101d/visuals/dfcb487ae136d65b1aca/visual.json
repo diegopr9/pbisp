@@ -67,7 +67,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'ANUALIZADO'"
+                                "Value": "'MENSUALIZADO'"
                               }
                             }
                           ]
@@ -1148,11 +1148,7 @@
         }
       ]
     },
-    "syncGroup": {
-      "groupName": "TipoValor",
-      "fieldChanges": true,
-      "filterChanges": true
-    },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "isHidden": true
 }
