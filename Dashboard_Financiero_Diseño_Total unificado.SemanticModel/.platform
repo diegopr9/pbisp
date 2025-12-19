@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Dashboard_Financiero_Diseño_Total unificado"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "cf58f684-ea08-4738-a907-9ae58d334d96"
+  }
+}

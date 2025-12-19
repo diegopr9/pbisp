@@ -1,0 +1,37 @@
+table SelectorData
+	lineageTag: 6d476f98-a8fa-41ae-aec2-361be9a59977
+
+	column TipoData
+		lineageTag: 833a1a6b-af93-4ced-8b6e-07dc64deb7e1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoData]
+		sortByColumn: TipoDataOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoDataOrden
+		formatString: 0
+		lineageTag: 9fd809ef-21c8-41fe-aea7-ada67d9865b3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoDataOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorData = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoData", STRING,
+				    "TipoDataOrden", INTEGER,
+				    {
+				        {"FORECAST",3},
+				        {"REAL",1},
+				        {"PRESUPUESTO",2}
+				    }
+				)
+
+	annotation PBI_Id = 92cb949b82574e7a8b8aab795cfc9f78
+

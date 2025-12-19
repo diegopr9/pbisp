@@ -1,0 +1,48 @@
+table SelectorGrafico2
+	lineageTag: 233b9737-9be5-4dd3-8878-8b0160d01fea
+
+	column SelectorGrafico2
+		lineageTag: 5d0af399-2b00-452f-bb82-6753a43c73b7
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'SelectorGrafico2 Orden'
+
+		relatedColumnDetails
+			groupByColumn: 'SelectorGrafico2 Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorGrafico2 Campos'
+		isHidden
+		lineageTag: ea802a0f-cdbd-4456-8e3e-4785dfd03630
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'SelectorGrafico2 Orden'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorGrafico2 Orden'
+		isHidden
+		lineageTag: b3dce3f0-689e-482b-b4c5-0fbd4a7aeeab
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorGrafico2 = calculated
+		mode: import
+		source =
+				{
+				    ("BROKER", NAMEOF('gd_financiero_rt'[des_broker]), "BROKER"),
+				    ("CONTRATANTE", NAMEOF('gd_financiero_rt'[des_contratante]), "CONTRATANTE"),
+				    ("ASEGURADO", NAMEOF('gd_financiero_rt'[des_asegurado]), "ASEGURADO")
+				}
+
+	annotation PBI_Id = 6c20c7e2da7f4b7e97dc74f9ba8b07b1
+

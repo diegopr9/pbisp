@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "INICIAR PT",
+  "name": "54dd4d100a88ee8778d1",
+  "options": {
+    "targetVisualNames": [
+      "cd74d20ad604b0977908"
+    ]
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "99a9cdeaaedc1be2468b",
+    "sections": {
+      "99a9cdeaaedc1be2468b": {
+        "visualContainers": {
+          "7ce02febeeffcc2e48bc": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

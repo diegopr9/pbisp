@@ -1,0 +1,50 @@
+table SelectorGrafico1
+	lineageTag: 31e69a2c-fadc-45f3-a3ec-2877abb009dd
+
+	column Parámetro
+		lineageTag: 0169eb49-b7c5-4e9f-a4f5-5ec2f3802f8f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parámetro Orden'
+
+		relatedColumnDetails
+			groupByColumn: 'Parámetro Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parámetro Campos'
+		isHidden
+		lineageTag: a58f09d7-3b72-4952-b068-36573902f382
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parámetro Orden'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parámetro Orden'
+		isHidden
+		lineageTag: ddd339cc-f99b-41a6-ae96-e89d188ecd5f
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorGrafico1 = calculated
+		mode: import
+		source =
+				{
+				    ("AGENCIA", NAMEOF('gd_financiero_rt'[des_agencia]), "AGENCIA"),
+				    ("CANAL", NAMEOF('gd_financiero_rt'[des_canal]), "CANAL"),
+				    ("U. NEGOCIO", NAMEOF('gd_financiero_rt'[des_grupo]), "U. NEGOCIO"),
+				    ("RAMO", NAMEOF('gd_financiero_rt'[Ramo_RT]), "RAMO"),
+				    ("RIESGO", NAMEOF('gd_financiero_rt'[des_tipo_riesgo]), "RIESGO")
+				}
+
+	annotation PBI_Id = 56165b1032bb46d2b66ca298fe362152
+

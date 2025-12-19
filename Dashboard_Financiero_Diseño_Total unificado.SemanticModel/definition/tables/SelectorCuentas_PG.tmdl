@@ -1,0 +1,65 @@
+table SelectorCuentas_PG
+	lineageTag: af760fc7-6ea8-4da2-af47-5025886db476
+
+	column Orden
+		formatString: 0
+		lineageTag: 1c0a8086-bca1-4603-b035-13e4c6b74f66
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descripción
+		lineageTag: 40d9776a-bb99-4640-bd37-3a9e79938188
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Descripción]
+		sortByColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorCuentas_PG = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE (
+				    "Orden", INTEGER,
+				    "Descripción", STRING,
+				    {
+				        {  1, "Primas Brutas" },
+				        {  2, "(-) Coaseguros Cedidos" },
+				        {  3, "(-) Cesión de Reaseguros" },
+				
+				        {  4, "(=) PRIMAS NETAS" },
+				        {  5, "(-) Excesos de Pérdida" },
+				        {  6, "(-) Constitución RRC" },
+				
+				        {  7, "(=) PRIMAS DEVENGADAS" },
+				        {  8, "(-) Costo de Siniestros" },
+				        {  9, "(-) Siniestros pagados" },
+				        { 10, "Recuperaciones siniestros" },
+				        { 11, "(-) Ajuste Reserva Siniestros" },
+				        { 12, "(-) IBNR" },
+				
+				        { 13, "(-) NETO COMISIONES" },
+				        { 14, "(-) Comisiones Pagadas" },
+				        { 15, "Comisiones Ganadas" },
+				
+				        { 16, "(=) RESULTADO TECNICO" },
+				        { 17, "Ingresos Financieros" },
+				        { 18, "(-) Gastos Administrativos" },
+				        { 19, "(-) Provisiones y Otros Imp." },
+				
+				        { 20, "(=) EBIT" },
+				        { 21, "(-) Participación Trabajadores" },
+				        { 22, "(-) Impuesto a la Renta" },
+				
+				        { 23, "(=) UTILIDAD NETA" }
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 512e6f9d79054e9dbc6c89760f786e3e
+

@@ -1,0 +1,65 @@
+table SelectorCuentas_PT
+	lineageTag: f1bc3180-32ab-472b-9165-e24425d30fc8
+
+	column Orden
+		formatString: 0
+		lineageTag: 23250177-27e4-4166-8400-3f9d021ad5ee
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descripción
+		lineageTag: 5d62af84-4b00-4c30-a581-c42bfa2e75fd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Descripción]
+		sortByColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorCuentas_PT = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE (
+				    "Orden", INTEGER,
+				    "Descripción", STRING,
+				    {
+				        {  1, "Capital Adecuado por Primas" },
+				        {  2, "Cap. Ade. Por Carga Media De Siniestralidad" },
+				        {  3, "Cap. Ade. Factor De Corrección Por Concentración" },
+				        {  4, "Cap. Ade. Riesgo De Crédito Por Reaseguro" },
+				
+				        {  5, "REQUERIMIENTO DE CAPITAL ADECUADO" },
+				
+				        {  6, "Capital Pagado" },
+				        {  7, "Capital Operativo" },
+				        {  8, "Reserva Legal" },
+				        {  9, "Aportes De Accionistas" },
+				        { 10, "Resultados Del Ejercicio" },
+				        { 11, "Utilidad retenida (capacitaciones)" },
+				        { 12, "Dividendos Acción" },
+				        { 13, "Reserva Desviación De Siniestralidad Y Catastrófica" },
+				
+				        { 14, "PATRIMONIO TÉCNICO PRIMARIO" },
+				
+				        { 15, "Utilidad Ret. Futuras Capitalizaciones" },
+				        { 16, "Otras (Pts)" },
+				        { 17, "45% Reserva Legal Pts" },
+				        { 18, "Resultados Acumulados Utilidades" },
+				        { 19, "Resultado Del Ejercicio Utilidades" },
+				        { 20, "Resultados Del Ejercicio Pérdidas" },
+				        { 21, "Resultado Del Ejercicio (Pts)" },
+				
+				        { 22, "PATRIMONIO TÉCNICO SECUNDARIO" },
+				
+				        { 23, "TOTAL PATRIMONIO TÉCNICO" }
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 81827c9ae7604483b0e94222d16df5b3
+

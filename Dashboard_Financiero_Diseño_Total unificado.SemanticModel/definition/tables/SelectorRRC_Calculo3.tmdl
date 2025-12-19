@@ -1,0 +1,37 @@
+table SelectorRRC_Calculo3
+	lineageTag: 6bb41ead-1b66-4a82-856b-75538aaa2bd0
+
+	column TipoValor
+		lineageTag: cdc02815-d9ae-4dbf-ace4-c7a5ae9356d7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoValor]
+		sortByColumn: TipoValorOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoValorOrden
+		formatString: 0
+		lineageTag: af3b4186-ef8e-4e6b-bd26-7037cfc269e5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoValorOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorRRC_Calculo3 = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoValor", STRING,
+				    "TipoValorOrden", INTEGER,
+				    {
+				        {"REAL",1},
+				        {"PRESUPUESTO",2},
+				        {"DIFERENCIAS",3}
+				    }
+				)
+
+	annotation PBI_Id = 4c9381b54cb5440fbf77ecdf67ed2064
+

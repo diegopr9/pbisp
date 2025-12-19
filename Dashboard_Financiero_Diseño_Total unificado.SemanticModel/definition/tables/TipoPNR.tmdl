@@ -1,0 +1,39 @@
+table TipoPNR
+	lineageTag: c03e664f-b2fe-4635-b385-0669d48f7876
+
+	column TipoPNR
+		lineageTag: 2fe55eeb-3620-4382-9ffa-69f49f6050cb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoPNR]
+		sortByColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Orden
+		formatString: 0
+		lineageTag: b3439c85-9fda-4503-b427-54bfb69d4c48
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition TipoPNR = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "TipoPNR", STRING, "Orden", INTEGER,
+				    {
+				        {"PNR CP", 1},
+				        {"PNR LP", 2},
+				        {"TOTALPNR", 3}
+				    }
+				)
+				
+				
+				```
+
+	annotation PBI_Id = 03f47a5512af4bd88c4b346498e1e9cf
+

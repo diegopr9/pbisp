@@ -1,0 +1,40 @@
+table SelectorCalculo_PG
+	lineageTag: 2480df07-d3cb-4433-92cf-38680feb4a77
+
+	column TipoCalculo
+		lineageTag: d2134f35-9b8b-4279-a4ff-8e4057c04749
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoCalculo]
+		sortByColumn: TipoCalculoOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoCalculoOrden
+		formatString: 0
+		lineageTag: 2628b651-fdbb-4a33-ab81-683950403749
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoCalculoOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorCalculo_PG = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoCalculo", STRING,
+				    "TipoCalculoOrden", INTEGER,
+				    {
+				        {"Real Act",1},
+				        {"Ppto",2},
+				        {"% Cumpl.",3},
+				        {"Real Y-1",4},
+				        {"%YoY",5},
+				        {"Desv",6}
+				    }
+				)
+
+	annotation PBI_Id = 2b037a733738476ea93a40aa18df1294
+

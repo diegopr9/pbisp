@@ -1,0 +1,35 @@
+table SelectorCalculoRT
+	lineageTag: cb2536da-f978-4845-9872-eaef76ec5e0c
+
+	column TipoData
+		lineageTag: 4976338b-35c1-4b50-8509-b2c87c976863
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoData]
+		sortByColumn: TipoDataOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoDataOrden
+		formatString: 0
+		lineageTag: 750aab4c-b000-446f-a5dc-b19599bb5dee
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoDataOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorCalculoRT = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoData", STRING,
+				    "TipoDataOrden", INTEGER,
+				    {
+				        {"RESULTADO TÉCNICO",1},
+				        {"PRIMAS BRUTAS",2}
+				    })
+
+	annotation PBI_Id = 8018a74574e14ca3b7e91cb9201384f1
+

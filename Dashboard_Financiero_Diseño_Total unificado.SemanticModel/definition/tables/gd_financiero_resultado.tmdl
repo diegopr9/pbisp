@@ -1,0 +1,345 @@
+table gd_financiero_resultado
+	lineageTag: 1d89eb11-a94c-4320-9d9a-081f0d8f2858
+
+	column fec_periodo
+		dataType: string
+		lineageTag: a29cf3f3-cba7-426b-949e-c143c4e5ccfe
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_empresa
+		dataType: string
+		lineageTag: f567d931-5cf6-4866-a17e-70533d6043e6
+		summarizeBy: none
+		sourceColumn: id_empresa
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 6e984aa4-2bb2-4aba-9cec-d33f64b929c4
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_auxiliar_id
+		dataType: string
+		lineageTag: f17a482d-7531-4764-bab6-336abfc0fd34
+		summarizeBy: none
+		sourceColumn: cod_auxiliar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_tipo
+		dataType: string
+		lineageTag: f9ee1178-92fb-4fde-b4a8-6329cf296f74
+		summarizeBy: none
+		sourceColumn: cod_tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo
+		dataType: double
+		lineageTag: 4317c2f6-6802-4e21-a079-c225b94f98b2
+		summarizeBy: sum
+		sourceColumn: val_saldo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column des_ddt
+		dataType: string
+		lineageTag: d99ef457-1a1c-4399-a736-d98419e84ebd
+		summarizeBy: none
+		sourceColumn: des_ddt
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_isd_asistencias
+		dataType: int64
+		formatString: 0
+		lineageTag: c6098f63-fa57-42fc-941d-0d404c86c019
+		summarizeBy: sum
+		sourceColumn: flag_isd_asistencias
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_con_signo
+		dataType: double
+		lineageTag: 2be89df2-271f-45ef-ba24-75d3f47a8416
+		summarizeBy: sum
+		sourceColumn: val_saldo_con_signo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto
+		dataType: double
+		lineageTag: da2cc586-fca0-46b8-b1d6-26e415b48505
+		summarizeBy: sum
+		sourceColumn: val_presupuesto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast
+		dataType: double
+		lineageTag: 415460d6-45a2-4cc1-ac00-b2079728621c
+		summarizeBy: sum
+		sourceColumn: val_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_anualizado
+		dataType: double
+		lineageTag: 3b7c9771-cedd-4833-82cf-83c37cdd1f9e
+		summarizeBy: sum
+		sourceColumn: val_saldo_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado
+		dataType: double
+		lineageTag: 1e6de057-a541-4cfb-9a76-276048a7fedf
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_anualizado
+		dataType: double
+		lineageTag: cf9f9c73-39c8-47cc-bf0b-6e7490e158cf
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column des_aplicacion
+		dataType: string
+		lineageTag: 0f157dfd-f8b3-4631-a745-ee7bf19123f4
+		summarizeBy: none
+		sourceColumn: des_aplicacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_status
+		dataType: string
+		lineageTag: de273c53-cc1e-4c0e-9563-ea651713dc1d
+		summarizeBy: none
+		sourceColumn: des_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_agencia
+		dataType: string
+		lineageTag: c0c682ce-9032-44f8-ba7f-047383d5b455
+		summarizeBy: none
+		sourceColumn: id_agencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_ramo
+		dataType: int64
+		formatString: 0
+		lineageTag: bf3a9b59-a1b6-43e0-89e3-b5073dcf8d36
+		summarizeBy: sum
+		sourceColumn: id_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_ramo_abreviado
+		dataType: string
+		lineageTag: acefc3e2-201c-4731-83a9-ebf68b133ef5
+		summarizeBy: none
+		sourceColumn: des_ramo_abreviado
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_factura
+		dataType: string
+		lineageTag: c6c93c97-b0a8-4976-9f0a-accc48c1af1a
+		summarizeBy: none
+		sourceColumn: cod_factura
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_gasto
+		dataType: string
+		lineageTag: 8403ad3f-3d4c-4955-81af-03385309f7e4
+		summarizeBy: none
+		sourceColumn: des_tipo_gasto
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: 18f4d148-b5a2-4815-a822-289029cd517f
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_poliza
+		dataType: string
+		lineageTag: 2f566283-802d-4279-a066-6e619045026a
+		summarizeBy: none
+		sourceColumn: cod_poliza
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_grupo
+		dataType: string
+		lineageTag: a6306dbe-9b32-4a17-badc-d59d6e2a0d8b
+		summarizeBy: none
+		sourceColumn: id_grupo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_tipo_negocio
+		dataType: string
+		lineageTag: 0351a0d5-93d5-4cb5-8957-a960e8445aee
+		summarizeBy: none
+		sourceColumn: id_tipo_negocio
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_tipo_riesgo
+		dataType: string
+		lineageTag: d4e91e94-a98a-4709-978c-b524e4fd58b9
+		summarizeBy: none
+		sourceColumn: id_tipo_riesgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_contratante
+		dataType: string
+		lineageTag: 330d8585-b080-4d12-b153-b70caf8ff3c5
+		summarizeBy: none
+		sourceColumn: cod_contratante
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_grupo_comercial
+		dataType: string
+		lineageTag: 6f6ddef3-ec09-47f1-890b-9729d204098f
+		summarizeBy: none
+		sourceColumn: des_grupo_comercial
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_grupo_financiero
+		dataType: string
+		lineageTag: 217e4f1c-3388-4922-be7e-2121748f08c8
+		summarizeBy: none
+		sourceColumn: des_grupo_financiero
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_broker
+		dataType: string
+		lineageTag: 175478e1-421d-41bf-886b-4c1191cc8a50
+		summarizeBy: none
+		sourceColumn: cod_broker
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_sponsor
+		dataType: string
+		lineageTag: bfb69f27-9a67-4125-9892-2095d2715de8
+		summarizeBy: none
+		sourceColumn: cod_sponsor
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_canal
+		dataType: string
+		lineageTag: 21c36636-9fca-4b16-aad2-07b6b74bb8b1
+		summarizeBy: none
+		sourceColumn: id_canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_subcanal
+		dataType: string
+		lineageTag: 7fc95015-9b0a-44d1-9a70-63e2e3380c9a
+		summarizeBy: none
+		sourceColumn: id_subcanal
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_origen_negocio
+		dataType: string
+		lineageTag: a9781147-60fa-4a27-9126-6664a9f24aaf
+		summarizeBy: none
+		sourceColumn: des_origen_negocio
+
+		annotation SummarizationSetBy = Automatic
+
+	column fec_periodo_ultimo_dia
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e19a6a91-7506-44b9-8121-69494ca6434e
+		summarizeBy: none
+		sourceColumn: fec_periodo_ultimo_dia
+
+		variation Variación
+			isDefault
+			relationship: 81918603-b414-406c-9d87-d422708f1608
+			defaultHierarchy: LocalDateTable_ba9106d3-c5dc-4039-b934-4a28d7a9604c.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column fec_corte
+		dataType: string
+		lineageTag: e28d87f8-78e6-40d3-a1b0-facaea6983c5
+		summarizeBy: none
+		sourceColumn: fec_corte
+
+		annotation SummarizationSetBy = Automatic
+
+	column particion
+		dataType: string
+		lineageTag: 25a90c50-a88d-4ecb-9f45-17a8dfc8f59d
+		summarizeBy: none
+		sourceColumn: particion
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_id = gd_financiero_resultado[fec_periodo]&"01"
+		lineageTag: 8747626e-0036-4e7e-9544-423de7b2d5cf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gd_financiero_resultado = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database=null, QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    ctlfinanciero_Database = Origen{[Name="ctlfinanciero",Kind="Database"]}[Data],
+				    schgold_Schema = ctlfinanciero_Database{[Name="schgold",Kind="Schema"]}[Data],
+				    gd_financiero_resultado_Table = schgold_Schema{[Name="gd_financiero_resultado",Kind="Table"]}[Data],
+				    #"Filas filtradas" = Table.SelectRows(gd_financiero_resultado_Table, each ([id_cuenta_contable] = "25900858") and ([cod_tipo] = "C") and ([flag_isd_asistencias] = 0))
+				in
+				    #"Filas filtradas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,62 @@
+table ColsMatriz_PQ
+	lineageTag: 20f3326b-9c5b-4a7e-a2df-fb6d71a94593
+
+	column Nivel1
+		lineageTag: 2b09e847-29d6-4737-9451-84311915885b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Nivel1]
+		sortByColumn: Orden1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nivel2
+		lineageTag: 45163e63-d222-4917-a178-247151f96ef8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Nivel2]
+		sortByColumn: Orden2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Orden1
+		formatString: 0
+		lineageTag: dcdf3615-7eb4-497a-90c6-af1f5922a188
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden1]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Orden2
+		formatString: 0
+		lineageTag: 0a6fc61a-dd3b-4d4a-942a-a32870811f7e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden2]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ColsMatriz_PQ = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "Nivel1", STRING, "Nivel2", STRING, "Orden1", INTEGER, "Orden2", INTEGER,
+				    {
+				    {"Producción",     "Actual", 1, 1},
+				    {"Producción",     "Ppto",   1, 2},
+				    {"Uso de red",     "Actual", 2, 1},
+				    {"Uso de red",     "Ppto",   2, 2},
+				    {"Variación",      "Producción", 3, 1},
+				    {"Variación",      "Uso de red", 3, 2},
+				    {"Factor de Comisión","Actual", 4, 1},
+				    {"Factor de Comisión","Ppto",   4, 2},
+				    {"Análisis Var",   "P",      5, 1},
+				    {"Análisis Var",   "Q",      5, 2}}
+				)
+				
+				```
+
+	annotation PBI_Id = a6ef17e1e69247b5aec45735d51c271a
+

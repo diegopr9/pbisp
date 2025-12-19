@@ -1,0 +1,21 @@
+table 'Etiqueta Top9_Otros'
+	lineageTag: 68ac552e-0a36-4174-9243-6845a6ac500d
+
+	column Etiqueta
+		lineageTag: ffd3873c-16ce-4e8f-a193-645377f6f9a0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Etiqueta]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Etiqueta Top9_Otros' = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE ( "Etiqueta", STRING, { { "Top 9" }, { "Otros gastos" } } )
+				
+				```
+
+	annotation PBI_Id = 8351d23259354e7ca829113dda383cdd
+

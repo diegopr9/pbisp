@@ -1,0 +1,1403 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "RRC",
+  "name": "034570b12352075eb2ce",
+  "options": {
+    "targetVisualNames": [
+      "8d140c50d07ece0c0b3a"
+    ]
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "f3b2e3231926ce91e10d",
+    "sections": {
+      "f3b2e3231926ce91e10d": {
+        "visualContainers": {
+          "f0425f184dad95befad8": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "50dd4935070673426524": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "cfaef29abbae05c65e2c": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "d9de2c8275c681a68c03": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "516841c85c0bcd20f6d3",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "0a990d97069d0a910eab": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "cb56f45b63105dcdde48",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "des_tiporamo"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "des_tiporamo"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "8d140c50d07ece0c0b3a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dd9518e5e9fc3d5754fe",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "5bba60c14473bc004b0e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b79e5ebfd5777874c3a5",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "2f2fd0ce29ba197775a6": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0031cd52533a23eca98b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "FechaMaxCargaTexto_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "3792c1f5056148ee40a2": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0944420742a3be669abb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1cdd735542014add7ab6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "01f4e0bc1c6d58ac1cfe",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Diferencia_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "df60fe4f1ed244f0f0ab",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real Act_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "497b113c6d885298e1c4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "76f1f02be650a20557e8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%Cumplimiento_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "dc87a2e9d76137da4add": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0944420742a3be669abb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1cdd735542014add7ab6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "9569a3efe980736f5b96",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Diferencia_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e1ce7764c57f34cbae52",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real Act_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d309df259cb78664e1bd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2125ff4837c1e270e936",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%Cumplimiento_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "f14099a0150467d41d97": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0944420742a3be669abb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "dc1d39c174d303e5604c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Diferencia_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "408c44b33cf81f8edb77",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real Act_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "06aed47d3f7efc25be06",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_RRC_1000"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "29f08d8e9a772e5e084c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%Cumplimiento_TB_123_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "da4f2195778b950e07a2": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0944420742a3be669abb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1cdd735542014add7ab6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0b15cdeb46e2c4f0b30a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real_Act_TB_4_VISUAL_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "26d007db58b9be08c0e9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_TB_4_VISUAL_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "706c3149fd14940522a5",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Diferencia_TB_4_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "190e67a6cb0a89a6435e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%Cumplimiento_TB_4_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "28fa29d88465e2327c5c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0944420742a3be669abb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "247ab4d059f44bc030cc",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real_Act_TB_5_VISUAL_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "338f34e85be907fb9830",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_TB_5_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "170d03b4a39cc64da419",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Diferencia_TB_5_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "169f65d4d92fd240ccbd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%Cumplimiento_TB_5_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "a7ecd7ee0d185530e8d0": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "43576537211d438e7920",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "4e5fe666fd64b3546d57",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real_Act_ALL_RRC"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "d57fc79238741d334050",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_RRC"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "6fc6ad8fab18830eddd8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "40af1d6eb22433990ef4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo1"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1027c95f29c7529696c7",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima_G1"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ea3289e08f7c9fa860a3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%SelectorCalculo_1_GF_12_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo1"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "322690fece9c01361368": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "43576537211d438e7920",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "4ceb265e9b52db07a017",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "8c1987f7784fd793aa57",
+                  "type": "Advanced",
+                  "expression": {
+                    "Arithmetic": {
+                      "Left": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "gd_financiero_rrc"
+                            }
+                          },
+                          "Property": "SelectorCalculo_1 RRC"
+                        }
+                      },
+                      "Right": {
+                        "ScopedEval": {
+                          "Expression": {
+                            "Measure": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "gd_financiero_rrc"
+                                }
+                              },
+                              "Property": "SelectorCalculo_1 RRC"
+                            }
+                          },
+                          "Scope": []
+                        }
+                      },
+                      "Operator": 3
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "8213060cf872d77e12a8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo1"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1bfc538542fe48bc7695",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima_G1"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fd46443c5fb22498fedb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%SelectorCalculo_1_GF_12_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo1"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "80bf253116016c41959c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "231082c9ee0e8756007e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Real_Act_ALL_RRC"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "c6946685a7b184601deb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "Ppto_RRC"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "dadd19e27dc2d974a461",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "6089ca3635cf397c513b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo2"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9fd9c45c4ba250b9036f",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima_G2"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "464f976a8d3224bb7918",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "%SelectorCalculo_2_GF_3_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo2"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "961ba049971d6c0de033": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "fc394dbf24814040be1d",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima_G3"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "94e621713b738f90b62a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo3"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "54deea8f62e2cc26f895",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "TipoPNR"
+                        }
+                      },
+                      "Property": "TipoPNR"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c3ac389d80b40b8d0be8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "SelectorCalculo_3_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo3"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "a3f928b793085d150a86": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "43576537211d438e7920",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "cuenta_tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "f11a523634ed400a4506",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "tipo_prima"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "50ecdd9ba2e306120d91",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo3"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c069d9acb37b3cb23b8b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "SelectorCalculo_5_RRC"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1bd15b46538965eedf1f",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "TipoRRC"
+                        }
+                      },
+                      "Property": "TipoRRC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredColumnChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorRRC_Calculo3"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "74c82df3d67be472c64c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "75be5b8e62d304b8f201",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "des_ramo"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_rrc"
+                        }
+                      },
+                      "Property": "des_ramo"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "079fea7314b3b5d05472": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "cbd4cee95b0c7a61a655": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "126807750d4522a00031": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

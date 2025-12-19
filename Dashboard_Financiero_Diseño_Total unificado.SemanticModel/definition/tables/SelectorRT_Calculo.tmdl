@@ -1,0 +1,36 @@
+table SelectorRT_Calculo
+	lineageTag: f1534c57-6fa4-4c5e-9f58-b286ea86a907
+
+	column TipoValor
+		lineageTag: 9dde466c-422d-47dd-b372-1471f09f9040
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoValor]
+		sortByColumn: TipoValorOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoValorOrden
+		formatString: 0
+		lineageTag: df765587-3ba0-4b4e-80bd-6d5f80b0f5bc
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoValorOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorRT_Calculo = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoValor", STRING,
+				    "TipoValorOrden", INTEGER,
+				    {
+				        {"Real",1},
+				        {"Ppto",2}
+				    }
+				)
+
+	annotation PBI_Id = f20cde8500d346dd851c2956cecc7498
+

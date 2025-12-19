@@ -1,0 +1,1175 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "INVERSIONES PORTAFOLIO",
+  "name": "c2abe34bb3bc6dd796d9",
+  "options": {
+    "targetVisualNames": []
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "d31c0082c1ff8de577c6",
+    "sections": {
+      "d31c0082c1ff8de577c6": {
+        "visualContainers": {
+          "58417bb33021240667be": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "ad014868d5610aba4e7e": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "098144432308ec40717a": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "83d879b00b5a4817de7e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "8900bea9056756e13baf",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_IN2"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e5ba040a06ffaeec394a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "BONOS DEL ESTADO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e639f7262042e74ba4a1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "INSTITUCIONES FINANCIERAS"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "781b609c2fd15449f5ce",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "SOCIEDADES NO FINANCIERAS"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "46ac9c9402969f7945ce",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "INVERSIONES CORPORATIVAS LA FAVORITA"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5b81af24282ef641dcfd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "FONDO DE INVERSIÓN Y FIDEICOMISO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5c58dceda96508c4a276",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "INVERSIÓN EXTERIOR"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "620c3763f2a07f48ac97",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "TOTAL PORTAFOLIO"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_IN2"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "65435b9b3e8d2824cb4c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "413edf3b3b57f0baf1df",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "FechaMaxCargaTexto_IN"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "355c6892798abed8c2c3": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f1a9e3a003e624e85252",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "2113f8359a0b6b09da4b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a465258f57e9997e0129",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Ramo_IN"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Ramo_IN"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "6ebb9bb76e1004288888": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "378948c55a0ed1a7be10",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorValor",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoValor"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Mensualizado'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "73b34e54e0ed0a40e215": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "57d7bbbc808c1a5c0b62",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorData",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoData"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Real'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "db77529ba8ab989160b0": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a8e4b568d81292561509",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "InversionesObligatorias"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "27a1afd0ca3be719d766",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "EXCEDENTE / DÉFICIT"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "2698fed5c157c7627e33",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "gd_financiero_inversiones",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 0,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "g"
+                                  }
+                                },
+                                "Property": "FiltroAñoDinamico_IN"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "1L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "FiltroAñoDinamico_IN"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "669e2512999407d02812",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7de587e0b10970092aab",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "TOTAL PORTAFOLIO"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "5a14bd08185000e25466",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Real Act. INP"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "20e33774d67a5cfb58ef",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Ppto INP"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "99286975bf8c528f8de1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "%CUMPLIMIENTO INP"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineClusteredColumnComboChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "f111e87cedede4691026": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "3b50d0209d0e24220993",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_IN2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Real Act.'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_IN2"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0cca1b483e00fcd901c1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "INGRESOS DE INVERSIONES"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "INGRESOS DE INVERSIONES"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "298962dd79013d1d0808": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "488a7343e849b0b0705d",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_IN2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Real Act.'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_IN2"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "f1696be2acb54eb0bfb2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "EGRESOS DE INVERSIONES"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "EGRESOS DE INVERSIONES"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "2f5d10800c0d97ca8560": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "ba9159649d31c7025e3a",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_IN2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Real Act.'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_IN2"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "14fa8c5865c844d34561",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "RESULTADO NETO INV."
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "RESULTADO NETO INV."
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "10cddc65ed37aaaa4ccb": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d389be319b99227ab94e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Ppto INP"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "Ppto INP"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "63d996ed0c10ccdaac32": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7d006347d0e66a50e886",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "%CUMPLIMIENTO INP"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_inversiones"
+                        }
+                      },
+                      "Property": "%CUMPLIMIENTO INP"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "85d6c9229cb37960e158": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "92046df54e1626dac7b9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCuentasInversiones"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCuentasInversiones"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "9a1952cd400b0436a3b3": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "9d26867f75d45e5a251e": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "a8b26a69cdb0803370eb": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

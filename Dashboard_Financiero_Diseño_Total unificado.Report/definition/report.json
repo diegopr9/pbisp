@@ -1,0 +1,166 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.0.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY25SU10",
+      "reportVersionAtImport": {
+        "visual": "2.1.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Custom2307685104292947.json",
+      "reportVersionAtImport": {
+        "visual": "2.4.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "PreselectedSlicer9302176388541",
+    "tableGridA86B787D407F4AE99B016A8E5AC0A27E",
+    "deneb7E15AEF80B9E4D4F8E12924291ECE89A"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY25SU10",
+          "path": "BaseThemes/CY25SU10.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Plantilla_BG3904507724888876.jpg",
+          "path": "Plantilla_BG3904507724888876.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_PG08938518957936503.jpg",
+          "path": "Plantilla_PG08938518957936503.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_RT_FINANCIERO33537801496537323.jpg",
+          "path": "Plantilla_RT_FINANCIERO33537801496537323.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_RT_2015853162210063165.jpg",
+          "path": "Plantilla_RT_2015853162210063165.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_PT9117758869219085.jpg",
+          "path": "Plantilla_PT9117758869219085.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_RRC6269234040871845.jpg",
+          "path": "Plantilla_RRC6269234040871845.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_RRC_23458010427055682.jpg",
+          "path": "Plantilla_RRC_23458010427055682.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_GASTOS4047958137360478.jpg",
+          "path": "Plantilla_GASTOS4047958137360478.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_INVERSIONES9807341162501053.jpg",
+          "path": "Plantilla_INVERSIONES9807341162501053.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_INVERSIONES_209918817175736527.jpg",
+          "path": "Plantilla_INVERSIONES_209918817175736527.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_PQ8858889565322354.jpg",
+          "path": "Plantilla_PQ8858889565322354.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "Plantilla_KPIS300461599154089.jpg",
+          "path": "Plantilla_KPIS300461599154089.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "activos9863241957242774.png",
+          "path": "activos9863241957242774.png",
+          "type": "Image"
+        },
+        {
+          "name": "pasivo21769286439204272.png",
+          "path": "pasivo21769286439204272.png",
+          "type": "Image"
+        },
+        {
+          "name": "monumento05548616076498658.png",
+          "path": "monumento05548616076498658.png",
+          "type": "Image"
+        },
+        {
+          "name": "Custom2307685104292947.json",
+          "path": "Custom2307685104292947.json",
+          "type": "CustomTheme"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultFilterActionIsDataFilter": true,
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true,
+    "customMemoryLimit": "1048576",
+    "customTimeoutLimit": "225"
+  }
+}

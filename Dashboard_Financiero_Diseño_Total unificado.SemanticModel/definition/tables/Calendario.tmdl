@@ -1,0 +1,328 @@
+table Calendario
+	lineageTag: d7545ed8-9965-4678-ba00-70d73172ff85
+
+	measure leyenda_mes_real_gt =
+			
+			/* ================== Estado de filtros ================== */
+			VAR filtro_anio = IF( ISFILTERED( Calendario[Año] ), "Si", "No" )
+			VAR filtro_mes  = IF( ISFILTERED( Calendario[Mes2] ), "Si", "No" )
+			
+			/* ================== Rango de fechas en el contexto (respeta slicers de fecha/rango) ================== */
+			VAR fecha_min_ctx =
+			    CALCULATE( MIN( Calendario[Date] ), ALLSELECTED( Calendario[Date] ) )
+			VAR fecha_max_ctx =
+			    CALCULATE( MAX( Calendario[Date] ), ALLSELECTED( Calendario[Date] ) )
+			
+			/* ================== Tabla de pares Año–Mes dentro del contexto ================== */
+			/* Usamos ALLSELECTED sobre toda la tabla Calendario para que respete el rango (p. ej., Ene 2024 → Oct 2025) */
+			VAR ParesAnioMesCtx =
+			    SUMMARIZE(
+			        ALLSELECTED( Calendario ),
+			        Calendario[Año],
+			        Calendario[Mes2]
+			    )
+			
+			/* ================== Mapeo Mes2 -> número de mes y cálculo de PeriodoNum ================== */
+			VAR ParesConPeriodo =
+			    ADDCOLUMNS(
+			        ParesAnioMesCtx,
+			        "MesNum",
+			        SWITCH(
+			            Calendario[Mes2],
+			            "Ene", 1, "Feb", 2, "Mar", 3, "Abr", 4, "May", 5, "Jun", 6,
+			            "Jul", 7, "Ago", 8, "Sep", 9, "Oct", 10, "Nov", 11, "Dic", 12,
+			            BLANK()
+			        ),
+			        "PeriodoNum",
+			            Calendario[Año] * 100 +
+			            SWITCH(
+			                Calendario[Mes2],
+			                "Ene", 1, "Feb", 2, "Mar", 3, "Abr", 4, "May", 5, "Jun", 6,
+			                "Jul", 7, "Ago", 8, "Sep", 9, "Oct", 10, "Nov", 11, "Dic", 12,
+			                BLANK()
+			            )
+			    )
+			
+			/* ================== Sin selección: usar MES ANTERIOR a HOY ================== */
+			VAR hoy         = TODAY()
+			VAR fechaPrev   = EOMONTH( hoy, -1 )   -- último día del mes anterior
+			VAR mes_actual  = MONTH( fechaPrev )   -- número de mes anterior
+			VAR anio_actual = YEAR(  fechaPrev )   -- año correspondiente al mes anterior
+			
+			/* ================== Periodos min/max seleccionados ================== */
+			/* Si no hay filtros de año/mes, usamos el mes anterior a hoy.
+			   Si hay filtros (de fecha, año y/o mes), tomamos min/max del PeriodoNum en los pares del contexto. */
+			VAR PeriodoNumMin =
+			    IF(
+			        filtro_anio = "No" && filtro_mes = "No",
+			        anio_actual * 100 + mes_actual,
+			        MINX( ParesConPeriodo, [PeriodoNum] )
+			    )
+			
+			VAR PeriodoNumMax =
+			    IF(
+			        filtro_anio = "No" && filtro_mes = "No",
+			        anio_actual * 100 + mes_actual,
+			        MAXX( ParesConPeriodo, [PeriodoNum] )
+			    )
+			
+			VAR anio_min_seleccionado = INT( DIVIDE( PeriodoNumMin, 100 ) )
+			VAR mes_min_seleccionado  = PeriodoNumMin - anio_min_seleccionado * 100
+			
+			VAR anio_max_seleccionado = INT( DIVIDE( PeriodoNumMax, 100 ) )
+			VAR mes_max_seleccionado  = PeriodoNumMax - anio_max_seleccionado * 100
+			
+			/* ================== Nombre de mes (abreviado con punto) ================== */
+			VAR nombre_mes_min =
+			    SWITCH(
+			        mes_min_seleccionado,
+			        1, "Ene.", 2, "Feb.", 3, "Mar.", 4, "Abr.", 5, "May.", 6, "Jun.",
+			        7, "Jul.", 8, "Ago.", 9, "Sep.", 10, "Oct.", 11, "Nov.", 12, "Dic.",
+			        ""
+			    )
+			
+			VAR nombre_mes_max =
+			    SWITCH(
+			        mes_max_seleccionado,
+			        1, "Ene.", 2, "Feb.", 3, "Mar.", 4, "Abr.", 5, "May.", 6, "Jun.",
+			        7, "Jul.", 8, "Ago.", 9, "Sep.", 10, "Oct.", 11, "Nov.", 12, "Dic.",
+			        ""
+			    )
+			
+			//* ================== Construcción de la leyenda ================== */
+			VAR leyenda_mes_min = nombre_mes_min & " " & anio_min_seleccionado
+			VAR leyenda_mes_max = nombre_mes_max & " " & anio_max_seleccionado
+			
+			RETURN
+			IF(
+			    leyenda_mes_min = leyenda_mes_max,
+			    leyenda_mes_min,
+			    leyenda_mes_min & " - " & leyenda_mes_max
+			
+			)
+		lineageTag: 5528e96a-7c31-4764-b287-b2b1fbbc2813
+
+	column Date
+		formatString: yyyy-mm
+		lineageTag: 8dc33bf5-23b2-4e0f-8d14-07a8242132a3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variación
+			isDefault
+			relationship: a5ed89d5-da62-4d85-acf7-a06c6d1494a6
+			defaultHierarchy: LocalDateTable_5c6a93dc-1807-4e1c-819c-eedffc06cbaa.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column YYYY-MM
+		lineageTag: af2e618b-7deb-4943-8080-c33435cd3f27
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YYYY-MM]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesNombreAño
+		lineageTag: 4b2fb326-0977-4f62-990e-8fde42fea68f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MesNombreAño]
+		sortByColumn: YYYY-MM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año
+		formatString: 0
+		lineageTag: 4bf38d70-fccc-40db-8486-811e54041b74
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Año]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		formatString: 0
+		lineageTag: 89450568-3288-469c-b1c3-ea116359e70f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NombreMes
+		lineageTag: c7f7d8e1-4acb-40e3-a2ab-e45a6625dff1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [NombreMes]
+		sortByColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrdenMes
+		formatString: 0
+		lineageTag: d3a4c150-ce45-482a-8075-3fdb5e8e1884
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [OrdenMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FechaClave
+		lineageTag: 1a437815-bf1b-44af-9d56-261b63417740
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FechaClave]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TrimestreNum
+		formatString: 0
+		lineageTag: 083b4fd3-5117-4579-8261-772717423747
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TrimestreNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 1ac5e8e8-8985-429b-b374-d26fac678c1c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		lineageTag: 0cba8637-f0be-4382-92ec-4d5a9a8e8cac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterNombreAño
+		lineageTag: 9ef5b20d-d54b-43e8-a919-0a3d267c950a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [QuarterNombreAño]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TrimestreNombreAño
+		lineageTag: 6b19723c-24fd-487f-9b98-4fec64490bed
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TrimestreNombreAño]
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrdenTrimestre
+		formatString: 0
+		lineageTag: 2d24b230-7bb3-4f32-86ef-2fa0f048ace3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [OrdenTrimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column InicioTrimestre
+		formatString: General Date
+		lineageTag: f7d65ffe-f320-4bb0-94b5-0a5028faac12
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [InicioTrimestre]
+
+		variation Variación
+			isDefault
+			relationship: 257b02ee-20e5-45f5-9994-bd8e36d409fb
+			defaultHierarchy: LocalDateTable_5658d455-3509-4e4f-9a0c-921bec0a88de.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column FinTrimestre
+		formatString: General Date
+		lineageTag: 471ae0e8-fe3b-41bd-8c75-bf0ce6376b0b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FinTrimestre]
+
+		variation Variación
+			isDefault
+			relationship: 1474c0b5-c1e8-481e-9906-2556d23f5f9d
+			defaultHierarchy: LocalDateTable_bb3ea3a4-ced2-4e64-b70c-41f6e402adbb.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes2
+		lineageTag: e4a52385-5b12-4393-a80c-074c0f029ffe
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes2]
+		sortByColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Año Jerarquía'
+		lineageTag: dbee7473-7ddf-48a9-ad57-77e69c106f8c
+
+		level Año
+			lineageTag: c1b1f2ab-9e3c-47cc-b19c-a234e7d2ef1d
+			column: Año
+
+		level Mes2
+			lineageTag: 3096ca78-802c-423f-a5fb-7f5882e3e629
+			column: Mes2
+
+		level MesNombreAño
+			lineageTag: e9c33b61-c55e-45f0-a55b-b57ca3967fe0
+			column: MesNombreAño
+
+	partition Calendario = calculated
+		mode: import
+		source = ```
+				
+				VAR MinFecha = DATE(2021, 1, 1)
+				VAR MaxFecha = MAX ( gd_financiero_general[fec_periodo_fecha_BG] )
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR ( MinFecha, MaxFecha ),
+				
+				    // Claves y derivados básicos
+				    "YYYY-MM", FORMAT ( [Date], "yyyy-MM" ),
+				    "MesNombreAño",
+				        VAR m = FORMAT ( [Date], "[$-es-ES]mmm" )
+				        RETURN UPPER( LEFT( m, 1 ) ) & LOWER( MID( m, 2, 99 ) ) & " " & FORMAT ( [Date], "yyyy" ),
+				    "Año", YEAR ( [Date] ),
+				    "Mes", MONTH ( [Date] ),
+				    "NombreMes", FORMAT ( [Date], "[$-es-ES]mmmm" ),
+				    "Mes2", VAR m = FORMAT ( [Date], "[$-es-ES]mmm" )
+				        RETURN UPPER( LEFT( m, 1 ) ) & LOWER( MID( m, 2, 99 ) ) 
+				    ,
+				    "OrdenMes", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+				    "FechaClave", VALUE ( FORMAT ( [Date], "yyyymmdd" ) ),
+				
+				    // —— Trimestre / Quarter ——
+				    "TrimestreNum", QUARTER ( [Date] ),                                 -- 1..4
+				    "Quarter", "Q" & QUARTER ( [Date] ),                                -- Q1..Q4
+				    "Trimestre", "T" & QUARTER ( [Date] ),                              -- T1..T4 (en español)
+				    "QuarterNombreAño", "Q" & QUARTER ( [Date] ) & " " & FORMAT ( [Date], "yyyy" ),   -- p.ej. Q3 2025
+				    "TrimestreNombreAño", "T" & QUARTER ( [Date] ) & " " & FORMAT ( [Date], "yyyy" ), -- p.ej. T3 2025
+				    "OrdenTrimestre", YEAR ( [Date] ) * 10 + QUARTER ( [Date] ),        -- para ordenar Q/T dentro del año
+				
+				    // Fechas de inicio/fin del trimestre (útiles para medidas)
+				    "InicioTrimestre",
+				        DATE ( YEAR ( [Date] ), ( QUARTER ( [Date] ) - 1 ) * 3 + 1, 1 ),
+				    "FinTrimestre",
+				        EOMONTH ( DATE ( YEAR ( [Date] ), ( QUARTER ( [Date] ) - 1 ) * 3 + 1, 1 ), 2 )
+				)
+				
+				```
+
+	annotation PBI_Id = 2d4f88335d944b64a8be7f03387924d3
+

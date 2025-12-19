@@ -1,0 +1,70 @@
+model Model
+	culture: es-MX
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-MX
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Indicadores DAX","gd_financiero_general","gd_grupo_contable2","gd_financiero_rt","gd_financiero_inversiones","gd_financiero_pq","gd_financiero_rrc","gd_financiero_gastos","gd_patrimonio_tecnico_unificado","gd_financiero_gasto_gerencial_base","gd_financiero_resultado"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DateTableTemplate_22bd4ed3-a02b-491a-b922-85c1afbb25d7
+ref table Calendario
+ref table Tabla_KPI_PG
+ref table gd_financiero_general
+ref table LocalDateTable_b36e8f8f-e6e6-4793-9417-12d2022d8c33
+ref table gd_grupo_contable2
+ref table LocalDateTable_8af44c74-d325-41af-b922-ebc0fbfdaff8
+ref table SelectorValor
+ref table SelectorData
+ref table LocalDateTable_87bcafc8-6724-4679-a310-7076cb316635
+ref table SelectorCalculo_PT
+ref table LocalDateTable_997d7fee-68e5-4875-90d5-1479118cef3e
+ref table SelectorCalculo_PG
+ref table SelectorDesviaciones_PG
+ref table SelectorCalculo_PG_KPI
+ref table LocalDateTable_0cc8de16-06dc-4055-b6e3-5a07fa60b618
+ref table gd_financiero_rt
+ref table LocalDateTable_eed37994-7e57-46a9-b4bb-d77088879a77
+ref table SelectorGrafico1
+ref table SelectorGrafico2
+ref table SelectorRT_Calculo
+ref table SelectorCalculoRT
+ref table SelectorGraficoRT_Informe
+ref table gd_financiero_inversiones
+ref table LocalDateTable_0e71960a-1d44-4d57-a5fb-eb6d455acf8d
+ref table SelectorCalculo_IN
+ref table SelectorCalculo_IN2
+ref table gd_financiero_pq
+ref table LocalDateTable_a586c0bc-90b0-48f8-aa4f-86a257afadc7
+ref table ColsMatriz_PQ
+ref table SelectorTabla
+ref table gd_financiero_rrc
+ref table LocalDateTable_e9e2ef24-728f-4415-94d7-bc769680a5d6
+ref table SelectorRRC_Calculo3
+ref table SelectorRRC_Calculo2
+ref table SelectorRRC_Calculo1
+ref table TipoPNR
+ref table TipoRRC
+ref table SelectorCuentas_PG
+ref table SelectorCuentas_PT
+ref table gd_financiero_gastos
+ref table LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf
+ref table 'Etiqueta Top9_Otros'
+ref table gd_patrimonio_tecnico_unificado
+ref table LocalDateTable_5c6a93dc-1807-4e1c-819c-eedffc06cbaa
+ref table LocalDateTable_5658d455-3509-4e4f-9a0c-921bec0a88de
+ref table LocalDateTable_bb3ea3a4-ced2-4e64-b70c-41f6e402adbb
+ref table gd_financiero_gasto_gerencial_base
+ref table LocalDateTable_df5126f3-2c89-44ae-8570-e12af3843150
+ref table gd_financiero_resultado
+ref table LocalDateTable_ba9106d3-c5dc-4039-b934-4a28d7a9604c
+ref table 'Eje TopN con Otros'
+ref table 'Eje TopN Otros Gerencias'
+
+ref cultureInfo es-MX
+

@@ -1,0 +1,36 @@
+table SelectorRRC_Calculo1
+	lineageTag: 02647ad2-5495-4f45-8a91-8c7cd688bb00
+
+	column TipoValor
+		lineageTag: 7f9c9ee1-ab89-4b13-969f-d4ffddc06669
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoValor]
+		sortByColumn: TipoValorOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoValorOrden
+		formatString: 0
+		lineageTag: 3774b5ee-99dc-4fba-981e-414c0027be82
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoValorOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorRRC_Calculo1 = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoValor", STRING,
+				    "TipoValorOrden", INTEGER,
+				    {
+				        {"VARIACIÓN REAL",1},
+				        {"VARIACIÓN PPTO",2}
+				    }
+				)
+
+	annotation PBI_Id = 22fffab171df46c1b80558896eac77a2
+

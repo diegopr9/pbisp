@@ -1,0 +1,51 @@
+table SelectorGraficoRT_Informe
+	lineageTag: b3642d0b-e8bb-46de-92da-cc6cb3011475
+
+	column SelectorGraficoRT_Informe
+		lineageTag: 33453c73-b781-4e75-a727-739c55df6f62
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'SelectorGraficoRT_Informe Orden'
+
+		relatedColumnDetails
+			groupByColumn: 'SelectorGraficoRT_Informe Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorGraficoRT_Informe Campos'
+		isHidden
+		lineageTag: 3563200e-c3b0-41c6-aea6-126cd8e4ec67
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'SelectorGraficoRT_Informe Orden'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorGraficoRT_Informe Orden'
+		isHidden
+		lineageTag: 415538fe-51bb-4f15-923b-bc31b419e71e
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorGraficoRT_Informe = calculated
+		mode: import
+		source =
+				{
+				    ("U. NEGOCIO", NAMEOF('gd_financiero_rt'[des_grupo]), "U. NEGOCIO"),
+				    ("AGENCIA", NAMEOF('gd_financiero_rt'[Combinacion_BP_Agencia]), "AGENCIA"),
+				    ("AGRUPACIÓN", NAMEOF('gd_financiero_rt'[Combinacion_BP_Agrupacion]), "AGRUPACIÓN"),
+				    ("RAMO", NAMEOF('gd_financiero_rt'[Ramo_RT]), "RAMO"),
+				    ("RIESGO", NAMEOF('gd_financiero_rt'[des_tipo_riesgo]), "RIESGO"),
+				    ("CANAL", NAMEOF('gd_financiero_rt'[des_canal]), "CANAL")
+				}
+
+	annotation PBI_Id = 731a1d5bef3f46038edd1a8a7531f0f3
+

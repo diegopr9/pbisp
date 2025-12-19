@@ -1,0 +1,55 @@
+table SelectorDesviaciones_PG
+	lineageTag: 036c2d9b-4d5c-4004-bc53-c0d1d1dc809e
+
+	column Orden
+		formatString: 0
+		lineageTag: bdba7201-b205-42d0-a987-65197703da7e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Concepto
+		lineageTag: aa5f2e38-4f4d-492e-a480-34b4c227fbcd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Concepto]
+		sortByColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo
+		lineageTag: f3772e57-046c-4f9f-b452-3acd98368cc5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Tipo]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorDesviaciones_PG = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE (
+				    "Orden", INTEGER,
+				    "Concepto", STRING,
+				    "Tipo", STRING,
+				    {
+				
+				        { 1 , "PRIMAS BRUTAS" , "Delta" },
+				        { 2 , "CESIÓN"        , "Delta" },
+				        { 3 , "DEVENGO"       , "Delta" },
+				        { 4 , "SINIESTROS"    , "Delta" },
+				        { 5 , "COMISIONES"    , "Delta" },
+				        { 6 , "FINANCIEROS"   , "Delta" },
+				        { 7 , "GASTOS"        , "Delta" },
+				        { 8, "PROVISIONES"    , "Delta" },        
+				        { 9 , "OTROS"         , "Delta" }
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 92374090f52e4baa901ae92bf4f2d437
+

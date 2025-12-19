@@ -1,0 +1,49 @@
+table SelectorTabla
+	lineageTag: c9541a47-8ca2-481e-8e38-87f0126a2218
+
+	column SelectorTabla
+		lineageTag: 185e1773-bb71-48dd-8c31-f2b52176924f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'SelectorTabla Orden'
+
+		relatedColumnDetails
+			groupByColumn: 'SelectorTabla Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorTabla Campos'
+		isHidden
+		lineageTag: b39f741e-eb78-4e19-b069-2d9edcf610d1
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'SelectorTabla Orden'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SelectorTabla Orden'
+		isHidden
+		lineageTag: b46cf473-17b8-418f-93d4-b0961a6cbe39
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorTabla = calculated
+		mode: import
+		source =
+				{
+				    ("Sponsor", NAMEOF('gd_financiero_pq'[des_sponsor]), "Sponsor"),
+				    ("Broker", NAMEOF('gd_financiero_pq'[des_broker]), "Broker"),
+				    ("Pólizas", NAMEOF('gd_financiero_pq'[des_poliza]), "Pólizas"),
+				    ("Tipo Riesgo", NAMEOF('gd_financiero_pq'[des_tipo_riesgo]), "Tipo Riesgo")
+				}
+
+	annotation PBI_Id = d3da8325c1864025950d5037497ca67a
+

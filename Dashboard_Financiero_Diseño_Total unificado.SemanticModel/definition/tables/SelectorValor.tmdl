@@ -1,0 +1,39 @@
+table SelectorValor
+	lineageTag: fd0a24ba-dbd9-42ce-8d3b-e58893379789
+
+	column TipoValor
+		lineageTag: 5214c774-0688-41bf-9c01-49e117df3002
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoValor]
+		sortByColumn: TipoValorOrden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoValorOrden
+		formatString: 0
+		lineageTag: 9adc4ac6-50d9-40e9-a3c3-b044e6f5f5fb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TipoValorOrden]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SelectorValor = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "TipoValor", STRING,
+				    "TipoValorOrden", INTEGER,
+				    {
+				        {"ANUALIZADO",3},
+				        {"MENSUALIZADO",1},
+				        {"ACUMULADO",2}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 995a6da1101349198a452b3c600a3bcc
+

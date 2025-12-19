@@ -1,0 +1,234 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "5482f7de67967a3524c4",
+  "position": {
+    "x": 880.76923076923072,
+    "y": 417.30769230769232,
+    "z": 11000,
+    "height": 343.26923076923077,
+    "width": 659.61538461538464,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "pythonVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendario"
+                    }
+                  },
+                  "Property": "MesNombreAño"
+                }
+              },
+              "queryRef": "Calendario.MesNombreAño",
+              "nativeQueryRef": "MesNombreAño"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Activos_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Activos_BG1",
+              "nativeQueryRef": "Activos_BG1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Pasivos_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Pasivos_BG1",
+              "nativeQueryRef": "Pasivos_BG1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_general"
+                    }
+                  },
+                  "Property": "Patrimonio_BG1"
+                }
+              },
+              "queryRef": "gd_financiero_general.Patrimonio_BG1",
+              "nativeQueryRef": "Patrimonio_BG1"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "script": [
+        {
+          "properties": {
+            "source": {
+              "expr": {
+                "Literal": {
+                  "Value": "'import matplotlib.pyplot as plt\nimport numpy as np\nimport matplotlib.ticker as ticker\nfrom matplotlib import rcParams\n \n \n# Copia del dataset\ndf = dataset.copy()\n \n# Variables\nmeses      = df[\"MesNombreAño\"].tolist()\nactivos    = df[\"Activos_BG1\"].values\npasivos    = df[\"Pasivos_BG1\"].values\npatrimonio = df[\"Patrimonio_BG1\"].values\n \nx = np.arange(len(meses))\nancho = 0.35\n \nfig, ax = plt.subplots(figsize=(10, 5))\n \n# --- BARRAS ---\nb_activos = ax.bar(x - ancho/2, activos, width=ancho, color=\"#0B1F70\", label=\"ACTIVOS\")  # Color actualizado\nb_pasivos = ax.bar(x + ancho/2, pasivos, width=ancho, color=\"#9CB6FA\", label=\"PASIVOS\")\nb_patrimonio = ax.bar(x + ancho/2, patrimonio, bottom=pasivos,\n                      width=ancho, color=\"#1FC4EC\", label=\"PATRIMONIO\")\n \n# --- FUNCIÓN PARA FORMATEAR EN MILLONES ---\ndef formato_millones(valor):\n    return f\"{valor/1_000_000:.0f} M\"\n \n# --- AGREGAR VALORES DENTRO DE LAS BARRAS ---\nfor bar in b_activos:\n    height = bar.get_height()\n    ax.text(bar.get_x() + bar.get_width()/2, height/2,\n            formato_millones(height), ha=''center'', va=''center'',\n            fontsize=6, color=\"white\", fontweight=\"bold\")  # tamaño reducido\n \nfor bar in b_pasivos:\n    height = bar.get_height()\n    ax.text(bar.get_x() + bar.get_width()/2, height/2,\n            formato_millones(height), ha=''center'', va=''center'',\n            fontsize=6, color=\"black\", fontweight=\"bold\")\n \nfor bar_p, bar_pa in zip(b_patrimonio, b_pasivos):\n    height = bar_p.get_height()\n    base = bar_pa.get_height()\n    ax.text(bar_p.get_x() + bar_p.get_width()/2, base + (height/2),\n            formato_millones(height), ha=''center'', va=''center'',\n            fontsize=6, color=\"black\", fontweight=\"bold\")\n \n# --- ESTÉTICA ---\nax.set_xticks(x)\nax.set_xticklabels(meses)\n \n# Formato del eje Y en millones\nax.yaxis.set_visible(False)\n \n# ✅ LEYENDA SUPERIOR\nlegend = ax.legend(loc=''upper center'', bbox_to_anchor=(0.5, 1.12), ncol=3, frameon=False, fontsize=20)\nfor text in legend.get_texts():\n    text.set_color(\"#333333\")\nfor spine in ax.spines.values():\n    spine.set_visible(False) \nplt.tight_layout()\nplt.show()'"
+                }
+              }
+            },
+            "provider": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Python'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'CUENTAS DE B&G'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Arial Unicode MS'''"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#4A4949'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3a4a1164104c3a0da3c8",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendario"
+              }
+            },
+            "Property": "MesNombreAño"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ffad8ba334590ac0a67d",
+        "ordinal": 1,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Activos_BG1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7828067d5e39802acebc",
+        "ordinal": 2,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Pasivos_BG1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7fff238ba410e0e90b5a",
+        "ordinal": 3,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_general"
+              }
+            },
+            "Property": "Patrimonio_BG1"
+          }
+        },
+        "type": "Advanced"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

@@ -1,0 +1,39 @@
+table Tabla_KPI_PG
+	lineageTag: a3917282-83f7-4aff-b3fa-7ce069fe3fb0
+
+	column KPI_des_PG
+		lineageTag: 06003e14-3d2a-47e0-90b0-1cd998ada142
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [KPI_des_PG]
+		sortByColumn: KPI_Orden_PG
+
+		annotation SummarizationSetBy = Automatic
+
+	column KPI_Orden_PG
+		formatString: 0
+		lineageTag: 386eef58-3e9e-4bee-8166-a391d66a459b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [KPI_Orden_PG]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Tabla_KPI_PG = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "KPI_des_PG", STRING,
+				    "KPI_Orden_PG", INTEGER,
+				    {
+				        {"%GASTOS PRIMA BRUTA", 1},
+				        {"RENTABILIDAD TÉCNICA", 2},
+				        {"RENTABILIDAD FINANCIERA", 3},
+				        {"SINIESTRALIDAD INCURRIDA", 4},
+				        {"%COSTO DE SINIESTROS", 5}
+				    }
+				)
+
+	annotation PBI_Id = e2f767718bf9451787a7f6ffe0d28e7b
+

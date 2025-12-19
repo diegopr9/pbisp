@@ -1,0 +1,36 @@
+table TipoRRC
+	lineageTag: 7b135582-1b12-4c39-a911-1bda3b98c518
+
+	column Orden
+		formatString: 0
+		lineageTag: cdf6faec-6bd8-4678-957c-cb731aa69322
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Orden]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TipoRRC
+		lineageTag: 013711e3-cd6a-43a7-9e37-9b4a279a3087
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TipoRRC]
+		sortByColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition TipoRRC = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "TipoRRC", STRING, "Orden", INTEGER,
+				    {
+				        {"RRC. CP", 1},
+				        {"RRC. LP", 2},
+				        {"TOTAL", 3}
+				    }
+				)
+
+	annotation PBI_Id = 8166f65933bf4534a64db5ecca8994e7
+

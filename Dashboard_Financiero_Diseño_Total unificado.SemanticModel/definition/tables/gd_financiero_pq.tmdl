@@ -1,0 +1,1133 @@
+table gd_financiero_pq
+	lineageTag: c3fe49d2-396f-40f8-9eb0-358e85d4a6aa
+
+	measure FechaMaxCargaTexto_PQ =
+			
+			VAR FechaMax =
+			    CALCULATE (
+			        MAX ( gd_financiero_pq[fec_periodo_fecha_PQ] ),
+			        ALL ( gd_financiero_pq )
+			    )
+			VAR MesAbrevRaw = FORMAT ( FechaMax, "MMM" )         -- abreviado
+			VAR MesSinPunto  = SUBSTITUTE ( MesAbrevRaw, ".", "" )
+			VAR MesCap       = UPPER ( LEFT ( MesSinPunto, 1 ) ) &
+			                   LOWER ( MID ( MesSinPunto, 2, LEN ( MesSinPunto ) - 1 ) )
+			VAR Mes3         = LEFT ( MesCap, 3 )                 -- asegura "Dic", "Sep", etc.
+			RETURN
+			    IF ( ISBLANK ( FechaMax ), BLANK (), Mes3 & " " & FORMAT ( FechaMax, "yyyy" ) )
+		displayFolder: MEDIDAS
+		lineageTag: 3bba435f-4880-4e3b-996d-78e4c5665444
+
+	measure Actual_red_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = {"42010102","42010103","42010202","42010203","4201030302", "4201030303", "4201030502", "4201030503", "4201030902", "4201030903", "4201031002", "4201031003", "4201031302", "4201031303", "4201031402", "4201031403", "4201031802", "4201031803", "4201032902", "4201032903", "4201033002", "4201033003"}
+			VAR Cond2 = "UR"
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_saldo_con_signo_anualizado]), gd_financiero_pq[Formula] = Cond2,
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[Formula] = Cond2,
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_forecast_anualizado]),gd_financiero_pq[Formula] = Cond2,
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_forecast]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_forecast]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: 1eb248a6-5c2e-4753-81ec-a01e0dab994c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Actual_45_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = "45"   
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_saldo_con_signo_anualizado]), gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),
+			                gd_financiero_pq[id_cuenta_contable_n2] = Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_forecast_anualizado]),gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_forecast]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_forecast]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: 1786d0d1-60e1-4249-911a-6f655b8ccee3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 1_Actual_PQ = COALESCE(DIVIDE([Actual_51_PQ]-[Actual_45_PQ],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: be8782d6-1b4b-4b60-8a5b-dc2f063bad9d
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Ppto_51_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = "51"   
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]), gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),
+			                gd_financiero_pq[id_cuenta_contable_n2] = Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: a03e41a2-5a85-4b7e-87f1-124cd82f426c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ppto_45_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = "45"   
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]), gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),
+			                gd_financiero_pq[id_cuenta_contable_n2] = Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: 5d2259ea-9493-4689-be13-406f2903b54f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 2_Ppto_PQ = COALESCE(DIVIDE([Ppto_51_PQ]-[Ppto_45_PQ],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 3ce731ba-028f-44ad-8b07-19da02362201
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Ppto_red_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = {"42010102","42010103","42010202","42010203","4201030302", "4201030303", "4201030502", "4201030503", "4201030902", "4201030903", "4201031002", "4201031003", "4201031302", "4201031303", "4201031402", "4201031403", "4201031802", "4201031803", "4201032902", "4201032903", "4201033002", "4201033003"}   
+			VAR Cond2 = "UR"
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[Formula] = Cond2, 
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[Formula] = Cond2,
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable] = Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[Formula] = Cond2,
+			                gd_financiero_pq[id_cuenta_contable] IN Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: 1ae538d9-c39f-44dd-abec-9543baf90f55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 5_Produccion_PQ = [1_Actual_PQ]-[2_Ppto_PQ]
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: da26c623-51da-4130-a10e-26be9ad06c19
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 6_Uso_red_PQ = COALESCE([3_Actual_red_PQ]-[4_Ppto_red_PQ],0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 266d8e0b-831e-40e8-8a3d-517d9f4ba079
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 7_Actual_FC_PQ = COALESCE(DIVIDE([3_Actual_red_PQ],[1_Actual_PQ],0) ,0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 3f631616-d2d8-4cac-b116-29b112fdcb82
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 8_Ppto_FC_PQ = COALESCE(DIVIDE([4_Ppto_red_PQ],[2_Ppto_PQ],0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 3977961d-d85a-4955-8619-fb4d13aa22e4
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 10_Q_AV_PQ = COALESCE(DIVIDE([5_Produccion_PQ]*[8_Ppto_FC_PQ],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 9a14636f-b512-457b-99a7-d270110e5ff0
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 9_P_AV_PQ = COALESCE([6_Uso_red_PQ]-[10_Q_AV_PQ],0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 26dd44ff-780f-467f-818b-41b537cb8e90
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Actual_51_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = "51"   
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_saldo_con_signo_anualizado]), gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),
+			                gd_financiero_pq[id_cuenta_contable_n2] = Cond1
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_forecast_anualizado]),gd_financiero_pq[id_cuenta_contable_n2] = Cond1),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_forecast]),
+			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_forecast]),
+			                        gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: e2e93947-8b16-46d2-841a-6b6cfa731ab5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure %CUMPLIMIENTO = COALESCE(DIVIDE([Actual_red_PQ],[Ppto_red_PQ],0),0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: MEDIDAS
+		lineageTag: 1cd4c499-30a7-4d32-a6cc-3ccdb99cd3d9
+
+	measure 3_Actual_red_PQ = COALESCE(DIVIDE([Actual_red_PQ],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: df5a3902-9813-486a-a60e-b1c07b1971e5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 4_Ppto_red_PQ = COALESCE(DIVIDE([Ppto_red_PQ],1000,0),0)
+		formatString: 0
+		displayFolder: MEDIDAS
+		lineageTag: 94b4dba3-f471-410c-adb1-4391e13a7a2a
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Título Tarjeta' = ```
+			
+			IF(
+			    SELECTEDVALUE(SelectorTabla[SelectorTabla Orden]) = "Broker",
+			    "Comisión Broker",
+			    "Uso de red"
+			)
+			
+			```
+		displayFolder: MEDIDAS
+		lineageTag: fcb133c6-2a84-4d00-b038-04561a125910
+
+	measure Actual_Comision_Bro_4201_PQ = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			-- Normalizo a primer día del mes
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			VAR Cond1 = {"42010102","42010103","42010202","42010203","4201030302", "4201030303", "4201030502", "4201030503", "4201030902", "4201030903", "4201031002", "4201031003", "4201031302", "4201031303", "4201031402", "4201031403", "4201031802", "4201031803", "4201032902", "4201032903", "4201033002", "4201033003"}
+			VAR Cond2 = "CB"
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE (
+			                SUM(gd_financiero_pq[val_saldo_con_signo_anualizado]), gd_financiero_pq[Formula] = Cond2 ),               
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                    gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_saldo_con_signo]),
+			                        gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado",
+			                CALCULATE(
+			                SUM(gd_financiero_pq[val_presupuesto_anualizado]),gd_financiero_pq[Formula] = Cond2
+			                ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_presupuesto]),
+			                    gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                                
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_presupuesto]),
+			                        gd_financiero_pq[id_cuenta_contable] IN Cond1,gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        ),
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                CALCULATE(SUM(gd_financiero_pq[val_forecast_anualizado]),gd_financiero_pq[Formula] = Cond2
+			    ),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			                CALCULATE (
+			                    SUM(gd_financiero_pq[val_forecast]),
+			                    gd_financiero_pq[Formula] = Cond2,
+			                    FILTER (
+			                        ALL(Calendario[MesNombreAño]),
+			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
+			                        MONTH(Calendario[MesNombreAño]) = MesActual
+			                    )
+			                ),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			                    CALCULATE(
+			                        SUM(gd_financiero_pq[val_forecast]),
+			                        gd_financiero_pq[Formula] = Cond2,
+			                        FiltroAcumulado
+			                    )
+			        )
+			)
+			```
+		displayFolder: MEDIDAS
+		lineageTag: c8ff2a58-b75d-4dea-bf9d-399f03ae1957
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo
+		dataType: string
+		lineageTag: 766ee3a3-ee13-426e-a675-962a7c8402a0
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: e02c14b6-330c-4016-bc6e-179624cb82ee
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_riesgo
+		dataType: string
+		lineageTag: e709dcd0-4c11-4589-8d9d-3f50307a8508
+		summarizeBy: none
+		sourceColumn: des_tipo_riesgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_broker
+		dataType: string
+		lineageTag: dbded0fe-c17d-4eb8-8dde-8444e75a00c2
+		summarizeBy: none
+		sourceColumn: des_broker
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_poliza
+		dataType: string
+		lineageTag: a80d1f68-a68d-4e69-b612-8887c6c3c4a7
+		summarizeBy: none
+		sourceColumn: des_poliza
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_sponsor
+		dataType: string
+		lineageTag: d03f9dbf-cd92-4459-b0ee-8d3cb05f163c
+		summarizeBy: none
+		sourceColumn: des_sponsor
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n2
+		dataType: string
+		lineageTag: abc8234b-1607-4599-8ec0-3d0481651859
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n2
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n5
+		dataType: string
+		lineageTag: 3973fd3a-776b-43cf-9dd1-5e245d0810ab
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n5
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n6
+		dataType: string
+		lineageTag: 28dbcc66-c2f0-4b12-9de1-8533a6183c4e
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n6
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 78ae68ff-3401-410c-aac4-3d3e879f87d5
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des
+		dataType: string
+		lineageTag: 2da3b3a1-a988-4e90-8cac-5eaffb1d3813
+		summarizeBy: none
+		sourceColumn: cta_des
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_con_signo
+		dataType: double
+		lineageTag: 1c9e6036-666a-47aa-aa85-e18575e84b70
+		summarizeBy: sum
+		sourceColumn: val_saldo_con_signo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto
+		dataType: double
+		lineageTag: 52193af3-3c1c-4353-948a-fbad7d9c9654
+		summarizeBy: sum
+		sourceColumn: val_presupuesto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast
+		dataType: double
+		lineageTag: 1af56711-4760-4bd2-8cc3-5bc10ed88a11
+		summarizeBy: sum
+		sourceColumn: val_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado
+		dataType: double
+		lineageTag: 38f8c795-517c-4bbc-a12f-dae0b74df6e1
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_con_signo_anualizado
+		dataType: int64
+		formatString: 0
+		lineageTag: 43bdf2da-790c-49f7-bd74-b672e10c179e
+		summarizeBy: sum
+		sourceColumn: val_saldo_con_signo_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_forecast_anualizado
+		dataType: double
+		lineageTag: 8a454972-86ca-48cf-bf01-21ee70c5998e
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_entero_PQ =
+			
+			VALUE(gd_financiero_pq[fec_periodo] & "01")
+		displayFolder: COLUMNAS
+		lineageTag: bcc99a15-39aa-4619-8ca2-7ada2a59dd7a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_fecha_PQ = ```
+			
+			DATE(
+			    LEFT(gd_financiero_pq[fec_periodo], 4),            
+			    MID(gd_financiero_pq[fec_periodo], 5, 2),          
+			    1                                               
+			)
+			```
+		formatString: General Date
+		displayFolder: COLUMNAS
+		lineageTag: c10ca522-3d31-494c-9012-264e5154df5d
+		summarizeBy: none
+
+		variation Variación
+			isDefault
+			relationship: 5842a9a0-20a7-43e2-8af6-84eddc39b306
+			defaultHierarchy: LocalDateTable_a586c0bc-90b0-48f8-aa4f-86a257afadc7.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ramo_BG =
+			
+			SWITCH(TRUE(),
+			    SEARCH("GENERALES", 'gd_financiero_pq'[des_tipo_ramo], 1, 0) > 0, "NO VIDA",
+			    SEARCH("VIDA", 'gd_financiero_pq'[des_tipo_ramo], 1, 0) > 0, "VIDA",
+			    "Otros"
+			)
+		displayFolder: COLUMNAS
+		lineageTag: a9865560-b69f-4114-8aef-336952f9b393
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Formula
+		dataType: string
+		lineageTag: 44605203-aa13-4ad9-bb1e-cb75f9dcd990
+		summarizeBy: none
+		sourceColumn: Formula
+
+		annotation SummarizationSetBy = Automatic
+
+	column 3_Actual_Comision_Brok_PQ = COALESCE(DIVIDE([Actual_Comision_Bro_4201_PQ]-[Actual_red_PQ],1000,0),0)
+		displayFolder: MEDIDAS
+		lineageTag: b119f24f-22dd-4182-acb3-e93bf009b3ac
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition gd_financiero_pq = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags="SELECT * FROM  vw_rt_financiero_pq", EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    vw_rt_financiero_pq_schgold_ctlfinanciero = Origen{[Item="vw_rt_financiero_pq",Schema="schgold",Catalog="ctlfinanciero"]}[Data]
+				in
+				    vw_rt_financiero_pq_schgold_ctlfinanciero
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
