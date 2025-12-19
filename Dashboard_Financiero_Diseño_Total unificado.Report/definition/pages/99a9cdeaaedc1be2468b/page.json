@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
   "name": "99a9cdeaaedc1be2468b",
   "displayName": "PATRIMONIO TÉCNICO",
-  "displayOption": "FitToPage",
+  "displayOption": "ActualSize",
   "height": 768,
   "width": 1550,
   "filterConfig": {
@@ -60,60 +60,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "2d126f5beb2148075328",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "SelectorValor"
-              }
-            },
-            "Property": "TipoValor"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "s",
-              "Entity": "SelectorValor",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "s"
-                          }
-                        },
-                        "Property": "TipoValor"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'MENSUALIZADO'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
       }
     ]
   },
@@ -161,23 +107,88 @@
   },
   "visualInteractions": [
     {
-      "source": "80be68a34e01b921ff1d",
-      "target": "e598e4e696a01f2ea57e",
+      "source": "da71ecfc0f4a39ceb600",
+      "target": "928a72b90458857d8a77",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "da71ecfc0f4a39ceb600",
+      "target": "0e97a1fd555638ff005a",
       "type": "NoFilter"
     },
     {
-      "source": "e598e4e696a01f2ea57e",
-      "target": "31e3333968d765a8cdc8",
+      "source": "da71ecfc0f4a39ceb600",
+      "target": "f21d379284f49e4a8578",
       "type": "NoFilter"
     },
     {
-      "source": "31e3333968d765a8cdc8",
-      "target": "80be68a34e01b921ff1d",
+      "source": "da71ecfc0f4a39ceb600",
+      "target": "12fac6eec1d4bc4682ee",
       "type": "NoFilter"
     },
     {
-      "source": "80be68a34e01b921ff1d",
-      "target": "31e3333968d765a8cdc8",
+      "source": "da71ecfc0f4a39ceb600",
+      "target": "7e60421f559193328167",
+      "type": "NoFilter"
+    },
+    {
+      "source": "928a72b90458857d8a77",
+      "target": "da71ecfc0f4a39ceb600",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "928a72b90458857d8a77",
+      "target": "0e97a1fd555638ff005a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "928a72b90458857d8a77",
+      "target": "12fac6eec1d4bc4682ee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "928a72b90458857d8a77",
+      "target": "7e60421f559193328167",
+      "type": "NoFilter"
+    },
+    {
+      "source": "0e97a1fd555638ff005a",
+      "target": "12fac6eec1d4bc4682ee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "0e97a1fd555638ff005a",
+      "target": "7e60421f559193328167",
+      "type": "NoFilter"
+    },
+    {
+      "source": "0e97a1fd555638ff005a",
+      "target": "da71ecfc0f4a39ceb600",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "0e97a1fd555638ff005a",
+      "target": "928a72b90458857d8a77",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "12fac6eec1d4bc4682ee",
+      "target": "0e97a1fd555638ff005a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7c8ab8c8b7029ca45a0a",
+      "target": "7ce02febeeffcc2e48bc",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7c8ab8c8b7029ca45a0a",
+      "target": "928a72b90458857d8a77",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7c8ab8c8b7029ca45a0a",
+      "target": "da71ecfc0f4a39ceb600",
       "type": "NoFilter"
     }
   ]

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "a173442493ad0e49379a",
   "position": {
-    "x": 861.70212765957456,
-    "y": 110.63829787234043,
-    "z": 9000,
-    "height": 627.65957446808511,
-    "width": 675.53191489361711,
-    "tabOrder": 9000
+    "x": 862,
+    "y": 131,
+    "z": 7000,
+    "height": 676,
+    "width": 675,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "hundredPercentStackedColumnChart",
@@ -28,7 +28,7 @@
               },
               "queryRef": "gd_financiero_rt.Combinacion_BP_Agencia",
               "nativeQueryRef": "AGENCIA",
-              "active": true,
+              "active": false,
               "displayName": "AGENCIA"
             },
             {
@@ -162,6 +162,27 @@
                   "Value": "8D"
                 }
               }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Arial'"
+                }
+              }
+            },
+            "italic": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "maxMarginFactor": {
+              "expr": {
+                "Literal": {
+                  "Value": "15L"
+                }
+              }
             }
           }
         }
@@ -187,6 +208,20 @@
               "expr": {
                 "Literal": {
                   "Value": "46L"
+                }
+              }
+            },
+            "enableTitleDataLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "titleContentType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
                 }
               }
             }

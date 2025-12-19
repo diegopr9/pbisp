@@ -16,6 +16,883 @@
               "visualType": "pageNavigator",
               "objects": {}
             }
+          },
+          "75c07b880d9b0a3348c5": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "935a25cadbbd6b62fdea",
+                  "type": "TopN",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "subquery",
+                        "Expression": {
+                          "Subquery": {
+                            "Query": {
+                              "Version": 2,
+                              "From": [
+                                {
+                                  "Name": "c",
+                                  "Entity": "cuentas_contables",
+                                  "Type": 0
+                                },
+                                {
+                                  "Name": "g",
+                                  "Entity": "gd_financiero_general_gastos",
+                                  "Type": 0
+                                }
+                              ],
+                              "Select": [
+                                {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Source": "c"
+                                      }
+                                    },
+                                    "Property": "cta_des"
+                                  },
+                                  "Name": "field"
+                                }
+                              ],
+                              "OrderBy": [
+                                {
+                                  "Direction": 2,
+                                  "Expression": {
+                                    "Aggregation": {
+                                      "Expression": {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "g"
+                                            }
+                                          },
+                                          "Property": "val_saldo_balance"
+                                        }
+                                      },
+                                      "Function": 0
+                                    }
+                                  }
+                                }
+                              ],
+                              "Top": 10
+                            }
+                          }
+                        },
+                        "Type": 2
+                      },
+                      {
+                        "Name": "c",
+                        "Entity": "cuentas_contables",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "c"
+                                    }
+                                  },
+                                  "Property": "cta_des"
+                                }
+                              }
+                            ],
+                            "Table": {
+                              "SourceRef": {
+                                "Source": "subquery"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "531d64b0d64f9c76d465",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Real Act_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c1cbf85b93572705fe83",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Ppto_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1a3c5581e72eb63a608f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Dif Real Vs Ppto GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "dce32834985baba85339",
+                  "type": "Advanced",
+                  "expression": {
+                    "Arithmetic": {
+                      "Left": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "gd_financiero_general_gastos"
+                            }
+                          },
+                          "Property": "Dif Real Vs Ppto GT"
+                        }
+                      },
+                      "Right": {
+                        "ScopedEval": {
+                          "Expression": {
+                            "Measure": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "gd_financiero_general_gastos"
+                                }
+                              },
+                              "Property": "Dif Real Vs Ppto GT"
+                            }
+                          },
+                          "Scope": [
+                            {
+                              "RoleRef": {
+                                "Role": "Columns"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "Operator": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "490fa32ff58f90eff4fd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "% Cumplimiento GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "gd_financiero_general_gastos"
+                            }
+                          },
+                          "Property": "val_saldo_balance"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "70b74beddcd8ad190dbb": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "98ddec2417be4c885bd9": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7834fe8a8f052d6bc7e6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "23ae9795219020e7b654": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7faad287218d914f09de",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorValor",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoValor"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Mensualizado'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "14bea490264a59e94586": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "6f2b7a9f844f7a44ec4a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorData",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoData"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Real'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "c624b1634a76121e7171": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "2451ce853d000a46570f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "FechaMaxCargaTexto_GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "4662107d7088eecc0181": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "6f6685c94696e7dd21f1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Real Act_GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "72fbdc522850d2952aa8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "92c99cff4849a1cfd827",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Ppto_GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "3021d0fa589abbba0e59": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "2cf45cbc3a97cb0fa7d4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Dif Real Vs Ppto GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "7ad387464eed05b25a61": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "eecda9078bf911650a4e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "% Cumplimiento GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "0c287afe0992d3bbab00": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7b03e5ba49753d9e5e0b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "% Cumplimiento GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "d7312ca5e1180b0c6d29": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b3ce93642aca7a81a25b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "% Cumplimiento GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "641083db6482c61ca5c7": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f4758e839a98540749e6",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Real Act_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c1eadc70a5391e64d400",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Ppto_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f5048a74ad66ce88b2c7",
+                  "type": "TopN",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredBarChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "1350b4c8a125a054c7ac": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "8be6c1ba829522b6965c",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "Gerencias_cta_Gastos"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b256a63b6a69dc07c037",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Ppto_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "dd6b74fa504457f9606a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "Real Act_GT"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5230eeb3c6aa68b9517a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_general_gastos"
+                        }
+                      },
+                      "Property": "% Cumplimiento GT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineStackedColumnComboChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "cuentas_contables"
+                        }
+                      },
+                      "Property": "Gerencias_cta_Gastos"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "4c6cc422c9e604972630": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
           }
         }
       }

@@ -3,11 +3,11 @@
   "name": "d55040d10860dc0175da",
   "position": {
     "x": 13,
-    "y": 147,
-    "z": 3000,
-    "height": 74,
+    "y": 162,
+    "z": 2000,
+    "height": 70,
     "width": 141,
-    "tabOrder": 3000
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",

@@ -21,7 +21,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "cb11a6a76413ba11122a",
+                  "name": "4f3322df281924a0d1ff",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -474,104 +474,6 @@
               }
             }
           },
-          "294aef1380806082c712": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "c5de5b03055313289766",
-                  "type": "Categorical",
-                  "filter": {
-                    "Version": 2,
-                    "From": [
-                      {
-                        "Name": "c",
-                        "Entity": "canal",
-                        "Type": 0
-                      }
-                    ],
-                    "Where": [
-                      {
-                        "Condition": {
-                          "Not": {
-                            "Expression": {
-                              "In": {
-                                "Expressions": [
-                                  {
-                                    "Column": {
-                                      "Expression": {
-                                        "SourceRef": {
-                                          "Source": "c"
-                                        }
-                                      },
-                                      "Property": "des_canal_mod"
-                                    }
-                                  }
-                                ],
-                                "Values": [
-                                  [
-                                    {
-                                      "Literal": {
-                                        "Value": "null"
-                                      }
-                                    }
-                                  ]
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  },
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "canal"
-                        }
-                      },
-                      "Property": "des_canal_mod"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Basic'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "canal"
-                        }
-                      },
-                      "Property": "des_canal_mod"
-                    }
-                  }
-                ]
-              }
-            }
-          },
           "4cfd3e89d6806e9d0840": {
             "filters": {
               "byExpr": [
@@ -591,7 +493,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "84b1695808f587899812",
+                  "name": "4bb41be9281edbca9c8d",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -606,7 +508,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "092ed236ffe5df277f15",
+                  "name": "e6a9dd8e7440d24c6a66",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -621,7 +523,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "ca9c4197af7589c83e53",
+                  "name": "3b5ec53f361f3104ce03",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -636,7 +538,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "a97978e49a67f8ea7d32",
+                  "name": "89c3765c1af8e048882e",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -651,7 +553,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e3af6fbfaf5fb0cd7d2a",
+                  "name": "0d8bbc2de7c6b4d17256",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -666,7 +568,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "7580ffd45c816ea5ae7e",
+                  "name": "b08c73db67b215dac0bf",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -681,7 +583,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e39e1e0d881e590a82f0",
+                  "name": "50d6b1c5d43b66edd80b",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -696,7 +598,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b9b97435c682b5433fb4",
+                  "name": "dd4b4bf654fd77ebe7da",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -711,7 +613,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "744d4abc049c1a9c3789",
+                  "name": "4928c251e439ffba1ec4",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -726,7 +628,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "36e0cfe1bb0dd21e76a0",
+                  "name": "276302f17c44f972d45a",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -741,7 +643,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f9fffc9ff03bc6e2a124",
+                  "name": "a63609b92b4140b2c165",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -756,7 +658,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "8bf819aa959d1ec8de3b",
+                  "name": "2ef0b4143fa2006c265b",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -771,7 +673,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "a0fc32ba76a40bab8f88",
+                  "name": "d6f53748dbca054a181c",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -786,7 +688,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b95c7a89e071e388c4ed",
+                  "name": "c28d9b84a88a9f632a38",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -801,7 +703,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "14d65754f1d53f1518b0",
+                  "name": "3a6309f2733000bb0873",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -816,7 +718,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "e3f44fbb1d82a7a300c1",
+                  "name": "a2bc2581cca8df161980",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -831,7 +733,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "dc9a3ade5f43d6fe8a9e",
+                  "name": "c6f0a6555464f19bc399",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -846,7 +748,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "d9743fc943394c69b936",
+                  "name": "c83bd5f5fd5ea191b59a",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -861,7 +763,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "a13b8b597dad0b1bb417",
+                  "name": "c5a607e59f8170da6353",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -876,7 +778,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "9a59e94632925738f17d",
+                  "name": "da64833bf2ba9bca9a94",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -891,7 +793,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "f38c7f35f448a15ce3aa",
+                  "name": "8b60f9f437bac5bb4169",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -990,7 +892,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "03d61dea290f8904140d",
+                  "name": "10540553f4730aa2b327",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1084,7 +986,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "76747de83899e63675af",
+                  "name": "558878136062cd982a97",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1178,7 +1080,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "3ecf5c36819f155e82b2",
+                  "name": "31e435a6a0b85e461837",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1272,7 +1174,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "48231ccf92de03f3a985",
+                  "name": "4f5f3456f91256ab9c5d",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1366,7 +1268,7 @@
                   "howCreated": 1
                 },
                 {
-                  "name": "24884c865e87198e52ae",
+                  "name": "4441c5792093e00a8bd5",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1645,7 +1547,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "72a340182b062e8212ba",
+                  "name": "1f1b19087e957c514f71",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1660,7 +1562,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "ca4eb82b0f09c1dd7bf7",
+                  "name": "ef71fdf17486598533a5",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1675,7 +1577,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "28947b84d27e0683bd6c",
+                  "name": "4381e6c8fb6e57405023",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1690,7 +1592,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "1191dc662bb4b571140a",
+                  "name": "b7b580830ae28ea0dfec",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1835,7 +1737,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "43ae34daa3379f301e56",
+                  "name": "d0a5ca8db6b48e1417c1",
                   "type": "TopN",
                   "filter": {
                     "Version": 2,
@@ -1937,7 +1839,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b8b00f7f88f644c395d5",
+                  "name": "b449c340a6cc8c9711c7",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1952,7 +1854,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "1747f5974c5c59b62c58",
+                  "name": "26e0aa5e0e9934640fdc",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1967,7 +1869,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "ea5f9f214ffd91052f48",
+                  "name": "0cedff2f0fe822bb4926",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2090,12 +1992,6 @@
             }
           },
           "8d9c186fc715782d4109": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
-          "72832706a5641d5e0187": {
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {}

@@ -3,11 +3,11 @@
   "name": "baa995fd720402995605",
   "position": {
     "x": 984,
-    "y": 497,
-    "z": 15000,
-    "height": 223,
+    "y": 533,
+    "z": 14000,
+    "height": 238,
     "width": 553,
-    "tabOrder": 15000
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "lineClusteredColumnComboChart",
@@ -20,16 +20,16 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gd_financiero_rt"
+                      "Entity": "gd_financiero_rt_final"
                     }
                   },
-                  "Property": "des_broker"
+                  "Property": "des_asegurado"
                 }
               },
-              "queryRef": "gd_financiero_rt.des_broker",
-              "nativeQueryRef": "BROKER",
+              "queryRef": "gd_financiero_rt_final.des_asegurado",
+              "nativeQueryRef": "ASEGURADO",
               "active": true,
-              "displayName": "BROKER"
+              "displayName": "ASEGURADO"
             }
           ],
           "fieldParameters": [
@@ -63,8 +63,8 @@
                 }
               },
               "queryRef": "gd_financiero_rt.GRA_REAL_ACT RESULTADO TÉCNICO RT",
-              "nativeQueryRef": "RESULTADO TÉCNICO:",
-              "displayName": "RESULTADO TÉCNICO:"
+              "nativeQueryRef": "RESULTADO TÉCNICO",
+              "displayName": "RESULTADO TÉCNICO"
             },
             {
               "field": {
@@ -78,8 +78,8 @@
                 }
               },
               "queryRef": "gd_financiero_rt.GRA RESULTADO TÉCNICO RT",
-              "nativeQueryRef": "PRESUPUESTO:",
-              "displayName": "PRESUPUESTO:"
+              "nativeQueryRef": "PRESUPUESTO",
+              "displayName": "PRESUPUESTO"
             }
           ]
         },
@@ -97,8 +97,8 @@
                 }
               },
               "queryRef": "gd_financiero_rt.GRA_%CUMPLI RESULTADO TÉCNICO RT",
-              "nativeQueryRef": "%CUMPLIMIENTO:",
-              "displayName": "%CUMPLIMIENTO:"
+              "nativeQueryRef": "%CUMPLIMIENTO",
+              "displayName": "%CUMPLIMIENTO"
             }
           ]
         }
@@ -118,8 +118,7 @@
             },
             "direction": "Descending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {
@@ -150,7 +149,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "8D"
+                }
+              }
+            },
+            "maxMarginFactor": {
+              "expr": {
+                "Literal": {
+                  "Value": "27L"
                 }
               }
             }
@@ -230,7 +236,21 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
                 }
               }
             }
@@ -324,6 +344,13 @@
               "expr": {
                 "Literal": {
                   "Value": "'lineOnly'"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'TopCenter'"
                 }
               }
             }
@@ -467,25 +494,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#243A90'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "gd_financiero_rt.GRA_REAL_ACT RESULTADO TÉCNICO RT"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#3CBAEA'"
+                      "Value": "'#094D8F'"
                     }
                   }
                 }
@@ -512,6 +521,24 @@
           },
           "selector": {
             "metadata": "gd_financiero_rt.GRA_%CUMPLI RESULTADO TÉCNICO RT"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#3cbaea'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gd_financiero_rt.GRA_REAL_ACT RESULTADO TÉCNICO RT"
           }
         }
       ]
@@ -639,7 +666,8 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "cb3b28f74933315dbdfc",
+        "name": "594e5d92c4c6529e858b",
+        "ordinal": 0,
         "field": {
           "Measure": {
             "Expression": {
@@ -647,7 +675,69 @@
                 "Entity": "gd_financiero_rt"
               }
             },
-            "Property": "Rank Dinámico"
+            "Property": "GRA_%CUMPLI RESULTADO TÉCNICO RT"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "bfac7bd1e99699887998",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt"
+              }
+            },
+            "Property": "des_contratante"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "05d077b67e88c7490fc9",
+        "ordinal": 2,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt"
+              }
+            },
+            "Property": "GRA_PPTO RESULTADO TÉCNICO RT"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0ecd79ee52a507897db1",
+        "ordinal": 3,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt"
+              }
+            },
+            "Property": "Top9 + Otros (ROBUSTO)"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "449863eeda9d79a310f4",
+        "ordinal": 4,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt"
+              }
+            },
+            "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
           }
         },
         "type": "Advanced",
@@ -663,54 +753,61 @@
           "Where": [
             {
               "Condition": {
-                "Or": {
+                "Comparison": {
+                  "ComparisonKind": 1,
                   "Left": {
-                    "Comparison": {
-                      "ComparisonKind": 3,
-                      "Left": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Source": "g"
-                            }
-                          },
-                          "Property": "Rank Dinámico"
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "g"
                         }
                       },
-                      "Right": {
-                        "Literal": {
-                          "Value": "10L"
-                        }
-                      }
+                      "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
                     }
                   },
                   "Right": {
-                    "Comparison": {
-                      "ComparisonKind": 3,
-                      "Left": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Source": "g"
-                            }
-                          },
-                          "Property": "Rank Dinámico"
-                        }
-                      },
-                      "Right": {
-                        "Literal": {
-                          "Value": "10L"
-                        }
-                      }
+                    "Literal": {
+                      "Value": "0L"
                     }
                   }
                 }
               }
             }
           ]
+        }
+      },
+      {
+        "name": "4a4439098316e7b95d87",
+        "ordinal": 5,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt"
+              }
+            },
+            "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
+          }
         },
+        "type": "Advanced",
         "howCreated": "User"
+      },
+      {
+        "name": "b187ae82c00d1f76cbe5",
+        "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gd_financiero_rt_final"
+              }
+            },
+            "Property": "des_asegurado"
+          }
+        },
+        "type": "Categorical"
       }
-    ]
+    ],
+    "filterSortOrder": "Custom"
   }
 }

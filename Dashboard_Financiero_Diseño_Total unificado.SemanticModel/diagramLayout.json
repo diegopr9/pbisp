@@ -4,14 +4,14 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 3320,
-        "y": 9640
+        "x": 3601.666666666667,
+        "y": 3976.666666666667
       },
       "nodes": [
         {
           "location": {
             "x": 3274.4365167930391,
-            "y": 10037.305930944585
+            "y": 4596.6713662245929
           },
           "nodeIndex": "gd_financiero_general",
           "nodeLineageTag": "3b489f1c-3960-46d8-9b56-0de663fdb5bb",
@@ -19,12 +19,12 @@
             "height": 514.33333333333348,
             "width": 234
           },
-          "zIndex": 35
+          "zIndex": 33
         },
         {
           "location": {
             "x": 4423.2012122053138,
-            "y": 10630.477342220489
+            "y": 5189.8427775004966
           },
           "nodeIndex": "gd_grupo_contable2",
           "nodeLineageTag": "37fc9dfe-f41e-4d58-ad53-125baaa8ae72",
@@ -32,28 +32,15 @@
             "height": 459.48898678414105,
             "width": 234
           },
-          "zIndex": 21
+          "zIndex": 19
         },
         {
           "location": {
             "x": 6038.0336756905754,
-            "y": 11061.623111561325
+            "y": 5620.9885468413322
           },
           "nodeIndex": "Tabla_KPI_PG",
           "nodeLineageTag": "a3917282-83f7-4aff-b3fa-7ce069fe3fb0",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 20
-        },
-        {
-          "location": {
-            "x": 6043.2777712636826,
-            "y": 10836.178138731859
-          },
-          "nodeIndex": "SelectorData",
-          "nodeLineageTag": "6d476f98-a8fa-41ae-aec2-361be9a59977",
           "size": {
             "height": 200,
             "width": 234
@@ -62,63 +49,11 @@
         },
         {
           "location": {
-            "x": 6063.7050840390129,
-            "y": 10602.063640195687
+            "x": 6043.2777712636826,
+            "y": 5395.5435740118664
           },
-          "nodeIndex": "SelectorValor",
-          "nodeLineageTag": "fd0a24ba-dbd9-42ce-8d3b-e58893379789",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 19
-        },
-        {
-          "location": {
-            "x": 3920.3004423926486,
-            "y": 10408.699825840684
-          },
-          "nodeIndex": "Calendario",
-          "nodeLineageTag": "d7545ed8-9965-4678-ba00-70d73172ff85",
-          "size": {
-            "height": 334.44444444444446,
-            "width": 234
-          },
-          "zIndex": 33
-        },
-        {
-          "location": {
-            "x": 6321.2777712636826,
-            "y": 10614.511472065191
-          },
-          "nodeIndex": "SelectorCalculo_PG",
-          "nodeLineageTag": "2480df07-d3cb-4433-92cf-38680feb4a77",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 14
-        },
-        {
-          "location": {
-            "x": 6330.0119856542842,
-            "y": 10357.91088469368
-          },
-          "nodeIndex": "SelectorCalculo_PG_KPI",
-          "nodeLineageTag": "28eef668-cbe1-4f28-ac31-9431ed9edaee",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 15
-        },
-        {
-          "location": {
-            "x": 6060.8445847732273,
-            "y": 10357.103248864018
-          },
-          "nodeIndex": "SelectorCalculo_PT",
-          "nodeLineageTag": "ec9ffb72-9ea5-4e16-8660-d88a18ba3ce3",
+          "nodeIndex": "SelectorData",
+          "nodeLineageTag": "6d476f98-a8fa-41ae-aec2-361be9a59977",
           "size": {
             "height": 200,
             "width": 234
@@ -127,11 +62,11 @@
         },
         {
           "location": {
-            "x": 6314.411398282773,
-            "y": 10849.672999231123
+            "x": 6063.7050840390129,
+            "y": 5161.4290754756948
           },
-          "nodeIndex": "SelectorDesviaciones_PG",
-          "nodeLineageTag": "036c2d9b-4d5c-4004-bc53-c0d1d1dc809e",
+          "nodeIndex": "SelectorValor",
+          "nodeLineageTag": "fd0a24ba-dbd9-42ce-8d3b-e58893379789",
           "size": {
             "height": 200,
             "width": 234
@@ -140,8 +75,73 @@
         },
         {
           "location": {
+            "x": 3920.3004423926486,
+            "y": 4968.0652611206915
+          },
+          "nodeIndex": "Calendario",
+          "nodeLineageTag": "d7545ed8-9965-4678-ba00-70d73172ff85",
+          "size": {
+            "height": 334.44444444444446,
+            "width": 234
+          },
+          "zIndex": 31
+        },
+        {
+          "location": {
+            "x": 6321.2777712636826,
+            "y": 5173.8769073451986
+          },
+          "nodeIndex": "SelectorCalculo_PG",
+          "nodeLineageTag": "2480df07-d3cb-4433-92cf-38680feb4a77",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 6330.0119856542842,
+            "y": 4917.2763199736874
+          },
+          "nodeIndex": "SelectorCalculo_PG_KPI",
+          "nodeLineageTag": "28eef668-cbe1-4f28-ac31-9431ed9edaee",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 6060.8445847732273,
+            "y": 4916.4686841440252
+          },
+          "nodeIndex": "SelectorCalculo_PT",
+          "nodeLineageTag": "ec9ffb72-9ea5-4e16-8660-d88a18ba3ce3",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 6314.411398282773,
+            "y": 5409.0384345111306
+          },
+          "nodeIndex": "SelectorDesviaciones_PG",
+          "nodeLineageTag": "036c2d9b-4d5c-4004-bc53-c0d1d1dc809e",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
             "x": 4527.3453189876163,
-            "y": 9773.975562306814
+            "y": 4333.3409975868217
           },
           "nodeIndex": "gd_financiero_rt",
           "nodeLineageTag": "ae2cce77-ba63-40fe-bf2a-b8b1a6e53085",
@@ -149,12 +149,12 @@
             "height": 511.66666666666663,
             "width": 234
           },
-          "zIndex": 22
+          "zIndex": 20
         },
         {
           "location": {
             "x": 6558.6966138928656,
-            "y": 10002.975562306814
+            "y": 4562.3409975868217
           },
           "nodeIndex": "SelectorGrafico1",
           "nodeLineageTag": "31e69a2c-fadc-45f3-a3ec-2877abb009dd",
@@ -162,12 +162,12 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 12
+          "zIndex": 10
         },
         {
           "location": {
             "x": 6570.5389280121562,
-            "y": 10172.975562306814
+            "y": 4732.3409975868217
           },
           "nodeIndex": "SelectorGrafico2",
           "nodeLineageTag": "233b9737-9be5-4dd3-8878-8b0160d01fea",
@@ -175,12 +175,12 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 13
+          "zIndex": 11
         },
         {
           "location": {
             "x": 6045.5646397310975,
-            "y": 10123.975562306814
+            "y": 4683.3409975868217
           },
           "nodeIndex": "SelectorRT_Calculo",
           "nodeLineageTag": "f1534c57-6fa4-4c5e-9f58-b286ea86a907",
@@ -188,12 +188,12 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 8
         },
         {
           "location": {
             "x": 6295.5903514500405,
-            "y": 10122.308895640148
+            "y": 4681.6743309201556
           },
           "nodeIndex": "SelectorCalculoRT",
           "nodeLineageTag": "cb2536da-f978-4845-9872-eaef76ec5e0c",
@@ -201,12 +201,12 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 11
+          "zIndex": 9
         },
         {
           "location": {
             "x": 6303.9236847833736,
-            "y": 9936.308895640148
+            "y": 4495.6743309201556
           },
           "nodeIndex": "SelectorGraficoRT_Informe",
           "nodeLineageTag": "b3642d0b-e8bb-46de-92da-cc6cb3011475",
@@ -214,12 +214,12 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 27
+          "zIndex": 25
         },
         {
           "location": {
             "x": 3683.9493965023148,
-            "y": 10937.308895640148
+            "y": 5496.6743309201556
           },
           "nodeIndex": "gd_financiero_inversiones",
           "nodeLineageTag": "42b250e3-ef65-454e-a58b-5dd64c5a770c",
@@ -227,15 +227,41 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 7
         },
         {
           "location": {
             "x": 6590.6160631689818,
-            "y": 10615.642228973482
+            "y": 5175.00766425349
           },
           "nodeIndex": "SelectorCalculo_IN",
           "nodeLineageTag": "c779a11e-1233-4ce2-9dea-aaa137691356",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 21
+        },
+        {
+          "location": {
+            "x": 6592.2827298356478,
+            "y": 5401.6743309201556
+          },
+          "nodeIndex": "SelectorCalculo_IN2",
+          "nodeLineageTag": "5da05623-282b-40a4-9c02-f7924a1eb2bf",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 6572.2827298356478,
+            "y": 5617.8505562929
+          },
+          "nodeIndex": "ColsMatriz_PQ",
+          "nodeLineageTag": "20f3326b-9c5b-4a7e-a2df-fb6d71a94593",
           "size": {
             "height": 200,
             "width": 234
@@ -244,34 +270,8 @@
         },
         {
           "location": {
-            "x": 6592.2827298356478,
-            "y": 10842.308895640148
-          },
-          "nodeIndex": "SelectorCalculo_IN2",
-          "nodeLineageTag": "5da05623-282b-40a4-9c02-f7924a1eb2bf",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 24
-        },
-        {
-          "location": {
-            "x": 6572.2827298356478,
-            "y": 11058.485121012893
-          },
-          "nodeIndex": "ColsMatriz_PQ",
-          "nodeLineageTag": "20f3326b-9c5b-4a7e-a2df-fb6d71a94593",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 25
-        },
-        {
-          "location": {
             "x": 5773.9493965023157,
-            "y": 10822.994679718971
+            "y": 5382.360114998979
           },
           "nodeIndex": "SelectorTabla",
           "nodeLineageTag": "c9541a47-8ca2-481e-8e38-87f0126a2218",
@@ -279,12 +279,12 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 31
+          "zIndex": 29
         },
         {
           "location": {
             "x": 3920.6160631689809,
-            "y": 9818.4851210128927
+            "y": 4377.8505562929
           },
           "nodeIndex": "gd_financiero_pq",
           "nodeLineageTag": "c3fe49d2-396f-40f8-9eb0-358e85d4a6aa",
@@ -292,12 +292,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 6
         },
         {
           "location": {
             "x": 3287.3084415545891,
-            "y": 10644.661346385637
+            "y": 5204.0267816656451
           },
           "nodeIndex": "gd_financiero_rrc",
           "nodeLineageTag": "7e3b8f35-8475-41af-9b70-5f5bbbc5851c",
@@ -305,15 +305,41 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 26
+          "zIndex": 24
         },
         {
           "location": {
             "x": 5797.3084415545909,
-            "y": 10354.661346385637
+            "y": 4914.0267816656451
           },
           "nodeIndex": "SelectorRRC_Calculo3",
           "nodeLineageTag": "6bb41ead-1b66-4a82-856b-75538aaa2bd0",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 26
+        },
+        {
+          "location": {
+            "x": 5780.6417748879239,
+            "y": 5147.360114998979
+          },
+          "nodeIndex": "SelectorRRC_Calculo2",
+          "nodeLineageTag": "01eabd6c-7fdd-42af-ba24-29d190e093e3",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 27
+        },
+        {
+          "location": {
+            "x": 5787.3084415545909,
+            "y": 4680.6934483323112
+          },
+          "nodeIndex": "SelectorRRC_Calculo1",
+          "nodeLineageTag": "02647ad2-5495-4f45-8a91-8c7cd688bb00",
           "size": {
             "height": 200,
             "width": 234
@@ -322,24 +348,11 @@
         },
         {
           "location": {
-            "x": 5780.6417748879239,
-            "y": 10587.994679718971
+            "x": 5755.6417748879239,
+            "y": 5600.6934483323112
           },
-          "nodeIndex": "SelectorRRC_Calculo2",
-          "nodeLineageTag": "01eabd6c-7fdd-42af-ba24-29d190e093e3",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 29
-        },
-        {
-          "location": {
-            "x": 5787.3084415545909,
-            "y": 10121.328013052304
-          },
-          "nodeIndex": "SelectorRRC_Calculo1",
-          "nodeLineageTag": "02647ad2-5495-4f45-8a91-8c7cd688bb00",
+          "nodeIndex": "TipoPNR",
+          "nodeLineageTag": "c03e664f-b2fe-4635-b385-0669d48f7876",
           "size": {
             "height": 200,
             "width": 234
@@ -348,11 +361,24 @@
         },
         {
           "location": {
-            "x": 5755.6417748879239,
-            "y": 11041.328013052304
+            "x": 6290.6160631689809,
+            "y": 5639.0267816656451
           },
-          "nodeIndex": "TipoPNR",
-          "nodeLineageTag": "c03e664f-b2fe-4635-b385-0669d48f7876",
+          "nodeIndex": "TipoRRC",
+          "nodeLineageTag": "7b135582-1b12-4c39-a911-1bda3b98c518",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 5477.3076216143918,
+            "y": 5595.70300703839
+          },
+          "nodeIndex": "SelectorCuentas_PG",
+          "nodeLineageTag": "af760fc7-6ea8-4da2-af47-5025886db476",
           "size": {
             "height": 200,
             "width": 234
@@ -361,113 +387,11 @@
         },
         {
           "location": {
-            "x": 6290.6160631689809,
-            "y": 11079.661346385637
-          },
-          "nodeIndex": "TipoRRC",
-          "nodeLineageTag": "7b135582-1b12-4c39-a911-1bda3b98c518",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 7
-        },
-        {
-          "location": {
-            "x": 5477.3076216143918,
-            "y": 11036.337571758382
-          },
-          "nodeIndex": "SelectorCuentas_PG",
-          "nodeLineageTag": "af760fc7-6ea8-4da2-af47-5025886db476",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 34
-        },
-        {
-          "location": {
             "x": 5473.6202974995122,
-            "y": 10804.680463797793
+            "y": 5364.0458990778006
           },
           "nodeIndex": "SelectorCuentas_PT",
           "nodeLineageTag": "f1bc3180-32ab-472b-9165-e24425d30fc8",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 6
-        },
-        {
-          "location": {
-            "x": 3601.8462130426087,
-            "y": 9599.5966254769955
-          },
-          "nodeIndex": "Etiqueta Top9_Otros",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 1
-        },
-        {
-          "location": {
-            "x": 3998.5128797092757,
-            "y": 9497.5417778033716
-          },
-          "nodeIndex": "gd_patrimonio_tecnico_unificado",
-          "nodeLineageTag": "9095a7ce-321a-4cb3-a062-5f22a4c308af",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 2
-        },
-        {
-          "location": {
-            "x": 3319.8462130426087,
-            "y": 9640.5818480545149
-          },
-          "nodeIndex": "gd_financiero_gasto_gerencial_base",
-          "nodeLineageTag": "8e49a7db-957e-40d8-96e8-b490a4c7b1ca",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 37
-        },
-        {
-          "location": {
-            "x": 3627.3076216143922,
-            "y": 9892.1886236700921
-          },
-          "nodeIndex": "gd_financiero_gastos",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 3
-        },
-        {
-          "location": {
-            "x": 4306.1795463759427,
-            "y": 9602.248514721181
-          },
-          "nodeIndex": "gd_financiero_resultado",
-          "nodeLineageTag": "1d89eb11-a94c-4320-9d9a-081f0d8f2858",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 36
-        },
-        {
-          "location": {
-            "x": 4003.5128797092743,
-            "y": 9023.1082063872527
-          },
-          "nodeIndex": "Eje TopN con Otros",
-          "nodeLineageTag": "04eb9c18-caf2-414d-bb05-5c5c1627ad90",
           "size": {
             "height": 200,
             "width": 234
@@ -476,15 +400,66 @@
         },
         {
           "location": {
-            "x": 3601.8462130426087,
-            "y": 4664.3112489494451
+            "x": 4234.9194885600346,
+            "y": 5760.13511308576
           },
-          "nodeIndex": "Eje TopN Otros Gerencias",
+          "nodeIndex": "gd_financiero_general_gt",
+          "nodeLineageTag": "0fd72108-4d67-4427-86ae-cd1d128532aa",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 3627.3076216143922,
+            "y": 4451.5540589501
+          },
+          "nodeIndex": "gd_financiero_general_gastos",
+          "nodeLineageTag": "a0fc4016-2a38-40ba-a3c9-ed0e7d88025c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 3601.8462130426087,
+            "y": 4158.9620607570032
+          },
+          "nodeIndex": "Etiqueta Top9_Otros",
           "size": {
             "height": 200,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 4831.8462130426087,
+            "y": 4854.4543376960464
+          },
+          "nodeIndex": "gd_financiero_rt_final",
+          "nodeLineageTag": "7f6a376d-d0a1-4124-ab3b-58ed4d7ed2ec",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 34
+        },
+        {
+          "location": {
+            "x": 3601.8462130426087,
+            "y": 2236.9072130833792
+          },
+          "nodeIndex": "TopN_Eje",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas las tablas",

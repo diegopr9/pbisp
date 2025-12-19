@@ -225,17 +225,6 @@
           "selector": {
             "id": "652e975e5317f62acfe6"
           }
-        },
-        {
-          "properties": {
-            "showHiddenPages": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
         }
       ]
     },

@@ -1,0 +1,27 @@
+table TopN_Eje
+	lineageTag: 7d4101ef-3d88-46a4-91e1-dcd4dc822edc
+
+	column Categoria
+		lineageTag: 7f8bd245-91a7-4534-b150-f69b66bb7075
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Categoria]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition TopN_Eje = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE(
+				    "Categoria", STRING,
+				    {
+				        {"TOP"},
+				        {"OTROS"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 933b7490ae52420db322eac31f9e7405
+

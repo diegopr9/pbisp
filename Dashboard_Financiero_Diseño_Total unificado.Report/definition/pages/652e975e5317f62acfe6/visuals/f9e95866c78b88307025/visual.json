@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "f9e95866c78b88307025",
   "position": {
-    "x": 175.53191489361703,
-    "y": 119.14893617021278,
-    "z": 8000,
-    "height": 627.65957446808511,
-    "width": 671.27659574468089,
-    "tabOrder": 8000
+    "x": 176,
+    "y": 131,
+    "z": 6000,
+    "height": 676,
+    "width": 671,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "hundredPercentStackedColumnChart",
@@ -164,7 +164,73 @@
                   "Value": "46L"
                 }
               }
+            },
+            "detailContentType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Percent of total'"
+                }
+              }
+            },
+            "labelOverflow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "enableTitleDataLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleContentType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Custom'"
+                }
+              }
             }
+          }
+        },
+        {
+          "properties": {
+            "dynamicLabelDetail": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_rt"
+                    }
+                  },
+                  "Property": "GRA_REAL_ACT RESULTADO TÉCNICO RT"
+                }
+              }
+            },
+            "dynamicLabelTitle": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_rt"
+                    }
+                  },
+                  "Property": "GRA2_REAL_ACT RESULTADO TÉCNICO RT"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "highlightMatching": 1
           }
         }
       ],
@@ -1364,6 +1430,19 @@
             ]
           }
         }
+      ],
+      "ribbonBands": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -1508,49 +1587,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "g",
-              "Entity": "gd_financiero_rt",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "g"
-                              }
-                            },
-                            "Property": "Combinacion_BP_Agencia"
-                          }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "'Otros'"
-                            }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
         "objects": {
           "general": [
             {

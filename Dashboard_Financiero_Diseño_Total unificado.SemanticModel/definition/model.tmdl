@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["Indicadores DAX","gd_financiero_general","gd_grupo_contable2","gd_financiero_rt","gd_financiero_inversiones","gd_financiero_pq","gd_financiero_rrc","gd_financiero_gastos","gd_patrimonio_tecnico_unificado","gd_financiero_gasto_gerencial_base","gd_financiero_resultado"]
+annotation PBI_QueryOrder = ["Indicadores DAX","gd_financiero_general","gd_grupo_contable2","gd_financiero_rt","gd_financiero_inversiones","gd_financiero_pq","gd_financiero_rrc","gd_financiero_general_gt","gd_financiero_general_gastos","gd_financiero_rt_final"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -52,19 +52,18 @@ ref table TipoPNR
 ref table TipoRRC
 ref table SelectorCuentas_PG
 ref table SelectorCuentas_PT
-ref table gd_financiero_gastos
+ref table gd_financiero_general_gt
+ref table LocalDateTable_f4364477-2baf-4251-bc4a-aeec6130fdf1
+ref table gd_financiero_general_gastos
+ref table LocalDateTable_e406318d-593e-4210-8d04-b2aaaeee6bef
 ref table LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf
 ref table 'Etiqueta Top9_Otros'
-ref table gd_patrimonio_tecnico_unificado
+ref table gd_financiero_rt_final
+ref table TopN_Eje
 ref table LocalDateTable_5c6a93dc-1807-4e1c-819c-eedffc06cbaa
 ref table LocalDateTable_5658d455-3509-4e4f-9a0c-921bec0a88de
 ref table LocalDateTable_bb3ea3a4-ced2-4e64-b70c-41f6e402adbb
-ref table gd_financiero_gasto_gerencial_base
-ref table LocalDateTable_df5126f3-2c89-44ae-8570-e12af3843150
-ref table gd_financiero_resultado
-ref table LocalDateTable_ba9106d3-c5dc-4039-b934-4a28d7a9604c
-ref table 'Eje TopN con Otros'
-ref table 'Eje TopN Otros Gerencias'
+ref table LocalDateTable_8cf2b4ed-beed-4320-ace8-e8e4f9526f7e
 
 ref cultureInfo es-MX
 

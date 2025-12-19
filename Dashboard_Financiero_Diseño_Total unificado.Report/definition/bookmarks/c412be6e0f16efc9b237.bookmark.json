@@ -1,0 +1,1191 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "BORRAR FILTROS - P&Q",
+  "name": "c412be6e0f16efc9b237",
+  "options": {
+    "targetVisualNames": []
+  },
+  "explorationState": {
+    "version": "1.40",
+    "activeSection": "729f3c25ec78f88ed2f0",
+    "sections": {
+      "729f3c25ec78f88ed2f0": {
+        "visualContainers": {
+          "739dde059b5e083a6300": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "2d7de59a678165296a32": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "865c47876094a0c9c4d7": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "141c9aea439c608d1d04",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "FechaMaxCargaTexto_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "577d0b0d77dacac5b816": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "11350c07dfa30546d8fb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "Ramo_BG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {}
+            }
+          },
+          "98b70fe15ae05a1a0071": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "93195b2ac3c4ef41aada",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorValor",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoValor"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'MENSUALIZADO'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "1c7a09e0801ba8734309": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "368e5fd3dfe2256327b4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorTabla"
+                        }
+                      },
+                      "Property": "SelectorTabla"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorTabla",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "SelectorTabla Campos"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'''gd_financiero_pq''[des_broker]'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "cachedFilterDisplayItems": [
+                {
+                  "id": {
+                    "scopeId": {
+                      "Comparison": {
+                        "ComparisonKind": 0,
+                        "Left": {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "SelectorTabla"
+                              }
+                            },
+                            "Property": "SelectorTabla Campos"
+                          }
+                        },
+                        "Right": {
+                          "Literal": {
+                            "Value": "'''gd_financiero_pq''[des_broker]'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "displayName": "Broker"
+                }
+              ]
+            }
+          },
+          "1fffd8e0c66140953123": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f3994552c55e1fb74a2e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "5_Produccion_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "b921c13eab11a82d0e01": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "3cac85ebe56d03010dfb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "2_Ppto_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "db466ae812e17d96a452": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "896fbd9fafdc19752b6f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "%CUMPLIMIENTO"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "5fe115ac80294472da7b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "cd9838525d67e4f053fd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "9_P_AV_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "99d028a5494b0318284a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "04e68ba695e85ad407b0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "10_Q_AV_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "9485a97dbbb4d1a8c047": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "91607b948fa219d57327",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "1_Actual_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e63ab90f1c41232a73e4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "2_Ppto_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f8049a7bc3546d99549e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "5_Produccion_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a15249e549cc290aec62",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "6_Uso_red_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2fdfbfc127bbac9ffa69",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "7_Actual_FC_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d2c80098204420743aef",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "8_Ppto_FC_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c899f1504048557554f2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "9_P_AV_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "83a2528cefc6c6785c48",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "10_Q_AV_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3cd417e18207721f93fd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "3_Actual_red_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "46cdeb99943c6028c1e1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "4_Ppto_red_PQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0c83cb7863ef0438fa69",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2b6d3a01b4ae5ddbb6cd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "des_broker"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "des_broker"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "des_broker"
+                    }
+                  }
+                ]
+              },
+              "projections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "des_broker"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "cta_des"
+                    }
+                  }
+                ],
+                "Values": [
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "1_Actual_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "2_Ppto_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "3_Actual_red_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "4_Ppto_red_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "5_Produccion_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "6_Uso_red_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "7_Actual_FC_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "8_Ppto_FC_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "9_P_AV_PQ"
+                    }
+                  },
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "10_Q_AV_PQ"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "Rows": [
+                  {
+                    "expr": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "SelectorTabla"
+                          }
+                        },
+                        "Property": "SelectorTabla"
+                      }
+                    },
+                    "index": 0,
+                    "length": 1,
+                    "sortDirection": 2
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "gd_financiero_pq.des_broker"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "gd_financiero_pq"
+                              }
+                            },
+                            "Property": "des_broker"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "gd_financiero_pq.cta_des"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ]
+            }
+          },
+          "21fb1a6c4051a835766b": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "e5d63dd27bcb1a31e113": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "4a6f3cfd1b0a90900049": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "f0ca068de0376dee6b6a": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "a8d8893c8440da01755d": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "4eba2861263a76c553ab": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "da2ff9a7492ed555aa7e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "587476a3fe65d287cbf8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "Título Tarjeta"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {}
+            }
+          },
+          "61be9fe3bc27a36a3c30": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "9a63dd790a43b76eddb1": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "adad22ee2278aa40e134",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorData"
+                        }
+                      },
+                      "Property": "TipoData"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorData",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoData"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'REAL'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "0a71bda790b6bc6f1565": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "1b2054d2541d01b801c2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "afee8da740b3fe9900b7",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "Calendario",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "c"
+                                        }
+                                      },
+                                      "Property": "NombreMes"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "null"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "NombreMes"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f881f9ba365972978d67",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "Año"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "Año"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "Año"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "NombreMes"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Values"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "Calendario.Año"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Calendario"
+                              }
+                            },
+                            "Property": "Año"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "Calendario.NombreMes"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null,
+                    "children": [
+                      {
+                        "identityValues": [
+                          {
+                            "Literal": {
+                              "Value": "2025L"
+                            }
+                          }
+                        ],
+                        "isToggled": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "c4659bcbd4e6fcf35f48": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -826,13 +826,6 @@
                 }
               }
             },
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
             "singleSelect": {
               "expr": {
                 "Literal": {

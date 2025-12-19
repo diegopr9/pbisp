@@ -112,7 +112,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'% GASTOS PRIMA BRUTA'"
+                  "Value": "'% GASTOS PRIMA BUTA'"
                 }
               }
             },

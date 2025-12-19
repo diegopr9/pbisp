@@ -43,21 +43,25 @@ relationship 882af980-b036-40e0-a777-83f0f14de5b6
 	fromColumn: gd_financiero_rrc.fec_periodo_fecha_RRC
 	toColumn: LocalDateTable_e9e2ef24-728f-4415-94d7-bc769680a5d6.Date
 
+relationship ab11e65b-f808-4931-ab35-8129868cd84e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: gd_financiero_general_gt.fec_periodo_fecha_GT
+	toColumn: LocalDateTable_f4364477-2baf-4251-bc4a-aeec6130fdf1.Date
+
+relationship 8976c6a4-244b-4349-8c41-87151db3b116
+	joinOnDateBehavior: datePartOnly
+	fromColumn: gd_financiero_general_gastos.fecha_ultimo_dia
+	toColumn: LocalDateTable_e406318d-593e-4210-8d04-b2aaaeee6bef.Date
+
 relationship 745f0c13-0b1c-4ea6-8d69-68ee6755df44
 	joinOnDateBehavior: datePartOnly
-	fromColumn: gd_financiero_gastos.fec_periodo_fecha_G
+	fromColumn: gd_financiero_general_gastos.fec_periodo_fecha_G
 	toColumn: LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf.Date
 
-relationship a5ed89d5-da62-4d85-acf7-a06c6d1494a6
+relationship d8c1b801-e89d-48b0-90c3-5a5fcdefaafb
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Calendario.Date
 	toColumn: LocalDateTable_5c6a93dc-1807-4e1c-819c-eedffc06cbaa.Date
-
-relationship c9ecab7f-07aa-8685-85e4-57f601ec3ff4
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: Calendario.FechaClave
-	toColumn: gd_patrimonio_tecnico_unificado.id_fecha
 
 relationship 14203b44-eeb3-c7fd-d18f-1eacb959948e
 	fromColumn: gd_financiero_general.fec_periodo_entero_BG
@@ -83,35 +87,30 @@ relationship d477cb88-3ed6-ce9a-d44e-d47e164962f5
 	fromColumn: gd_financiero_rrc.fec_periodo_entero_RRC
 	toColumn: Calendario.FechaClave
 
-relationship bcfae79f-bbfa-c671-b5ef-268741552892
-	fromColumn: gd_financiero_gastos.fec_periodo_entero_G
+relationship 1b2c7509-8e10-2b58-f3be-2957ba78e780
+	fromColumn: gd_financiero_general_gt.fec_periodo_entero_GT
 	toColumn: Calendario.FechaClave
 
-relationship 257b02ee-20e5-45f5-9994-bd8e36d409fb
+relationship bcfae79f-bbfa-c671-b5ef-268741552892
+	fromColumn: gd_financiero_general_gastos.fec_periodo_entero_G
+	toColumn: Calendario.FechaClave
+
+relationship 1fae3c6f-0625-d767-41e4-d766ba1f4061
+	fromColumn: gd_financiero_rt_final.fec_periodo_id
+	toColumn: Calendario.FechaClave
+
+relationship c50f0447-3d6c-4131-9be0-ed7eeb388bf4
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Calendario.InicioTrimestre
 	toColumn: LocalDateTable_5658d455-3509-4e4f-9a0c-921bec0a88de.Date
 
-relationship 1474c0b5-c1e8-481e-9906-2556d23f5f9d
+relationship 9e86fc87-b1a5-45e7-8a8b-536698f624ac
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Calendario.FinTrimestre
 	toColumn: LocalDateTable_bb3ea3a4-ced2-4e64-b70c-41f6e402adbb.Date
 
-relationship 6e34b438-b381-4463-a0e2-2280d6178e98
+relationship 7e78896d-c1bc-4d1a-8853-3bc347643b49
 	joinOnDateBehavior: datePartOnly
-	fromColumn: gd_financiero_gasto_gerencial_base.fecha_ultimo_dia
-	toColumn: LocalDateTable_df5126f3-2c89-44ae-8570-e12af3843150.Date
-
-relationship 81918603-b414-406c-9d87-d422708f1608
-	joinOnDateBehavior: datePartOnly
-	fromColumn: gd_financiero_resultado.fec_periodo_ultimo_dia
-	toColumn: LocalDateTable_ba9106d3-c5dc-4039-b934-4a28d7a9604c.Date
-
-relationship 8a1e0766-15b3-8557-9912-0f28fb9bcafd
-	fromColumn: gd_financiero_resultado.fecha_id
-	toColumn: Calendario.FechaClave
-
-relationship 1fa471d3-baab-fd7d-e28a-d2217ca7d527
-	fromColumn: gd_financiero_gasto_gerencial_base.id_tiempo
-	toColumn: Calendario.FechaClave
+	fromColumn: Calendario.YYYY-MM-DD
+	toColumn: LocalDateTable_8cf2b4ed-beed-4320-ace8-e8e4f9526f7e.Date
 

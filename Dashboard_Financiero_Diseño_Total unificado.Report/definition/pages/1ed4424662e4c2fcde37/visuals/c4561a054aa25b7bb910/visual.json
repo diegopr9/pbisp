@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "c4561a054aa25b7bb910",
   "position": {
-    "x": 8.8461538461538467,
-    "y": 77.6923076923077,
-    "z": 21000,
-    "height": 53.076923076923073,
-    "width": 151.15384615384616,
-    "tabOrder": 21000
+    "x": 9,
+    "y": 85,
+    "z": 19000,
+    "height": 53,
+    "width": 151,
+    "tabOrder": 19000
   },
   "visual": {
     "visualType": "slicer",
@@ -123,7 +123,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Oct 2025'"
+                                "Value": "'Mar 2025'"
                               }
                             }
                           ]
@@ -190,6 +190,19 @@
                       "Percent": -0.5
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "strictSingleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -330,6 +343,11 @@
         }
       ]
     },
+    "syncGroup": {
+      "groupName": "Año",
+      "fieldChanges": true,
+      "filterChanges": true
+    },
     "drillFilterOtherVisuals": true
   },
   "filterConfig": {
@@ -344,6 +362,35 @@
               }
             },
             "Property": "MesNombreAño"
+          }
+        },
+        "type": "Categorical",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "afee8da740b3fe9900b7",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendario"
+              }
+            },
+            "Property": "NombreMes"
           }
         },
         "type": "Categorical",
@@ -370,7 +417,7 @@
                                 "Source": "c"
                               }
                             },
-                            "Property": "MesNombreAño"
+                            "Property": "NombreMes"
                           }
                         }
                       ],
@@ -390,6 +437,7 @@
             }
           ]
         },
+        "howCreated": "User",
         "objects": {
           "general": [
             {

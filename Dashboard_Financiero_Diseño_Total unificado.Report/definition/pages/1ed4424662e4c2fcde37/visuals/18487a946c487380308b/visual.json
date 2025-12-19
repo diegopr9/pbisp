@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "18487a946c487380308b",
   "position": {
-    "x": 14,
-    "y": 131,
+    "x": 12,
+    "y": 138,
     "z": 2000,
-    "height": 95,
-    "width": 140,
+    "height": 120,
+    "width": 144,
     "tabOrder": 2000
   },
   "visual": {
@@ -492,10 +492,17 @@
                 }
               }
             },
+            "autoGrid": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "maxTiles": {
               "expr": {
                 "Literal": {
-                  "Value": "3L"
+                  "Value": "4L"
                 }
               }
             }

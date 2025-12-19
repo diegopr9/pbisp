@@ -3,11 +3,11 @@
   "name": "291fda347004bb8b1b51",
   "position": {
     "x": 517.75700934579436,
-    "y": 60.747663551401864,
-    "z": 13001,
+    "y": 65.747663551401871,
+    "z": 10000,
     "height": 33.644859813084111,
     "width": 687.85046728971963,
-    "tabOrder": 13000
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -138,15 +138,7 @@
       ],
       "selection": [
         {
-          "properties": {
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "layout": [

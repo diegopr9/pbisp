@@ -92,14 +92,14 @@
                 }
               }
             },
-            "strictSingleSelect": {
+            "singleSelect": {
               "expr": {
                 "Literal": {
                   "Value": "true"
                 }
               }
             },
-            "singleSelect": {
+            "strictSingleSelect": {
               "expr": {
                 "Literal": {
                   "Value": "true"

@@ -9339,6 +9339,66 @@ table gd_financiero_inversiones
 
 		annotation SummarizationSetBy = Automatic
 
+	column val_saldo_balance_prev
+		dataType: double
+		lineageTag: 5968bdd7-9c5f-4df0-8992-1c55e0b227de
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_anualizado_prev
+		dataType: double
+		lineageTag: 7ed464d4-e944-4d04-8cd0-d5dd37fd71f8
+		summarizeBy: sum
+		sourceColumn: val_saldo_anualizado_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_prev
+		dataType: double
+		lineageTag: 4cd0d9f1-f437-43de-8d9d-6dc38fbcaefe
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado_prev
+		dataType: double
+		lineageTag: 4737fd0a-4287-4b8d-9499-7dda2f724e18
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_prev
+		dataType: double
+		lineageTag: cba8a52a-b676-4c7d-b52e-3032804e5688
+		summarizeBy: sum
+		sourceColumn: val_forecast_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_anualizado_prev
+		dataType: double
+		lineageTag: 4dcbee2c-1f72-4830-a22f-841255446b32
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado_prev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition gd_financiero_inversiones = m
 		mode: import
 		source =

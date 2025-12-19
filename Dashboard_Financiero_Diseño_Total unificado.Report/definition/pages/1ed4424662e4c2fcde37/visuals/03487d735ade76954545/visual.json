@@ -3,11 +3,11 @@
   "name": "03487d735ade76954545",
   "position": {
     "x": 1000,
-    "y": 719.80198019801981,
-    "z": 19000,
-    "height": 34.653465346534652,
-    "width": 526.73267326732673,
-    "tabOrder": 19000
+    "y": 773,
+    "z": 17000,
+    "height": 34,
+    "width": 527,
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -72,7 +72,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'''gd_financiero_rt''[des_broker]'"
+                                "Value": "'''gd_financiero_rt_final''[des_asegurado]'"
                               }
                             }
                           ]
@@ -100,7 +100,7 @@
                                 "0": [
                                   {
                                     "Literal": {
-                                      "Value": "'''gd_financiero_rt''[des_broker]'"
+                                      "Value": "'''gd_financiero_rt_final''[des_asegurado]'"
                                     }
                                   }
                                 ]
@@ -124,7 +124,7 @@
                         },
                         "valueMap": [
                           {
-                            "0": "BROKER"
+                            "0": "ASEGURADO"
                           }
                         ]
                       }
@@ -138,15 +138,7 @@
       ],
       "selection": [
         {
-          "properties": {
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
+          "properties": {}
         }
       ],
       "layout": [

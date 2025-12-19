@@ -1,5 +1,4 @@
 table gd_financiero_general
-	isHidden
 	lineageTag: 3b489f1c-3960-46d8-9b56-0de663fdb5bb
 
 	measure 'Real Y-1_BG' = ```
@@ -83,29 +82,20 @@ table gd_financiero_general
 			        )
 			))
 			```
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 828ae701-c6c5-4bd3-a93e-c705d37a8c14
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure YoY_BG = [Real Act_BG] - [Real Y-1_BG]
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 1af888dd-3aa6-459b-885b-242f77031d99
 
-		changedProperty = IsHidden
-
 	measure %YoY_BG = DIVIDE([YoY_BG],[Real Y-1_BG],0)
 		formatString: 0.00\ %;-0.00\ %;0.00\ %
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 590fa391-5980-4a8f-b887-1439a4393560
-
-		changedProperty = IsHidden
 
 	measure Activos_BG = ```
 			
@@ -116,11 +106,8 @@ table gd_financiero_general
 			
 			```
 		formatString: #,0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 87ac99be-9411-4552-83cf-eace775387bb
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
@@ -131,11 +118,8 @@ table gd_financiero_general
 			    gd_financiero_general[TipoCuenta_BG] = "PASIVOS"
 			),0)/1000
 		formatString: #,0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 49543033-1067-4e83-bea6-5d9157071911
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
@@ -157,11 +141,8 @@ table gd_financiero_general
 			
 			
 			```
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 5a1f5bb5-f987-4b1b-9073-bc0f22cd5ea4
-
-		changedProperty = IsHidden
 
 	measure 'Real Act_BG' = ```
 			
@@ -251,11 +232,8 @@ table gd_financiero_general
 			        )
 			)
 			```
-		isHidden
 		displayFolder: Medidas
 		lineageTag: adf4fb17-a34a-4d6c-96b4-40ea276a714c
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -272,11 +250,8 @@ table gd_financiero_general
 			    // Default
 			    SUM(gd_financiero_general[val_saldo_balance])
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 84fac36c-2e83-4bd6-92a9-92999f97158c
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -287,11 +262,8 @@ table gd_financiero_general
 			    gd_financiero_general[TipoCuenta_BG] = "PATRIMONIO"
 			),0)/1000 
 			```
-		isHidden
 		displayFolder: Medidas
 		lineageTag: d3aebd79-dfa5-401d-bd67-48d532649fe8
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -315,11 +287,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 59413ecf-2cb4-4b8f-be74-2e874f088c76
-
-		changedProperty = IsHidden
 
 	measure 'ROE Max Periodo' = ```
 			
@@ -366,11 +335,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: af383750-967f-4891-9521-08245ff7b275
-
-		changedProperty = IsHidden
 
 	measure FiltroAñoDinamico_KPI_BG = ```
 			
@@ -391,11 +357,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0
-		isHidden
 		displayFolder: KPI
 		lineageTag: 971260a7-b745-4cf1-8627-bc265e300af2
-
-		changedProperty = IsHidden
 
 	measure 'ROE Max Periodo Anterior' = ```
 			
@@ -440,39 +403,27 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 45b73903-f84b-4fae-aa5b-1babbfcd1861
 
-		changedProperty = IsHidden
-
 	measure 'Real Act_BG_1000' = DIVIDE([Real Act_BG], 1000,0)
 		formatString: #,0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: f216a3c2-dda0-4895-bead-1eb7dc678965
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Real Y-1_1000' = DIVIDE([Real Y-1_BG],1000,0)
 		formatString: #,0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: e76216c1-0290-4650-a07d-4155cdb55fea
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure YoY_BG_1000 = DIVIDE([YoY_BG],1000,0)
 		formatString: #,0
-		isHidden
 		displayFolder: Medidas
 		lineageTag: b3851d51-fc49-47a2-a5fd-118d2abac85c
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
@@ -481,11 +432,8 @@ table gd_financiero_general
 			"PERIODO PASADO: "
 			
 			```
-		isHidden
 		displayFolder: KPI
 		lineageTag: 0d4e2677-bb54-4ead-99b3-01285a966eff
-
-		changedProperty = IsHidden
 
 	measure Filtro4MesesDinamico_KPI = ```
 			
@@ -519,11 +467,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0
-		isHidden
 		displayFolder: KPI
 		lineageTag: ccb0096d-7b4b-411c-904a-4af9aaafda7f
-
-		changedProperty = IsHidden
 
 	measure 'ROA Max Periodo' = ```
 			
@@ -570,11 +515,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 37b90fe2-7880-4b75-8aeb-64b92ac1fc57
-
-		changedProperty = IsHidden
 
 	measure 'ROA Max Periodo Anterior' = ```
 			
@@ -619,11 +561,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 4ce20238-62e9-43b8-8865-2e90cbae1ed0
-
-		changedProperty = IsHidden
 
 	measure 'ROS Max Periodo' = ```
 			
@@ -686,11 +625,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: cf95edea-f393-4382-95d8-6f1c3f0c0699
-
-		changedProperty = IsHidden
 
 	measure 'ROS Max Periodo Anterior' = ```
 			
@@ -753,11 +689,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: ac68e23f-3308-4b1f-8c05-ad9b01ad738f
-
-		changedProperty = IsHidden
 
 	measure 'LIQUIDEZ Max Periodo' = ```
 			
@@ -815,11 +748,8 @@ table gd_financiero_general
 			
 			```
 		formatString: #,0.00
-		isHidden
 		displayFolder: KPI
 		lineageTag: bda183dd-68e4-44c6-86b3-d532b0d6d025
-
-		changedProperty = IsHidden
 
 	measure 'LIQUIDEZ Max Periodo Anterior' = ```
 			
@@ -885,11 +815,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: ea81b738-b1b0-4fc1-bc2d-60384a440e17
-
-		changedProperty = IsHidden
 
 	measure 'LIQUIDEZ INMEDIATA Max Periodo' = ```
 			
@@ -939,11 +866,8 @@ table gd_financiero_general
 			
 			```
 		formatString: #,0.00
-		isHidden
 		displayFolder: KPI
 		lineageTag: e745419d-8947-4f23-9797-a7ad7aa459f1
-
-		changedProperty = IsHidden
 
 	measure 'LIQUIDEZ INMEDIATA Max Periodo Anterior' = ```
 			
@@ -991,11 +915,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 177ec938-6692-45e8-87ae-04168830fd8a
-
-		changedProperty = IsHidden
 
 	measure 'GASTOS Max Periodo' = ```
 			
@@ -1058,11 +979,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 34bf25f3-4e3d-44d1-abf2-1d9a3ce20f02
-
-		changedProperty = IsHidden
 
 	measure 'GASTOS Max Periodo Anterior' = ```
 			
@@ -1125,11 +1043,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: f159038e-46e4-4fed-a3b0-ec8f9a3ff658
-
-		changedProperty = IsHidden
 
 	measure 'COMISIONES Max Periodo' = ```
 			
@@ -1192,11 +1107,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: d496d4f8-e742-4f46-83d7-e4749c77c553
-
-		changedProperty = IsHidden
 
 	measure 'COMISIONES Max Periodo Anterior' = ```
 			
@@ -1259,11 +1171,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 76ab4990-2bd1-44a0-ad1a-158ed94bb172
-
-		changedProperty = IsHidden
 
 	measure 'SINIESTRALIDAD Max Periodo' = ```
 			
@@ -1320,11 +1229,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 77add115-90a3-47bb-9951-c2785cdeee2a
-
-		changedProperty = IsHidden
 
 	measure 'SINIESTRALIDAD Max Periodo Anterior' = ```
 			
@@ -1377,11 +1283,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 69f383a1-7f99-4808-a817-2c804283b151
-
-		changedProperty = IsHidden
 
 	measure 'SINIESTRALIDAD INCURRIDA Max Periodo' = ```
 			
@@ -1438,11 +1341,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: e297290f-2ad8-4f6b-ad2b-b253b3697dc8
-
-		changedProperty = IsHidden
 
 	measure 'SINIESTRALIDAD INCURRIDA Max Periodo Anterior' = ```
 			
@@ -1495,11 +1395,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 5642dd5d-3fc5-4c69-9131-a1cc0b2ae2ac
-
-		changedProperty = IsHidden
 
 	measure 'RAZON COMBINADA Max Periodo' = ```
 			
@@ -1556,11 +1453,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: caabbca6-791f-4b8a-a9f5-d4f84232daa7
-
-		changedProperty = IsHidden
 
 	measure 'RAZON COMBINADA Max Periodo Anterior' = ```
 			
@@ -1613,11 +1507,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 3665027a-9faf-4b86-a571-238014de7435
-
-		changedProperty = IsHidden
 
 	measure 'PAT/PRIMA NETA EMITIDA Max Periodo' = ```
 			
@@ -1672,11 +1563,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 1a92c820-364c-479f-ba04-6da44501b1b9
-
-		changedProperty = IsHidden
 
 	measure 'PAT/PRIMA NETA EMITIDA Max Periodo Anterior' = ```
 			
@@ -1731,11 +1619,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 421218dc-cbb7-4625-987c-41136b01b133
-
-		changedProperty = IsHidden
 
 	measure 'REND FINANCIERO CONTABLE Max Periodo' = ```
 			
@@ -1783,11 +1668,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: c4c3c9e0-6700-48a1-97f8-c783bf242dcf
-
-		changedProperty = IsHidden
 
 	measure 'REND FINANCIERO CONTABLE Max Periodo Anterior' = ```
 			
@@ -1835,11 +1717,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: cbce7416-98c2-4048-a144-2032cb7a312e
-
-		changedProperty = IsHidden
 
 	measure 'GASTOS/RT Max Periodo' =
 			
@@ -1912,11 +1791,8 @@ table gd_financiero_general
 			RETURN
 			COALESCE ( DIVIDE ( NUMERADOR, DENOMINADOR, 0 ), 0 )
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 4d2e19b4-ca52-4f9e-b22e-d34eded84b10
-
-		changedProperty = IsHidden
 
 	measure 'GASTOS/RT Max Periodo Anterior' = ```
 			
@@ -1988,11 +1864,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: ad4ea270-a267-4c3d-88b5-a95b0393a642
-
-		changedProperty = IsHidden
 
 	measure '%AJUSTE RESERVA/PB Max Periodo' = ```
 			
@@ -2067,11 +1940,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: d68f2e98-debc-42bb-a0f5-debd51ef9fcf
-
-		changedProperty = IsHidden
 
 	measure '%AJUSTED RESERVA/PB Max Periodo Anterior' = ```
 			
@@ -2144,11 +2014,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: b43a1f9c-e5fb-4d4d-bc98-4dde56d0d5a5
-
-		changedProperty = IsHidden
 
 	measure '%COSTOS EXCESOS/PB Max Periodo' = ```
 			
@@ -2196,11 +2063,8 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 591620cc-ac1d-49e7-830b-30b3e93dc2f0
-
-		changedProperty = IsHidden
 
 	measure '%COSTOS EXCESOS/PB Max Periodo Anterior' = ```
 			
@@ -2244,28 +2108,19 @@ table gd_financiero_general
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
-		isHidden
 		displayFolder: KPI
 		lineageTag: 63df3368-71ae-4c79-9c82-ecb6360cdd1b
-
-		changedProperty = IsHidden
 
 	measure 'Última Fecha Cargada' =
 			
 			CALCULATE( MAX( gd_financiero_general[fec_periodo_fecha_BG] ), ALL( gd_financiero_general ) )
 		formatString: General Date
-		isHidden
 		displayFolder: Medidas
 		lineageTag: e429b0e3-1df4-41c6-8716-71ca2e7eacf6
 
-		changedProperty = IsHidden
-
 	measure 'Otros Pasivos' = CALCULATE(SUM(gd_financiero_general[val_saldo_balance]),gd_financiero_general[cta_desc_bg] = "Otros Pasivos")-CALCULATE(SUM(gd_financiero_general[val_saldo_balance]),gd_financiero_general[cta_desc_bg] = "Primas anticipadas")
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 680db8d1-1823-480c-a7e2-bfb5c307b4d2
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2357,11 +2212,8 @@ table gd_financiero_general
 			        )
 			)
 			```
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 86a45428-9da1-487f-aab3-69e86b172160
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2374,11 +2226,8 @@ table gd_financiero_general
 			    [Activos_BG_P],
 			    'Calendario'[Año] = MaxYear                  -- aplica filtro al año máximo
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 46ead121-faac-4e0b-8c58-bc967e78c47e
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2391,11 +2240,8 @@ table gd_financiero_general
 			    [Pasivos_BG_P],
 			    'Calendario'[Año] = MaxYear                  -- aplica filtro al año máximo
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: aed238a0-85a3-49b3-9e52-d7db720d914b
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2408,11 +2254,8 @@ table gd_financiero_general
 			    [Patrimonio_BG_P],
 			    'Calendario'[Año] = MaxYear                  -- aplica filtro al año máximo
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 3027dd89-ad2e-4ec4-807d-54589097713e
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2425,11 +2268,8 @@ table gd_financiero_general
 			
 			```
 		formatString: #,0.00
-		isHidden
 		displayFolder: Medidas
 		lineageTag: 701c6c52-203f-43b5-97a4-06d03b56eec0
-
-		changedProperty = IsHidden
 
 	measure Pasivos_BG_P =
 			
@@ -2437,11 +2277,8 @@ table gd_financiero_general
 			    [Real Act_BG],
 			    gd_financiero_general[TipoCuenta_BG] = "PASIVOS" && gd_financiero_general[id_cuenta_contable] = "2"
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: cfbaccbe-fed9-47b8-8ad7-3f87ebe2801d
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -2451,201 +2288,54 @@ table gd_financiero_general
 			    [Real Act_BG],
 			    gd_financiero_general[id_cuenta_contable] IN{"31","3204","3206","3202","3201","3402","3401"}
 			)
-		isHidden
 		displayFolder: Medidas
 		lineageTag: dbb8ef13-bbf4-4d90-9bec-80cb71ed16f4
-
-		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Resultado del Ejercicio' = CALCULATE(SUM(gd_financiero_general[val_saldo_balance]),gd_financiero_general[cta_desc_bg] = "Resultado del Ejercicio")
-		isHidden
 		displayFolder: Medidas
 		lineageTag: f9ebfead-211d-4044-a4fe-7d7b16e508dd
 
-		changedProperty = IsHidden
-
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Real Act_BG_1000 Visible' =
-			
-			VAR currentId =
-			    COALESCE(
-			        SELECTEDVALUE( gd_financiero_general[Nivel8] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel7] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel6] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel5] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel4] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel3] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel2] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel1] )
-			    )
-			RETURN
-			IF(
-			    ISBLANK(currentId),
-			    BLANK(),
-			    CALCULATE(
-			        [Real Act_BG_1000],                                     -- tu medida original
-			        ALL( gd_financiero_general[id_cuenta_contable] ),       -- eliminamos filtro por id
-			        gd_financiero_general[id_cuenta_contable] = currentId   -- forzamos el id concreto
-			    )
-			)
-		formatString: #,0
-		isHidden
-		displayFolder: Medidas
-		lineageTag: fa08a1af-a6ee-44b0-b33b-b38d17c98886
-
-		changedProperty = IsHidden
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
-	measure 'Real Y-1_1000 Visible' =
-			
-			VAR currentId =
-			    COALESCE(
-			        SELECTEDVALUE( gd_financiero_general[Nivel8] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel7] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel6] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel5] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel4] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel3] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel2] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel1] )
-			    )
-			RETURN
-			IF(
-			    ISBLANK(currentId),
-			    BLANK(),
-			    CALCULATE(
-			        [Real Y-1_1000],                                        -- tu medida original
-			        ALL( gd_financiero_general[id_cuenta_contable] ),       -- eliminamos filtro por id
-			        gd_financiero_general[id_cuenta_contable] = currentId   -- forzamos el id concreto
-			    )
-			)
-		formatString: #,0
-		isHidden
-		displayFolder: Medidas
-		lineageTag: 434d4abc-5c4f-437b-902d-408b552099b4
-
-		changedProperty = IsHidden
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
-	measure 'YoY_BG_1000 Visible' =
-			
-			VAR currentId =
-			    COALESCE(
-			        SELECTEDVALUE( gd_financiero_general[Nivel8] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel7] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel6] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel5] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel4] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel3] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel2] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel1] )
-			    )
-			RETURN
-			IF(
-			    ISBLANK(currentId),
-			    BLANK(),
-			    CALCULATE(
-			        [YoY_BG_1000],                                          -- tu medida original
-			        ALL( gd_financiero_general[id_cuenta_contable] ),       -- eliminamos filtro por id
-			        gd_financiero_general[id_cuenta_contable] = currentId   -- forzamos el id concreto
-			    )
-			)
-		formatString: #,0
-		isHidden
-		displayFolder: Medidas
-		lineageTag: 7f6865d1-767d-4bc3-af74-6a96aca5dcbc
-
-		changedProperty = IsHidden
-
-		annotation PBI_FormatHint = {"isDecimal":true}
-
-	measure '%YoY_BG Visible' =
-			
-			VAR currentId =
-			    COALESCE(
-			        SELECTEDVALUE( gd_financiero_general[Nivel8] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel7] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel6] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel5] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel4] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel3] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel2] ),
-			        SELECTEDVALUE( gd_financiero_general[Nivel1] )
-			    )
-			RETURN
-			IF(
-			    ISBLANK(currentId),
-			    BLANK(),
-			    CALCULATE(
-			        [%YoY_BG],                                              -- tu medida original
-			        ALL( gd_financiero_general[id_cuenta_contable] ),       -- eliminamos filtro por id
-			        gd_financiero_general[id_cuenta_contable] = currentId   -- forzamos el id concreto
-			    )
-			)
-		formatString: #,0.00%;-#,0.00%;#,0.00%
-		isHidden
-		displayFolder: Medidas
-		lineageTag: 21ed806d-cc66-4b22-9894-cf2162ec5393
-
-		changedProperty = IsHidden
 
 	column fec_periodo
 		dataType: string
-		isHidden
 		lineageTag: 8f40653b-96dc-409a-9064-7d8dfac7458f
 		summarizeBy: none
 		sourceColumn: fec_periodo
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column id_empresa
 		dataType: string
-		isHidden
 		lineageTag: a73810f4-f627-47f3-a39e-2a3635cae120
 		summarizeBy: none
 		sourceColumn: id_empresa
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column des_tipo_ramo
 		dataType: string
-		isHidden
 		lineageTag: bd8b12eb-583a-41d8-895c-ceea29af2b83
 		summarizeBy: none
 		sourceColumn: des_tipo_ramo
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column id_cuenta_contable
 		dataType: string
-		isHidden
 		lineageTag: e0f5d4d9-c7d3-4512-9d8a-c7ac9bf52f8c
 		summarizeBy: none
 		sourceColumn: id_cuenta_contable
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_anterior
 		dataType: double
-		isHidden
 		lineageTag: 2b9a9535-3f46-4311-b36c-2487bc17fb83
 		summarizeBy: sum
 		sourceColumn: val_saldo_anterior
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2653,12 +2343,9 @@ table gd_financiero_general
 
 	column val_saldo_debito
 		dataType: double
-		isHidden
 		lineageTag: b552915f-ed84-4760-a721-e6542d65f1c8
 		summarizeBy: sum
 		sourceColumn: val_saldo_debito
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2666,12 +2353,9 @@ table gd_financiero_general
 
 	column val_saldo_credito
 		dataType: double
-		isHidden
 		lineageTag: 75962671-af3a-4e1f-9563-515e3fac4c9f
 		summarizeBy: sum
 		sourceColumn: val_saldo_credito
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2679,12 +2363,9 @@ table gd_financiero_general
 
 	column val_saldo_balance
 		dataType: double
-		isHidden
 		lineageTag: 7c5511a5-455c-4a3b-836b-be1d41728a38
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2692,12 +2373,9 @@ table gd_financiero_general
 
 	column val_saldo_mes
 		dataType: double
-		isHidden
 		lineageTag: 1955fcab-70ec-4016-aec7-15ff63b746f7
 		summarizeBy: sum
 		sourceColumn: val_saldo_mes
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2705,12 +2383,9 @@ table gd_financiero_general
 
 	column val_presupuesto
 		dataType: double
-		isHidden
 		lineageTag: bd9122d2-5062-4be9-aea7-e474b063fcd3
 		summarizeBy: sum
 		sourceColumn: val_presupuesto
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2718,12 +2393,9 @@ table gd_financiero_general
 
 	column val_forecast
 		dataType: double
-		isHidden
 		lineageTag: c405288c-c888-4181-9e40-22a28d199572
 		summarizeBy: sum
 		sourceColumn: val_forecast
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2731,7 +2403,6 @@ table gd_financiero_general
 
 	column fec_periodo_ultimo_dia
 		dataType: dateTime
-		isHidden
 		formatString: Long Date
 		lineageTag: 0d916d78-cf00-462a-b1aa-d83444f530b9
 		summarizeBy: none
@@ -2742,42 +2413,31 @@ table gd_financiero_general
 			relationship: 6d1d0bdf-2a80-49ef-a8a3-04b7e736ccca
 			defaultHierarchy: LocalDateTable_b36e8f8f-e6e6-4793-9417-12d2022d8c33.'Jerarquía de fechas'
 
-		changedProperty = IsHidden
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
 
 	column fec_corte
 		dataType: string
-		isHidden
 		lineageTag: 8e434bca-79c8-448b-9486-ec21d83fbbac
 		summarizeBy: none
 		sourceColumn: fec_corte
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column particion
 		dataType: string
-		isHidden
 		lineageTag: 358cfcea-ba96-4571-8104-45cba379143a
 		summarizeBy: none
 		sourceColumn: particion
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_anualizado
 		dataType: double
-		isHidden
 		lineageTag: 0aa66042-113f-497c-be26-b3b26780cf6e
 		summarizeBy: sum
 		sourceColumn: val_saldo_anualizado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2786,12 +2446,9 @@ table gd_financiero_general
 	column fec_periodo_entero_BG =
 			
 			VALUE(gd_financiero_general[fec_periodo] & "01")
-		isHidden
 		displayFolder: Columnas
 		lineageTag: 83b0ee8e-1299-4765-9140-dc86fd36fd54
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2805,7 +2462,6 @@ table gd_financiero_general
 			    1                                               
 			)
 			```
-		isHidden
 		formatString: yyyy-mm
 		displayFolder: Columnas
 		lineageTag: 838d220d-8c36-4d46-bb08-fe453c2f1283
@@ -2815,8 +2471,6 @@ table gd_financiero_general
 			isDefault
 			relationship: b4ee2312-29ac-4434-ac49-b5690565a9d3
 			defaultHierarchy: LocalDateTable_0cc8de16-06dc-4055-b6e3-5a07fa60b618.'Jerarquía de fechas'
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2833,23 +2487,17 @@ table gd_financiero_general
 			)
 			
 			```
-		isHidden
 		displayFolder: Columnas
 		lineageTag: c3ff167d-84fc-4526-a414-c0019ddae9ce
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column cod_nivel_cuenta
 		dataType: string
-		isHidden
 		lineageTag: 45c19e35-e137-42fc-8ee4-e155590f6e41
 		summarizeBy: none
 		sourceColumn: cod_nivel_cuenta
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2862,23 +2510,17 @@ table gd_financiero_general
 			)
 			
 			```
-		isHidden
 		displayFolder: Columnas
 		lineageTag: 81ac67a5-ab3b-4e64-8f03-f34337696817
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_presupuesto_anualizado
 		dataType: double
-		isHidden
 		lineageTag: 86c126a8-a7df-4ad2-9b26-a0b6bcacbcd4
 		summarizeBy: sum
 		sourceColumn: val_presupuesto_anualizado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2886,12 +2528,9 @@ table gd_financiero_general
 
 	column val_forecast_anualizado
 		dataType: double
-		isHidden
 		lineageTag: 4a61d5b5-554e-4618-a12f-8c3e86af299a
 		summarizeBy: sum
 		sourceColumn: val_forecast_anualizado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2899,12 +2538,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_acumulado
 		dataType: double
-		isHidden
 		lineageTag: 37b39637-83fa-484a-9780-25679ec8a963
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_acumulado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2912,12 +2548,9 @@ table gd_financiero_general
 
 	column val_presupuesto_acumulado
 		dataType: double
-		isHidden
 		lineageTag: 53921ae6-b78d-4296-a91f-a68cebe880a8
 		summarizeBy: sum
 		sourceColumn: val_presupuesto_acumulado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2925,12 +2558,9 @@ table gd_financiero_general
 
 	column val_forecast_acumulado
 		dataType: double
-		isHidden
 		lineageTag: fb2fb2fe-0319-4490-bfd8-4ad1efb81fa9
 		summarizeBy: sum
 		sourceColumn: val_forecast_acumulado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2938,23 +2568,17 @@ table gd_financiero_general
 
 	column fec_periodo_y_1
 		dataType: string
-		isHidden
 		lineageTag: 2b8db20a-7447-4303-9f8d-3c3fd6ebf370
 		summarizeBy: none
 		sourceColumn: fec_periodo_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_balance_y_1
 		dataType: double
-		isHidden
 		lineageTag: fdcae67e-3865-444d-955b-a0240bee4d9d
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2962,12 +2586,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_acumulado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 0645502b-98bb-430f-ad8a-1af982ad114f
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_acumulado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2975,12 +2596,9 @@ table gd_financiero_general
 
 	column val_forecast_acumulado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 4e8e2309-7ac0-48e9-8d61-99e946e7575e
 		summarizeBy: sum
 		sourceColumn: val_forecast_acumulado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -2988,12 +2606,9 @@ table gd_financiero_general
 
 	column val_presupuesto_anualizado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 9ee236ff-8ac2-486f-bb21-bfa0b3a56dfc
 		summarizeBy: sum
 		sourceColumn: val_presupuesto_anualizado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3001,12 +2616,9 @@ table gd_financiero_general
 
 	column val_presupuesto_y_1
 		dataType: double
-		isHidden
 		lineageTag: 10c14786-5ced-41ec-897c-132314696053
 		summarizeBy: sum
 		sourceColumn: val_presupuesto_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3014,12 +2626,9 @@ table gd_financiero_general
 
 	column val_forecast_y_1
 		dataType: double
-		isHidden
 		lineageTag: 76082c5a-c0f5-4075-855f-39b44cd26675
 		summarizeBy: sum
 		sourceColumn: val_forecast_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3027,12 +2636,9 @@ table gd_financiero_general
 
 	column val_forecast_anualizado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 7bf8133a-1d47-4d5c-adee-3d31ed4d27dd
 		summarizeBy: sum
 		sourceColumn: val_forecast_anualizado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3040,12 +2646,9 @@ table gd_financiero_general
 
 	column val_saldo_anualizado_y_1
 		dataType: double
-		isHidden
 		lineageTag: b5386ace-233a-4773-bf22-d98001657d16
 		summarizeBy: sum
 		sourceColumn: val_saldo_anualizado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3053,12 +2656,9 @@ table gd_financiero_general
 
 	column val_presupuesto_acumulado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 41ee5a38-47dc-4a07-8f5c-24a1210c37ea
 		summarizeBy: sum
 		sourceColumn: val_presupuesto_acumulado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3139,23 +2739,17 @@ table gd_financiero_general
 			    "25", "Otros Pasivos",
 			    BLANK ()
 			)
-		isHidden
 		displayFolder: Columnas
 		lineageTag: 6e888d55-4709-4658-bf31-ea53b0b99e5c
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_calculo
 		dataType: double
-		isHidden
 		lineageTag: a177ead8-5f39-439b-b4dd-4709b551a869
 		summarizeBy: sum
 		sourceColumn: val_saldo_calculo
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3163,12 +2757,9 @@ table gd_financiero_general
 
 	column val_saldo_mes_acumulado
 		dataType: double
-		isHidden
 		lineageTag: 5d183b90-36fb-4a9d-91d1-9e8cea14195f
 		summarizeBy: sum
 		sourceColumn: val_saldo_mes_acumulado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3176,12 +2767,9 @@ table gd_financiero_general
 
 	column val_saldo_mes_y_1
 		dataType: double
-		isHidden
 		lineageTag: effa47f0-9434-4db8-8cc3-8d089296976a
 		summarizeBy: sum
 		sourceColumn: val_saldo_mes_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3189,12 +2777,9 @@ table gd_financiero_general
 
 	column val_saldo_mes_acumulado_y_1
 		dataType: double
-		isHidden
 		lineageTag: 49c3f820-d861-4013-9a4c-905dabc4b8b3
 		summarizeBy: sum
 		sourceColumn: val_saldo_mes_acumulado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3202,23 +2787,17 @@ table gd_financiero_general
 
 	column cta_des
 		dataType: string
-		isHidden
 		lineageTag: 70c08fff-5e00-4cb8-9c21-b200262449bf
 		summarizeBy: none
 		sourceColumn: cta_des
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column des_gerencia
 		dataType: string
-		isHidden
 		lineageTag: a552118e-c5e0-46bf-9b7f-ea0927c59fb5
 		summarizeBy: none
 		sourceColumn: des_gerencia
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3233,23 +2812,17 @@ table gd_financiero_general
 			)
 			
 			```
-		isHidden
 		displayFolder: Columnas
 		lineageTag: b9a47037-bb42-4e10-8d0d-ebe431acdba8
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_calculo_acumulado
 		dataType: double
-		isHidden
 		lineageTag: a488e019-044f-4545-a987-e4f648ce2bfb
 		summarizeBy: sum
 		sourceColumn: val_saldo_calculo_acumulado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3257,12 +2830,9 @@ table gd_financiero_general
 
 	column val_saldo_calculo_y_1
 		dataType: double
-		isHidden
 		lineageTag: fa697fd9-09b0-416b-98ec-270c006b5ae3
 		summarizeBy: sum
 		sourceColumn: val_saldo_calculo_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3270,12 +2840,9 @@ table gd_financiero_general
 
 	column val_saldo_calculo_acumulado_y_1
 		dataType: double
-		isHidden
 		lineageTag: cdb8e91b-edee-4bcb-a841-5c7553ec838d
 		summarizeBy: sum
 		sourceColumn: val_saldo_calculo_acumulado_y_1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3283,12 +2850,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_real
 		dataType: double
-		isHidden
 		lineageTag: 1bf67a2e-b3d0-4e33-919d-dc8c681f4ecb
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_real
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3296,12 +2860,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_acumulado_real
 		dataType: double
-		isHidden
 		lineageTag: 57ec71ec-f6f3-4831-b07f-66dd8831ff75
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_acumulado_real
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3309,12 +2870,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_y_1_real
 		dataType: double
-		isHidden
 		lineageTag: bbaa3609-aae7-4bbb-9d4f-75653e2ae659
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_y_1_real
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3322,12 +2880,9 @@ table gd_financiero_general
 
 	column val_saldo_balance_acumulado_y_1_real
 		dataType: double
-		isHidden
 		lineageTag: 11f35247-456c-4ac2-944d-19778080b917
 		summarizeBy: sum
 		sourceColumn: val_saldo_balance_acumulado_y_1_real
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3335,33 +2890,24 @@ table gd_financiero_general
 
 	column cta_ida_n4
 		dataType: string
-		isHidden
 		lineageTag: ed77b124-8b69-4019-ba3d-4130f24dbfd4
 		summarizeBy: none
 		sourceColumn: cta_ida_n4
 
-		changedProperty = IsHidden
-
 		annotation SummarizationSetBy = Automatic
 
 	column Columna = IF(LEN(gd_financiero_general[cta_ida_n4]) = 6,"SI","NO")
-		isHidden
 		displayFolder: Columnas
 		lineageTag: 8bf597b7-3eb7-4ad8-b001-ba6eea05851f
 		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column val_saldo_calculo_anualizado
 		dataType: double
-		isHidden
 		lineageTag: e7a32ed6-184f-47f9-ad37-a88791c5507f
 		summarizeBy: sum
 		sourceColumn: val_saldo_calculo_anualizado
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -3369,7 +2915,6 @@ table gd_financiero_general
 
 	column cta_des_bg_n2
 		dataType: string
-		isHidden
 		lineageTag: 3f34b353-f182-4620-b613-1f85fe144471
 		summarizeBy: none
 		sourceColumn: cta_des_bg_n2
@@ -3377,351 +2922,57 @@ table gd_financiero_general
 
 		changedProperty = SortByColumn
 
-		changedProperty = IsHidden
-
 		annotation SummarizationSetBy = Automatic
 
 	column cta_des_bg_n1
 		dataType: string
-		isHidden
 		lineageTag: 05e2c8c7-c5dd-4bdd-b20d-ce966ebfd991
 		summarizeBy: none
 		sourceColumn: cta_des_bg_n1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column cta_ida_n1
 		dataType: string
-		isHidden
 		lineageTag: b4c6fa37-3052-4758-a714-4bfae09c53f6
 		summarizeBy: none
 		sourceColumn: cta_ida_n1
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column cta_ida_n2
 		dataType: string
-		isHidden
 		lineageTag: bfbf5e41-6d44-4959-a634-5ad4dcfd2d5a
 		summarizeBy: none
 		sourceColumn: cta_ida_n2
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column cta_ida_n3
 		dataType: string
-		isHidden
 		lineageTag: 270ebaeb-13a5-44a1-8f7c-728cad2c4539
 		summarizeBy: none
 		sourceColumn: cta_ida_n3
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column Orden_cta_des_bg_n2
 		dataType: string
-		isHidden
 		lineageTag: 7449b1c7-11b1-4b29-ae4a-466f7e133d78
 		summarizeBy: none
 		sourceColumn: Orden_cta_des_bg_n2
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Path = PATH ( gd_financiero_general[id_cuenta_contable], gd_financiero_general[PadreId_Clean] )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: ab55adb4-8270-45a9-a210-344cbf9e5126
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column PadreId
-		dataType: string
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 46336fd0-176f-4d72-9708-1a358fb60e47
-		summarizeBy: none
-		sourceColumn: PadreId
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column PadreId_Clean
-		dataType: string
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: ce2b94a9-1569-4024-b36d-35d3cb68500f
-		summarizeBy: none
-		sourceColumn: PadreId_Clean
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel1 = IF( LEN([id_cuenta_contable]) >= 1, PATHITEM([Path], 1, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 94966e53-9643-4a8c-9279-085413980e71
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel2 = IF( LEN([id_cuenta_contable]) >= 2, PATHITEM([Path], 2, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 115c63df-a80f-43d1-9145-1231c71fa857
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel3 = IF( LEN([id_cuenta_contable]) >= 4, PATHITEM([Path], 3, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 0d8e4f87-b863-44bd-aa2c-b768c4cc7281
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel4 = IF( LEN([id_cuenta_contable]) >= 6, PATHITEM([Path], 4, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: bb9bd847-0613-49b1-8fda-d779acac1002
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel5 = IF( LEN([id_cuenta_contable]) >= 8, PATHITEM([Path], 5, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: d2b20a5c-57ea-4df6-bbd7-a38141002702
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel6 = IF( LEN([id_cuenta_contable]) >= 10, PATHITEM([Path], 6, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 2692de8e-ad40-487a-9654-32e695281363
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel7 = IF( LEN([id_cuenta_contable]) >= 12, PATHITEM([Path], 7, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 804a5cfc-1ad4-4d25-9881-9716b210ada1
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel8 = IF( LEN([id_cuenta_contable]) >= 14, PATHITEM([Path], 8, TEXT), BLANK() )
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 820bc04b-ad93-42eb-9540-523251a5c9c7
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel1_Desc =
-			
-			VAR VALOR = CONCATENATE(CONCATENATE(gd_financiero_general[Nivel1], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel1]
-			))
-			
-			RETURN VALOR
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 4d45cfc5-7df2-4c4a-bb40-7af2f769eca6
-		summarizeBy: none
-		sortByColumn: Nivel1
-
-		changedProperty = SortByColumn
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel2_Desc =
-			
-			
-			IF(ISBLANK(gd_financiero_general[Nivel2]), gd_financiero_general[Nivel1_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel2], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel2]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: eba05484-521c-40d3-a484-d2ae6b38ea8f
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel3_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel3]), gd_financiero_general[Nivel2_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel3], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel3]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 249cbf85-7fd9-4c6f-8869-84d60ff69944
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel4_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel4]), gd_financiero_general[Nivel3_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel4], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel4]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 6a678e8b-9bef-4837-943b-189b93f80a2f
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel5_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel5]), gd_financiero_general[Nivel4_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel5], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel5]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: ad163117-2a72-427b-af0a-626ffbb5b730
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel6_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel6]), gd_financiero_general[Nivel5_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel6], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel6]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 61275ba2-cf9e-45b9-aed1-3b08e3f145be
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel7_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel7]), gd_financiero_general[Nivel6_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel7], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel7]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: f8cbbabb-0625-45f3-8fe6-1eb90b5033cc
-		summarizeBy: none
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column Nivel8_Desc =
-			IF(ISBLANK(gd_financiero_general[Nivel8]), gd_financiero_general[Nivel7_Desc], CONCATENATE(CONCATENATE(gd_financiero_general[Nivel8], " - "),
-			LOOKUPVALUE(
-			    'gd_financiero_general'[cta_des],
-			    'gd_financiero_general'[id_cuenta_contable],
-			    'gd_financiero_general'[Nivel8]
-			)))
-		isHidden
-		displayFolder: Jerarquia Cuentas
-		lineageTag: 6c36b536-c077-4a51-bbce-0b68024a658a
-		summarizeBy: none
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	partition gd_financiero_general = m
 		mode: import
-		source = ```
+		source =
 				let
 				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
 				    gd_financiero_general_schgold_ctlfinanciero = Origen{[Item="vw_gd_financiero_general",Schema="schgold",Catalog="ctlfinanciero"]}[Data],
-				    #"Added Conditional Column" = Table.AddColumn(gd_financiero_general_schgold_ctlfinanciero, "Orden_cta_des_bg_n2", each if [cta_des_bg_n2] = "Fondos Disponibles" then 1 else if [cta_des_bg_n2] = "Inversiones" then 2 else if [cta_des_bg_n2] = "Primas por Cobrar" then 3 else if [cta_des_bg_n2] = "Reaseguros por cobrar" then 4 else if [cta_des_bg_n2] = "Bienes raices y mobiliario" then 5 else if [cta_des_bg_n2] = "Cargos Diferidos" then 6 else if [cta_des_bg_n2] = "Otros Activos" then 7 else if [cta_des_bg_n2] = "Reservas Técnicas" then 1 else if [cta_des_bg_n2] = "Reservas Siniestros" then 2 else if [cta_des_bg_n2] = "Otras reservas" then 3 else if [cta_des_bg_n2] = "Reaseguros Cedidos" then 4 else if [cta_des_bg_n2] = "Cuentas por pagar" then 5 else if [cta_des_bg_n2] = "Otros Pasivos" then 6 else if [cta_des_bg_n2] = "Primas anticipadas" then 7 else if [cta_des_bg_n2] = "Capital" then 1 else if [cta_des_bg_n2] = "Reserva Legal" then 2 else if [cta_des_bg_n2] = "Reserva Capital" then 3 else if [cta_des_bg_n2] = "Reserva Especial" then 4 else if [cta_des_bg_n2] = "Dividendo en Acción" then 5 else if [cta_des_bg_n2] = "Resultados de Ejercicios Anteriores" then 6 else if [cta_des_bg_n2] = "Resultado del Ejercicio" then 7 else 999),
-				    #"Added Custom" = Table.AddColumn(#"Added Conditional Column", "PadreId", each let
-				    id = Text.From([id_cuenta_contable]),
-				    len = Text.Length(id),
-				    padre =
-				        if len = 1 then null
-				        else if len = 2 then Text.Start(id, 1)
-				        else if len = 4 then Text.Start(id, 2)
-				        else if len = 6 then Text.Start(id, 4)
-				        else if len = 8 then Text.Start(id, 6)
-				        else if len = 10 then Text.Start(id, 8)
-				        else if len = 12 then Text.Start(id, 10)
-				        else if len = 14 then Text.Start(id, 12)
-				        else null
+				    #"Added Conditional Column" = Table.AddColumn(gd_financiero_general_schgold_ctlfinanciero, "Orden_cta_des_bg_n2", each if [cta_des_bg_n2] = "Fondos Disponibles" then 1 else if [cta_des_bg_n2] = "Inversiones" then 2 else if [cta_des_bg_n2] = "Primas por Cobrar" then 3 else if [cta_des_bg_n2] = "Reaseguros por cobrar" then 4 else if [cta_des_bg_n2] = "Bienes raices y mobiliario" then 5 else if [cta_des_bg_n2] = "Cargos Diferidos" then 6 else if [cta_des_bg_n2] = "Otros Activos" then 7 else if [cta_des_bg_n2] = "Reservas Técnicas" then 1 else if [cta_des_bg_n2] = "Reservas Siniestros" then 2 else if [cta_des_bg_n2] = "Otras reservas" then 3 else if [cta_des_bg_n2] = "Reaseguros Cedidos" then 4 else if [cta_des_bg_n2] = "Cuentas por pagar" then 5 else if [cta_des_bg_n2] = "Otros Pasivos" then 6 else if [cta_des_bg_n2] = "Primas anticipadas" then 7 else if [cta_des_bg_n2] = "Capital" then 1 else if [cta_des_bg_n2] = "Reserva Legal" then 2 else if [cta_des_bg_n2] = "Reserva Capital" then 3 else if [cta_des_bg_n2] = "Reserva Especial" then 4 else if [cta_des_bg_n2] = "Dividendo en Acción" then 5 else if [cta_des_bg_n2] = "Resultados de Ejercicios Anteriores" then 6 else if [cta_des_bg_n2] = "Resultado del Ejercicio" then 7 else 999)
 				in
-				    padre),
-				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "PadreId_Clean", each let
-				    padre = [PadreId],
-				    existe = 
-				        if padre = null then false
-				        else Table.RowCount(
-				                Table.SelectRows(#"Added Custom", each Text.From([id_cuenta_contable]) = padre)
-				             ) > 0
-				in
-				    if existe then padre else null)
-				in
-				    #"Added Custom1"
-				```
-
-	changedProperty = IsHidden
+				    #"Added Conditional Column"
 
 	annotation PBI_NavigationStepName = Navegación
 

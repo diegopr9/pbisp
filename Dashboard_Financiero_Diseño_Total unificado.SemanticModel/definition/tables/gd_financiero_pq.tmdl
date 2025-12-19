@@ -249,7 +249,7 @@ table gd_financiero_pq
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 1_Actual_PQ = COALESCE(DIVIDE([Actual_51_PQ]-[Actual_45_PQ],1000,0),0)
+	measure 1_Actual_PQ = COALESCE(DIVIDE([Actual_51_PQ]-[Actual_45_PQ],1,0),0)
 		formatString: #,0
 		displayFolder: MEDIDAS
 		lineageTag: be8782d6-1b4b-4b60-8a5b-dc2f063bad9d
@@ -556,7 +556,7 @@ table gd_financiero_pq
 			            "Mensualizado", 
 			                CALCULATE (
 			                    SUM(gd_financiero_pq[val_presupuesto]),
-			                    gd_financiero_pq[id_cuenta_contable] = Cond1,gd_financiero_pq[Formula] = Cond2,
+			                    gd_financiero_pq[id_cuenta_contable] in Cond1,gd_financiero_pq[Formula] = Cond2,
 			                    FILTER (
 			                        ALL(Calendario[MesNombreAño]),
 			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
@@ -683,11 +683,12 @@ table gd_financiero_pq
 			                CALCULATE (
 			                    SUM(gd_financiero_pq[val_saldo_con_signo]),
 			                    gd_financiero_pq[id_cuenta_contable_n2] = Cond1,
-			                    FILTER (
+			                   FILTER (
 			                        ALL(Calendario[MesNombreAño]),
 			                        YEAR(Calendario[MesNombreAño]) = AnioActual &&
 			                        MONTH(Calendario[MesNombreAño]) = MesActual
 			                    )
+			                    
 			                ),
 			
 			            // Acumulado
@@ -1118,12 +1119,37 @@ table gd_financiero_pq
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column id_agencia
+		dataType: string
+		lineageTag: 22c9671b-3e87-403d-96e1-188c6264cf33
+		summarizeBy: none
+		sourceColumn: id_agencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_poliza
+		dataType: string
+		lineageTag: 4d0a77d8-b142-4806-a82d-52a78918e405
+		summarizeBy: none
+		sourceColumn: cod_poliza
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_ramo
+		dataType: int64
+		formatString: 0
+		lineageTag: 3db07a6f-b491-4a86-9223-f42c03e74ccc
+		summarizeBy: sum
+		sourceColumn: id_ramo
+
+		annotation SummarizationSetBy = Automatic
+
 	partition gd_financiero_pq = m
 		mode: import
 		source =
 				let
-				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags="SELECT * FROM  vw_rt_financiero_pq", EnableAutomaticProxyDiscovery=null, Implementation=null]),
-				    vw_rt_financiero_pq_schgold_ctlfinanciero = Origen{[Item="vw_rt_financiero_pq",Schema="schgold",Catalog="ctlfinanciero"]}[Data]
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    vw_rt_financiero_pq_schgold_ctlfinanciero = Origen{[Item="gd_financiero_pq",Schema="schgold",Catalog="ctlfinanciero"]}[Data]
 				in
 				    vw_rt_financiero_pq_schgold_ctlfinanciero
 

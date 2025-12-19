@@ -112,7 +112,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'SINIESTRALIDAD INCURRIDA'"
+                  "Value": "'SINIESTRO INC ACUM.'"
                 }
               }
             },

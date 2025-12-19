@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "37e39e9440d1668b2566",
   "position": {
-    "x": 11.582366589327147,
-    "y": 164.82598607888633,
+    "x": 11.284046692607005,
+    "y": 164.98054474708172,
     "z": 16000,
-    "height": 65.930394431554532,
-    "width": 148.78886310904875,
+    "height": 65.36964980544748,
+    "width": 148.63813229571986,
     "tabOrder": 16000
   },
   "visual": {
@@ -17,97 +17,40 @@
           "projections": [
             {
               "field": {
-                "HierarchyLevel": {
-                  "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Hierarchy": "Año Jerarquía"
-                    }
-                  },
-                  "Level": "Año"
-                }
-              },
-              "queryRef": "Calendario.Año Jerarquía.Año",
-              "nativeQueryRef": "Año Jerarquía Año",
-              "active": true
-            },
-            {
-              "field": {
-                "HierarchyLevel": {
-                  "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Calendario"
-                        }
-                      },
-                      "Hierarchy": "Año Jerarquía"
-                    }
-                  },
-                  "Level": "Mes2"
-                }
-              },
-              "queryRef": "Calendario.Año Jerarquía.Mes2",
-              "nativeQueryRef": "Año Jerarquía Mes2",
-              "active": true
-            }
-          ]
-        }
-      }
-    },
-    "expansionStates": [
-      {
-        "roles": [
-          "Values"
-        ],
-        "levels": [
-          {
-            "queryRefs": [
-              "Calendario.Año Jerarquía.Año"
-            ],
-            "isCollapsed": true,
-            "identityKeys": [
-              {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "Calendario"
                     }
                   },
-                  "Property": "Año"
+                  "Property": "MesNombreAño"
                 }
-              }
-            ],
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "Calendario.Año Jerarquía.Mes2"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          }
-        ],
-        "root": {
-          "children": [
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "2025L"
-                  }
-                }
-              ],
-              "isToggled": true
+              },
+              "queryRef": "Calendario.MesNombreAño",
+              "nativeQueryRef": "MesNombreAño",
+              "active": true
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Calendario"
+                  }
+                },
+                "Property": "MesNombreAño"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
-    ],
+    },
     "objects": {
       "data": [
         {
@@ -172,17 +115,7 @@
                                   "Source": "c"
                                 }
                               },
-                              "Property": "Año"
-                            }
-                          },
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "c"
-                                }
-                              },
-                              "Property": "Mes2"
+                              "Property": "MesNombreAño"
                             }
                           }
                         ],
@@ -190,107 +123,10 @@
                           [
                             {
                               "Literal": {
-                                "Value": "2025L"
-                              }
-                            },
-                            {
-                              "Literal": {
-                                "Value": "'Jun'"
+                                "Value": "'Feb 2025'"
                               }
                             }
                           ]
-                        ]
-                      }
-                    },
-                    "Annotations": {
-                      "filterExpressionMetadata": {
-                        "expressions": [
-                          {
-                            "HierarchyLevel": {
-                              "Expression": {
-                                "Hierarchy": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Calendario"
-                                    }
-                                  },
-                                  "Hierarchy": "Año Jerarquía"
-                                }
-                              },
-                              "Level": "Año"
-                            }
-                          },
-                          {
-                            "HierarchyLevel": {
-                              "Expression": {
-                                "Hierarchy": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Calendario"
-                                    }
-                                  },
-                                  "Hierarchy": "Año Jerarquía"
-                                }
-                              },
-                              "Level": "Mes2"
-                            }
-                          }
-                        ],
-                        "decomposedIdentities": {
-                          "values": [
-                            [
-                              {
-                                "0": [
-                                  {
-                                    "Literal": {
-                                      "Value": "2025L"
-                                    }
-                                  }
-                                ]
-                              },
-                              {
-                                "1": [
-                                  {
-                                    "Literal": {
-                                      "Value": "'Jun'"
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          ],
-                          "columns": [
-                            {
-                              "value": {
-                                "Column": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Calendario"
-                                    }
-                                  },
-                                  "Property": "Año"
-                                }
-                              }
-                            },
-                            {
-                              "value": {
-                                "Column": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Calendario"
-                                    }
-                                  },
-                                  "Property": "Mes2"
-                                }
-                              }
-                            }
-                          ]
-                        },
-                        "valueMap": [
-                          {
-                            "0": "2025",
-                            "1": "Jun"
-                          }
                         ]
                       }
                     }
@@ -602,7 +438,6 @@
             }
           ]
         },
-        "howCreated": "User",
         "objects": {
           "general": [
             {

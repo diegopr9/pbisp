@@ -1,107 +1,6 @@
 table Calendario
 	lineageTag: d7545ed8-9965-4678-ba00-70d73172ff85
 
-	measure leyenda_mes_real_gt =
-			
-			/* ================== Estado de filtros ================== */
-			VAR filtro_anio = IF( ISFILTERED( Calendario[Año] ), "Si", "No" )
-			VAR filtro_mes  = IF( ISFILTERED( Calendario[Mes2] ), "Si", "No" )
-			
-			/* ================== Rango de fechas en el contexto (respeta slicers de fecha/rango) ================== */
-			VAR fecha_min_ctx =
-			    CALCULATE( MIN( Calendario[Date] ), ALLSELECTED( Calendario[Date] ) )
-			VAR fecha_max_ctx =
-			    CALCULATE( MAX( Calendario[Date] ), ALLSELECTED( Calendario[Date] ) )
-			
-			/* ================== Tabla de pares Año–Mes dentro del contexto ================== */
-			/* Usamos ALLSELECTED sobre toda la tabla Calendario para que respete el rango (p. ej., Ene 2024 → Oct 2025) */
-			VAR ParesAnioMesCtx =
-			    SUMMARIZE(
-			        ALLSELECTED( Calendario ),
-			        Calendario[Año],
-			        Calendario[Mes2]
-			    )
-			
-			/* ================== Mapeo Mes2 -> número de mes y cálculo de PeriodoNum ================== */
-			VAR ParesConPeriodo =
-			    ADDCOLUMNS(
-			        ParesAnioMesCtx,
-			        "MesNum",
-			        SWITCH(
-			            Calendario[Mes2],
-			            "Ene", 1, "Feb", 2, "Mar", 3, "Abr", 4, "May", 5, "Jun", 6,
-			            "Jul", 7, "Ago", 8, "Sep", 9, "Oct", 10, "Nov", 11, "Dic", 12,
-			            BLANK()
-			        ),
-			        "PeriodoNum",
-			            Calendario[Año] * 100 +
-			            SWITCH(
-			                Calendario[Mes2],
-			                "Ene", 1, "Feb", 2, "Mar", 3, "Abr", 4, "May", 5, "Jun", 6,
-			                "Jul", 7, "Ago", 8, "Sep", 9, "Oct", 10, "Nov", 11, "Dic", 12,
-			                BLANK()
-			            )
-			    )
-			
-			/* ================== Sin selección: usar MES ANTERIOR a HOY ================== */
-			VAR hoy         = TODAY()
-			VAR fechaPrev   = EOMONTH( hoy, -1 )   -- último día del mes anterior
-			VAR mes_actual  = MONTH( fechaPrev )   -- número de mes anterior
-			VAR anio_actual = YEAR(  fechaPrev )   -- año correspondiente al mes anterior
-			
-			/* ================== Periodos min/max seleccionados ================== */
-			/* Si no hay filtros de año/mes, usamos el mes anterior a hoy.
-			   Si hay filtros (de fecha, año y/o mes), tomamos min/max del PeriodoNum en los pares del contexto. */
-			VAR PeriodoNumMin =
-			    IF(
-			        filtro_anio = "No" && filtro_mes = "No",
-			        anio_actual * 100 + mes_actual,
-			        MINX( ParesConPeriodo, [PeriodoNum] )
-			    )
-			
-			VAR PeriodoNumMax =
-			    IF(
-			        filtro_anio = "No" && filtro_mes = "No",
-			        anio_actual * 100 + mes_actual,
-			        MAXX( ParesConPeriodo, [PeriodoNum] )
-			    )
-			
-			VAR anio_min_seleccionado = INT( DIVIDE( PeriodoNumMin, 100 ) )
-			VAR mes_min_seleccionado  = PeriodoNumMin - anio_min_seleccionado * 100
-			
-			VAR anio_max_seleccionado = INT( DIVIDE( PeriodoNumMax, 100 ) )
-			VAR mes_max_seleccionado  = PeriodoNumMax - anio_max_seleccionado * 100
-			
-			/* ================== Nombre de mes (abreviado con punto) ================== */
-			VAR nombre_mes_min =
-			    SWITCH(
-			        mes_min_seleccionado,
-			        1, "Ene.", 2, "Feb.", 3, "Mar.", 4, "Abr.", 5, "May.", 6, "Jun.",
-			        7, "Jul.", 8, "Ago.", 9, "Sep.", 10, "Oct.", 11, "Nov.", 12, "Dic.",
-			        ""
-			    )
-			
-			VAR nombre_mes_max =
-			    SWITCH(
-			        mes_max_seleccionado,
-			        1, "Ene.", 2, "Feb.", 3, "Mar.", 4, "Abr.", 5, "May.", 6, "Jun.",
-			        7, "Jul.", 8, "Ago.", 9, "Sep.", 10, "Oct.", 11, "Nov.", 12, "Dic.",
-			        ""
-			    )
-			
-			//* ================== Construcción de la leyenda ================== */
-			VAR leyenda_mes_min = nombre_mes_min & " " & anio_min_seleccionado
-			VAR leyenda_mes_max = nombre_mes_max & " " & anio_max_seleccionado
-			
-			RETURN
-			IF(
-			    leyenda_mes_min = leyenda_mes_max,
-			    leyenda_mes_min,
-			    leyenda_mes_min & " - " & leyenda_mes_max
-			
-			)
-		lineageTag: 5528e96a-7c31-4764-b287-b2b1fbbc2813
-
 	column Date
 		formatString: yyyy-mm
 		lineageTag: 8dc33bf5-23b2-4e0f-8d14-07a8242132a3
@@ -111,7 +10,7 @@ table Calendario
 
 		variation Variación
 			isDefault
-			relationship: a5ed89d5-da62-4d85-acf7-a06c6d1494a6
+			relationship: d8c1b801-e89d-48b0-90c3-5a5fcdefaafb
 			defaultHierarchy: LocalDateTable_5c6a93dc-1807-4e1c-819c-eedffc06cbaa.'Jerarquía de fechas'
 
 		annotation SummarizationSetBy = Automatic
@@ -131,7 +30,7 @@ table Calendario
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MesNombreAño]
-		sortByColumn: YYYY-MM
+		sortByColumn: OrdenMes
 
 		annotation SummarizationSetBy = Automatic
 
@@ -240,7 +139,7 @@ table Calendario
 
 		variation Variación
 			isDefault
-			relationship: 257b02ee-20e5-45f5-9994-bd8e36d409fb
+			relationship: c50f0447-3d6c-4131-9be0-ed7eeb388bf4
 			defaultHierarchy: LocalDateTable_5658d455-3509-4e4f-9a0c-921bec0a88de.'Jerarquía de fechas'
 
 		annotation SummarizationSetBy = Automatic
@@ -254,7 +153,7 @@ table Calendario
 
 		variation Variación
 			isDefault
-			relationship: 1474c0b5-c1e8-481e-9906-2556d23f5f9d
+			relationship: 9e86fc87-b1a5-45e7-8a8b-536698f624ac
 			defaultHierarchy: LocalDateTable_bb3ea3a4-ced2-4e64-b70c-41f6e402adbb.'Jerarquía de fechas'
 
 		annotation SummarizationSetBy = Automatic
@@ -267,6 +166,23 @@ table Calendario
 		sortByColumn: Mes
 
 		annotation SummarizationSetBy = Automatic
+
+	column YYYY-MM-DD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6624ae5d-7b7d-448f-a998-2d6c56445f0e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YYYY-MM-DD]
+
+		variation Variación
+			isDefault
+			relationship: 7e78896d-c1bc-4d1a-8853-3bc347643b49
+			defaultHierarchy: LocalDateTable_8cf2b4ed-beed-4320-ace8-e8e4f9526f7e.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	hierarchy 'Año Jerarquía'
 		lineageTag: dbee7473-7ddf-48a9-ad57-77e69c106f8c
@@ -287,14 +203,14 @@ table Calendario
 		mode: import
 		source = ```
 				
-				VAR MinFecha = DATE(2021, 1, 1)
+				VAR MinFecha = MIN ( gd_financiero_general[fec_periodo_fecha_BG] )
 				VAR MaxFecha = MAX ( gd_financiero_general[fec_periodo_fecha_BG] )
 				RETURN
 				ADDCOLUMNS (
 				    CALENDAR ( MinFecha, MaxFecha ),
 				
 				    // Claves y derivados básicos
-				    "YYYY-MM", FORMAT ( [Date], "yyyy-MM" ),
+				    "YYYY-MM", FORMAT ( [Date], "yyyy-MM" ),"YYYY-MM-DD",FORMAT ( [Date], "yyyy-MM-dd" ),
 				    "MesNombreAño",
 				        VAR m = FORMAT ( [Date], "[$-es-ES]mmm" )
 				        RETURN UPPER( LEFT( m, 1 ) ) & LOWER( MID( m, 2, 99 ) ) & " " & FORMAT ( [Date], "yyyy" ),

@@ -1,0 +1,661 @@
+table gd_financiero_general_gastos
+	lineageTag: a0fc4016-2a38-40ba-a3c9-ed0e7d88025c
+
+	measure 'Real Act_GT' = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[saldo_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_valor]),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			
+			                        SUM(gd_financiero_general_gastos[saldo_mes_acumulado_miles]),
+			
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[val_presu_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_presu_mes_miles]),
+			
+			
+			            // Acumulado
+			            "Acumulado",                 
+			
+			                        SUM(gd_financiero_general_gastos[val_presu_mes_acumulado_miles]),
+			
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[val_forecast_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_forecast_mes_miles]),
+			
+			            // Acumulado
+			            "Acumulado",               
+			
+			                        SUM(gd_financiero_general_gastos[val_forecast_mes_acumulado_miles])
+			
+			        )
+			)))
+			```
+		formatString: #,0
+		lineageTag: e20fbb41-47d8-472d-8215-b630bb6870ab
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Ppto_GT = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[val_presu_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_presu_mes_miles]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gastos[val_presu_mes_acumulado_miles]),
+			
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[val_presu_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_presu_mes_miles]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gastos[val_presu_mes_acumulado_miles]),
+			        
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gastos[val_presu_mes_anualizado_miles]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gastos[val_presu_mes_miles]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gastos[val_presu_mes_acumulado_miles])
+			))))
+			```
+		formatString: #,0
+		lineageTag: 493dbecb-2e9f-4710-b9b1-b7104bac5991
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure FechaMaxCargaTexto_GT =
+			
+			VAR FechaMax =
+			    CALCULATE (
+			        MAX ( gd_financiero_general_gastos[fec_periodo_fecha_G] ),
+			        ALL ( gd_financiero_general_gastos )
+			    )
+			VAR MesAbrevRaw = FORMAT ( FechaMax, "MMM" )         -- abreviado
+			VAR MesSinPunto  = SUBSTITUTE ( MesAbrevRaw, ".", "" )
+			VAR MesCap       = UPPER ( LEFT ( MesSinPunto, 1 ) ) &
+			                   LOWER ( MID ( MesSinPunto, 2, LEN ( MesSinPunto ) - 1 ) )
+			VAR Mes3         = LEFT ( MesCap, 3 )                 -- asegura "Dic", "Sep", etc.
+			RETURN
+			    IF ( ISBLANK ( FechaMax ), BLANK (), Mes3 & " " & FORMAT ( FechaMax, "yyyy" ) )
+		lineageTag: 5855489c-fad6-42bc-a69e-d598adc1890b
+
+	measure 'Dif Real Vs Ppto GT' = [Real Act_GT] - [Ppto_GT]
+		formatString: #,0
+		lineageTag: d0f65d45-5e47-45c9-9a67-5d7a2bd2b7f4
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '% Cumplimiento GT' = COALESCE(DIVIDE([Real Act_GT],[Ppto_GT],0),0)
+		lineageTag: ab6ebff4-1181-4189-95ff-8ef2d4a27d0b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Ranking Cuenta GT' =
+			
+			VAR t =
+			    SUMMARIZE (
+			        ALLSELECTED ( 'gd_financiero_general_gastos'[cta_des] ),
+			        'gd_financiero_general_gastos'[cta_des],
+			        "Imp", [Real Act_GT]
+			    )
+			RETURN
+			    RANKX ( t, [Real Act_GT], , DESC, DENSE )
+		formatString: 0
+		lineageTag: 84cee15a-082d-4dc3-aff4-e2200e753a60
+
+	measure 'Total Real Act (ctx) GT' =
+			
+			CALCULATE ( [Real Act_GT], ALLSELECTED ( 'gd_financiero_general_gastos'[cta_des] ) )
+		lineageTag: c61961a3-0b58-467f-90bb-cb1334427883
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Participación Real GT' =
+			
+			DIVIDE ( [Real Act_GT], [Total Real Act (ctx) GT] )
+		lineageTag: ad2e3c4a-03b5-4d77-a995-4a59943eaff1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Real Act (Top 9) GT' =
+			
+			IF ( NOT ISBLANK([Real Act_GT]) && [Ranking Cuenta GT] <= 9, [Real Act_GT] )
+		lineageTag: d1de61fd-b408-42e8-a09a-3e9533a69c90
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Real Act (Otros) GT' =
+			
+			VAR Others = FILTER ( ALLSELECTED('gd_financiero_general_gastos'[cta_des]), [Ranking Cuenta GT] > 9 )
+			RETURN CALCULATE ( [Real Act_GT], KEEPFILTERS(Others) )
+		lineageTag: 29c4f9db-ad25-4ed5-aff8-a880e01db576
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Ppto (Top 9) GT' =
+			
+			IF ( NOT ISBLANK([Ppto_GT]) && [Ranking Cuenta GT] <= 9, [Ppto_GT] )
+		lineageTag: 820ef02d-2038-4457-a936-250f6faf2ad7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Ppto (Otros) GT' =
+			
+			VAR Others = FILTER ( ALLSELECTED('gd_financiero_general_gastos'[cta_des]), [Ranking Cuenta GT] > 9 )
+			RETURN CALCULATE ( [Ppto_GT], KEEPFILTERS(Others) )
+		lineageTag: 23110d62-ca06-4c95-a9b4-2f0f1978d933
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif (Top 9) GT' =
+			
+			IF ( [Ranking Cuenta GT] <= 9, [Dif Real Vs Ppto GT] )
+		lineageTag: 2ef8feb2-8d27-4fe0-8aec-96ca3f5caa92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif (Otros) GT' =
+			
+			VAR Others = FILTER ( ALLSELECTED('gd_financiero_general_gastos'[cta_des]), [Ranking Cuenta GT] > 9 )
+			RETURN CALCULATE ( [Dif Real Vs Ppto GT], KEEPFILTERS(Others) )
+		lineageTag: 097adbea-80d5-4331-8449-fdb2b8acad4f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Part (Top 9) GT' =
+			
+			IF ( [Ranking Cuenta GT] <= 9, DIVIDE([Real Act_GT], [Total Real Act (ctx) GT]) )
+		lineageTag: 2b2e6c1c-8c00-4c06-9a6f-25408943d981
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Part (Otros) GT' =
+			
+			DIVIDE ( [Real Act (Otros) GT], [Total Real Act (ctx) GT] )
+		lineageTag: 646dd76e-994c-42f8-bc4e-92f42776904b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Cumpl (Top 9) GT' =
+			
+			IF ( [Ranking Cuenta GT] <= 9, DIVIDE ( [Real Act_GT], [Ppto_GT] ) )
+		lineageTag: 4c13a31c-1e40-4f2e-a9c9-49adad8c8efc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Cumpl (Otros) GT' =
+			
+			DIVIDE ( [Real Act (Otros) GT], [Ppto (Otros) GT] )
+		lineageTag: 3aa8c929-f2e5-460d-9aff-41007c2d2d4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Real Act (Top9 u Otros) GT' =
+			
+			VAR et    = SELECTEDVALUE('Etiqueta Top9_Otros'[Etiqueta])
+			VAR enCat = ISINSCOPE('gd_financiero_general_gastos'[cta_des])
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			SWITCH ( TRUE(),
+			    et = "Otros gastos" && NOT enCat, [Real Act (Otros) GT],     -- solo la fila Otros
+			    et = "Top 9"        && enCat && rk <= 9, [Real Act_GT],      -- 9 detalles
+			    BLANK()                                                     -- ocultar cabecera Top 9 y demás
+			)
+		lineageTag: aec9d1d5-86da-4b98-a9fb-a4ce4dc6f340
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Ppto (Top9 u Otros) GT' =
+			
+			VAR et    = SELECTEDVALUE('Etiqueta Top9_Otros'[Etiqueta])
+			VAR enCat = ISINSCOPE('gd_financiero_general_gastos'[cta_des])
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			SWITCH ( TRUE(),
+			    et = "Otros gastos" && NOT enCat, [Ppto (Otros) GT],
+			    et = "Top 9"        && enCat && rk <= 9, [Ppto_GT],
+			    BLANK()
+			)
+		lineageTag: 210cf36c-cda8-42c9-a0e2-579563a1c216
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif (Top9 u Otros) GT' =
+			
+			VAR et    = SELECTEDVALUE('Etiqueta Top9_Otros'[Etiqueta])
+			VAR enCat = ISINSCOPE('gd_financiero_general_gastos'[cta_des])
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			SWITCH ( TRUE(),
+			    et = "Otros gastos" && NOT enCat, [Dif (Otros) GT],
+			    et = "Top 9"        && enCat && rk <= 9, [Dif Real Vs Ppto GT],
+			    BLANK()
+			)
+		lineageTag: d2c0968b-1143-441f-a819-b6836c45179b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Part (Top9 u Otros) GT' =
+			
+			VAR et    = SELECTEDVALUE('Etiqueta Top9_Otros'[Etiqueta])
+			VAR enCat = ISINSCOPE('gd_financiero_general_gastos'[cta_des])
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			SWITCH ( TRUE(),
+			    et = "Otros gastos" && NOT enCat, [%Part (Otros) GT],
+			    et = "Top 9"        && enCat && rk <= 9, [%Part (Top 9) GT],
+			    BLANK()
+			)
+		lineageTag: 10cc5a3c-700e-4434-9d96-50aa1a02b553
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Cumpl (Top9 u Otros) GT' =
+			
+			VAR et    = SELECTEDVALUE('Etiqueta Top9_Otros'[Etiqueta])
+			VAR enCat = ISINSCOPE('gd_financiero_general_gastos'[cta_des])
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			SWITCH ( TRUE(),
+			    et = "Otros gastos" && NOT enCat, [%Cumpl (Otros) GT],
+			    et = "Top 9"        && enCat && rk <= 9, [% Cumplimiento GT],
+			    BLANK()
+			)
+		lineageTag: 077ba089-38ce-4c94-882e-e45316ea76bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Mostrar fila (Top9/Otros) GT' = ```
+			
+			VAR et    = SELECTEDVALUE ( 'Etiqueta Top9_Otros'[Etiqueta] )
+			VAR enCat = ISINSCOPE ( 'gd_financiero_general_gastos'[cta_des] )
+			VAR rk    = [Ranking Cuenta GT]
+			RETURN
+			IF (
+			    -- Mantener SOLO la cabecera "Otros gastos"
+			    ( NOT enCat && et = "Otros gastos" )
+			        ||
+			    -- Mantener los 9 detalles bajo "Top 9"
+			    ( enCat && et = "Top 9" && rk <= 9 ),
+			    1,
+			    0
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 12270cae-057b-4c4d-80c6-fc5e6085c362
+
+	column fec_periodo
+		dataType: string
+		lineageTag: d80436e9-d16c-4bc6-8003-ed1d792110a3
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_ultimo_dia
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 05f065a6-c559-4aac-9012-b781237e66f3
+		summarizeBy: none
+		sourceColumn: fecha_ultimo_dia
+
+		variation Variación
+			isDefault
+			relationship: 8976c6a4-244b-4349-8c41-87151db3b116
+			defaultHierarchy: LocalDateTable_e406318d-593e-4210-8d04-b2aaaeee6bef.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id_empresa
+		dataType: string
+		lineageTag: bcb2503a-7bd3-4378-b263-ebf281fdfd55
+		summarizeBy: none
+		sourceColumn: id_empresa
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: e67f6ffc-fbcc-4e44-85c8-ee5b840343fe
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 8ebccda4-c748-4c33-a254-a5925d3ec153
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_gerencia
+		dataType: string
+		lineageTag: 7fabf763-ed61-4c85-b478-3df71bbc71f3
+		summarizeBy: none
+		sourceColumn: des_gerencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des
+		dataType: string
+		lineageTag: 7823d091-ecc0-40f5-a2ed-1b78d38b6708
+		summarizeBy: none
+		sourceColumn: cta_des
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_valor
+		dataType: double
+		lineageTag: b48d5f98-3c3f-4660-b3ae-158e052fd693
+		summarizeBy: sum
+		sourceColumn: val_valor
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column saldo_mes_anualizado_miles
+		dataType: double
+		lineageTag: 09330b8a-1a07-4b74-a656-dbee822b7a96
+		summarizeBy: sum
+		sourceColumn: saldo_mes_anualizado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column saldo_mes_acumulado_miles
+		dataType: double
+		lineageTag: 830e5f1f-6385-4c90-857a-55ce8478ff79
+		summarizeBy: sum
+		sourceColumn: saldo_mes_acumulado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column saldo_mes_y_1_miles
+		dataType: double
+		lineageTag: e4a36f9c-b6e4-43e8-98e9-39a13b630a41
+		summarizeBy: sum
+		sourceColumn: saldo_mes_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_mes_anualizado_y_1_miles
+		dataType: double
+		lineageTag: 2872547b-e7d6-4e37-a6c6-f2107145701f
+		summarizeBy: sum
+		sourceColumn: val_mes_anualizado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_mes_acumulado_y_1_miles
+		dataType: double
+		lineageTag: d059e940-680c-4d04-b281-941091e9bc35
+		summarizeBy: sum
+		sourceColumn: val_mes_acumulado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_miles
+		dataType: double
+		lineageTag: 7644514e-ef5f-40f1-b231-7dc2fec3dfb9
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_anualizado_miles
+		dataType: double
+		lineageTag: 0d3e65dc-541f-46aa-94e3-4f1ea6e3c3d5
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_anualizado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_acumulado_miles
+		dataType: double
+		lineageTag: 1d6910e9-2b6d-4d12-a1b5-8708587ce533
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_acumulado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_y_1_miles
+		dataType: double
+		lineageTag: 8014a189-6320-4bb0-b293-e43c26609ebf
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_anualizado_y_1_miles
+		dataType: double
+		lineageTag: e7256b39-b88e-4505-beed-52b27118c5ae
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_anualizado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presu_mes_acumulado_y_1_miles
+		dataType: double
+		lineageTag: 222715c5-0c63-412b-8f4d-c28fac521688
+		summarizeBy: sum
+		sourceColumn: val_presu_mes_acumulado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_miles
+		dataType: double
+		lineageTag: 0bef86a9-dcf5-4af5-9ff3-867e9a2bee40
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_anualizado_miles
+		dataType: double
+		lineageTag: f916c27a-0921-42d9-af2f-53b527a054a8
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_anualizado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_acumulado_miles
+		dataType: double
+		lineageTag: e5403a40-467a-4a7d-a5b1-b1317f6c7db8
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_acumulado_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_y_1_miles
+		dataType: double
+		lineageTag: a2e93dcb-d007-4f6a-82c8-e2c26f3d8e40
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_anualizado_y_1_miles
+		dataType: double
+		lineageTag: 11073801-ef6e-4843-b50c-e1fea59780c9
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_anualizado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_mes_acumulado_y_1_miles
+		dataType: double
+		lineageTag: 7055e81a-7464-4d6b-9113-a369e76abe11
+		summarizeBy: sum
+		sourceColumn: val_forecast_mes_acumulado_y_1_miles
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_entero_G =
+			
+			VALUE(gd_financiero_general_gastos[fec_periodo] & "01")
+		lineageTag: c7103f7e-7f70-4a11-829e-a856f800b44a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_fecha_G = ```
+			
+			DATE(
+			    LEFT(gd_financiero_general_gastos[fec_periodo], 4),            
+			    MID(gd_financiero_general_gastos[fec_periodo], 5, 2),          
+			    1                                               
+			)
+			```
+		formatString: General Date
+		lineageTag: 605e8e6b-aa6e-4f19-8c0a-db42da93eda6
+		summarizeBy: none
+
+		variation Variación
+			isDefault
+			relationship: 745f0c13-0b1c-4ea6-8d69-68ee6755df44
+			defaultHierarchy: LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gd_financiero_general_gastos = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    gd_financiero_general_schgold_ctlfinanciero = Origen{[Item="gd_financiero_gasto_gerencial_base",Schema="schgold",Catalog="ctlfinanciero"]}[Data]
+				in
+				    gd_financiero_general_schgold_ctlfinanciero
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

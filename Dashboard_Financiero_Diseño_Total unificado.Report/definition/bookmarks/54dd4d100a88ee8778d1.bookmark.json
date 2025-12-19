@@ -13,9 +13,1575 @@
     "sections": {
       "99a9cdeaaedc1be2468b": {
         "visualContainers": {
+          "ee5d57b05a5e34347423": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "92bfaeef71bdca8abb3e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b6b5b4bf14d505a410dc",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "ecc81a4f2a958791b59f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Capital Adecuado por Primas"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Capital Adecuado por Primas"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a7be03fb8d1cd392590c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7d0d4b5d283fd920b053",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0fd2719ca0e839a804dc",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Patrimonio Técnico Reportado"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Patrimonio Técnico Reportado"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "4f30ce275b2d55aee52f": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "aa806b7dcca5273ea15b",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "6cd5974ba7cc6428e804",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Excedente / Deficit"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Excedente / Deficit"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "38e078ae557e614d628a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "867d0d4cc3d2283d1d6b",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "45fb2215ba10fd1e6164",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI %EXCEDENTE CAP. REQ"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI %EXCEDENTE CAP. REQ"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "928a72b90458857d8a77": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9e438c58b013a8dbe818",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "d7c7d01a3bea5ee95a42",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "gd_grupo_contable2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 0,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "g"
+                                  }
+                                },
+                                "Property": "FiltroAñoDinamico_PT"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "1L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "FiltroAñoDinamico_PT"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "28b5a22c4635375d0c8a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Excedente / Deficit"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ae2844c458e322391364",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI Capital Adecuado por Primas"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fa6ac51a00ee1988784b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "537574abb78bd71f3735",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "KPI %EXCEDENTE CAP. REQ"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d7a30c8d5655693482b3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Patrimonio Técnico Reportado"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineStackedColumnComboChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "da71ecfc0f4a39ceb600": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "32866838be9317c832e7",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "s",
+                        "Entity": "SelectorCalculo_PT",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "s"
+                                    }
+                                  },
+                                  "Property": "TipoCalculo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'REAL ACT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0e60a264d059cd40c30c",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "gd_grupo_contable2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 0,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "g"
+                                  }
+                                },
+                                "Property": "FiltroAñoDinamico_PT"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "1L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "FiltroAñoDinamico_PT"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "4f2f1d70569962db1585",
+                  "type": "Advanced",
+                  "expression": {
+                    "Arithmetic": {
+                      "Left": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "gd_grupo_contable2"
+                            }
+                          },
+                          "Property": "Excedente / Deficit"
+                        }
+                      },
+                      "Right": {
+                        "ScopedEval": {
+                          "Expression": {
+                            "Measure": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "gd_grupo_contable2"
+                                }
+                              },
+                              "Property": "Excedente / Deficit"
+                            }
+                          },
+                          "Scope": []
+                        }
+                      },
+                      "Operator": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7f6ea07c7b908f842854",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3eb9300e89b613803fe3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "PRIMAS ANUALIZADAS"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "lineStackedColumnComboChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "3f5e423fbca303db3188": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "62159d6ec0333dfe563b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "s",
+                                "Entity": "SelectorValor",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "s"
+                                            }
+                                          },
+                                          "Property": "TipoValor"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Mensualizado'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorValor"
+                        }
+                      },
+                      "Property": "TipoValor"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "7c8ab8c8b7029ca45a0a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "26bd5f5912169fe1acce",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendario"
+                        }
+                      },
+                      "Property": "MesNombreAño"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "b7326fe327d53acd4cc9": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f9abda802e4eccadb327",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "FechaMaxCargaTexto_PT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "89fd5373b8cc7cc15ef7": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7593759167b9325d9d52",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Ramo_PT"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Ramo_PT"
+                    }
+                  }
+                ]
+              }
+            }
+          },
           "7ce02febeeffcc2e48bc": {
             "singleVisual": {
               "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "12fac6eec1d4bc4682ee": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a9e7bf127ca3332bb9fc",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "g",
+                        "Entity": "gd_grupo_contable2",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "g"
+                                    }
+                                  },
+                                  "Property": "des_grupo"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'PT'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "des_grupo"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "4bf6a191830b94bd793c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Patrimonio Técnico Requerido"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7d566862a4f2aec3a3bc",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Patrimonio Técnico Reportado"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9a3218f441d7789372f2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "105065d51d044d47812d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Excedente / Deficit"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "0e97a1fd555638ff005a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e6935c4dfbb8f16f9d22",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "68d73aec8eb60ce8576e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Capital Adecuado por Primas"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a21ddb1c594b73b533ae",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Cap. Ade. Riesgo De Crédito Por Reaseguro"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "194645f3905d20c3088d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Capital Pagado"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a7866007f2bc3555273e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Capital Operativo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "aac0d2892d1776947f21",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Reserva Legal"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "caf8f2c9862e2e4d5164",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Aportes De Accionistas"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d66bd33ae0fa66c051fc",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Utilidad retenida (capacitaciones)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5c1b45af2fa085b29ce8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Dividendos Acción"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6c58f1974db89e20094a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Reserva Desviación De Siniestralidad Y Catastrófica"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bd4aeb8719ea74b7daaa",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Utilidad Ret. Futuras Capitalizaciones"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a279b3fbc14d9233e302",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Otras (Pts)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "51ec0fffa4f36f9da1cf",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "45% Reserva Legal Pts"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d2272dd705de53cb913b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Resultados Acumulados Utilidades"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4ef6b7728432696923d5",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Resultado Del Ejercicio Utilidades"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "35aa5344888cfc1e06da",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Resultados Del Ejercicio Pérdidas"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "8b7682cf82f2d69f6010",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Resultado Del Ejercicio (Pts)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "40ab43d9972b2042b8b7",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "REQUERIMIENTO DE CAPITAL ADECUADO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "9405703b517fd8590bff",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Cap. Ade. Factor De Corrección Por Concentración"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ee249ee928465f9b42ab",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Resultados Del Ejercicio"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e6f098390fc39a5ff6bb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "PATRIMONIO TÉCNICO PRIMARIO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "dc102d9931e156c46e7e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "PATRIMONIO TÉCNICO SECUNDARIO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7fd8103527fc8176d9e3",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "TOTAL PATRIMONIO TÉCNICO"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4e00c4b33755d99189a0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_grupo_contable2"
+                        }
+                      },
+                      "Property": "Cap. Ade. Por Carga Media De Siniestralidad"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SelectorCalculo_PT"
+                        }
+                      },
+                      "Property": "TipoCalculo"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "f21d379284f49e4a8578": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "7e60421f559193328167": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "cd74d20ad604b0977908": {
+            "singleVisual": {
+              "visualType": "actionButton",
               "objects": {}
             }
           }

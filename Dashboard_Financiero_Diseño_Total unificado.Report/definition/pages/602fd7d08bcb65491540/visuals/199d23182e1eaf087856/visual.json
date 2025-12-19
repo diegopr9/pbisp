@@ -4,10 +4,10 @@
   "position": {
     "x": 159.81308411214951,
     "y": 157.94392523364485,
-    "z": 6000,
+    "z": 7000,
     "height": 601.86915887850466,
     "width": 707.47663551401865,
-    "tabOrder": 6000
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "pivotTable",
@@ -113,6 +113,36 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gd_financiero_general"
+                  }
+                },
+                "Property": "cta_des_bg_n1"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gd_financiero_general"
+                  }
+                },
+                "Property": "cta_des_bg_n2"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
       }
     },
     "expansionStates": [
@@ -975,6 +1005,36 @@
             }
           ]
         },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "618c33abf6b8f9cea3c3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "OrdenN2"
+              }
+            },
+            "Property": "cta_des_bg_n2"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User",
         "objects": {
           "general": [
             {

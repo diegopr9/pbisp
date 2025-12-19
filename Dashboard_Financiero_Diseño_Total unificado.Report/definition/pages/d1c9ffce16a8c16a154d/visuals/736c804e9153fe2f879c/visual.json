@@ -1,0 +1,93 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "736c804e9153fe2f879c",
+  "position": {
+    "x": 378.18181818181813,
+    "y": 131.81818181818181,
+    "z": 0,
+    "height": 280,
+    "width": 604.5454545454545,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "fec_periodo"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "gd_financiero_pq.fec_periodo",
+              "nativeQueryRef": "Recuento de fec_periodo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gd_financiero_pq"
+                    }
+                  },
+                  "Property": "des_broker"
+                }
+              },
+              "queryRef": "gd_financiero_pq.des_broker",
+              "nativeQueryRef": "des_broker"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gd_financiero_pq"
+                        }
+                      },
+                      "Property": "val_saldo_con_signo"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(gd_financiero_pq.val_saldo_con_signo)",
+              "nativeQueryRef": "Suma de val_saldo_con_signo"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gd_financiero_pq"
+                  }
+                },
+                "Property": "des_broker"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,721 @@
+table gd_financiero_general_gt
+	lineageTag: 0fd72108-4d67-4427-86ae-cd1d128532aa
+
+	measure FechaMaxCargaTexto_G =
+			
+			VAR FechaMax =
+			    CALCULATE (
+			        MAX ( gd_financiero_general_gt[fec_periodo_fecha_GT] ),
+			        ALL ( gd_financiero_general_gt )
+			    )
+			VAR MesAbrevRaw = FORMAT ( FechaMax, "MMM" )         -- abreviado
+			VAR MesSinPunto  = SUBSTITUTE ( MesAbrevRaw, ".", "" )
+			VAR MesCap       = UPPER ( LEFT ( MesSinPunto, 1 ) ) &
+			                   LOWER ( MID ( MesSinPunto, 2, LEN ( MesSinPunto ) - 1 ) )
+			VAR Mes3         = LEFT ( MesCap, 3 )                 -- asegura "Dic", "Sep", etc.
+			RETURN
+			    IF ( ISBLANK ( FechaMax ), BLANK (), Mes3 & " " & FORMAT ( FechaMax, "yyyy" ) )
+		displayFolder: MEDIDAS
+		lineageTag: 7b61aa9f-448b-4fa9-a781-93c67da6cb1f
+
+	measure 'Real Act_G' = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			
+			VAR MesActual_Inicio = DATE( AnioActual, MesActual, 1 )
+			VAR FiltroAcumulado =
+			    FILTER (
+			        ALL ( Calendario[MesNombreAño] ),
+			        DATEVALUE( Calendario[MesNombreAño] ) >= DATE( AnioActual, 1, 1 )
+			            && DATEVALUE( Calendario[MesNombreAño] ) <= EOMONTH( MesActual_Inicio, 0 )
+			    )
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_saldo_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_saldo_mes]),
+			
+			            // Acumulado
+			            "Acumulado",                 
+			
+			                        SUM(gd_financiero_general_gt[val_saldo_mes_acumulado]),
+			
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_presupuesto_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_presupuesto]),
+			
+			
+			            // Acumulado
+			            "Acumulado",                 
+			
+			                        SUM(gd_financiero_general_gt[val_presupuesto_acumulado]),
+			
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_forecast_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_forecast]),
+			
+			            // Acumulado
+			            "Acumulado",               
+			
+			                        SUM(gd_financiero_general_gt[val_forecast_acumulado])
+			
+			        )
+			)))
+			```
+		displayFolder: MEDIDAS
+		lineageTag: 10791717-5373-4bbc-9c18-0649f11665cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ppto_G = ```
+			
+			VAR PeriodoSeleccionado = MAX(Calendario[MesNombreAño])
+			VAR AnioActual = YEAR(PeriodoSeleccionado)
+			VAR MesActual = MONTH(PeriodoSeleccionado)
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE(SelectorData[TipoData]),
+			    "Real",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_presupuesto_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_presupuesto]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gt[val_presupuesto_acumulado]),
+			
+			    "Presupuesto",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_presupuesto_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_presupuesto]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gt[val_presupuesto_acumulado]),
+			        
+			    "Forecast",
+			        SWITCH(
+			            SELECTEDVALUE(SelectorValor[TipoValor]),
+			
+			            // Anualizado
+			            "Anualizado", 
+			                SUM(gd_financiero_general_gt[val_presupuesto_anualizado]),
+			
+			            // Mensualizado
+			            "Mensualizado", 
+			
+			                    SUM(gd_financiero_general_gt[val_presupuesto]),
+			
+			
+			            // Acumulado
+			            "Acumulado", 
+			
+			                        SUM(gd_financiero_general_gt[val_presupuesto_acumulado])
+			))))
+			```
+		displayFolder: MEDIDAS
+		lineageTag: df65a57a-12d2-44f0-9746-2c9d4e5156af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Cumplimiento G' = COALESCE(DIVIDE([Real Act_G_1000],[Ppto_G_1000],0),0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: MEDIDAS
+		lineageTag: e03292a4-2293-44e3-9a99-a8187d0751ed
+
+	measure %Proviciones_GT = COALESCE(DIVIDE(CALCULATE(SUM(gd_financiero_general_gt[val_saldo_balance]),gd_financiero_general_gt[id_cuenta_contable] = "25900858"),[Ppto_G],0),0)
+		displayFolder: MEDIDAS
+		lineageTag: 717a011e-0e1f-4afd-8130-4e42059056b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dif Real Vs Ppto G' = [Real Act_G_1000] - [Ppto_G_1000]
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 2a3b000e-15c2-4516-9653-b1f7a97a8c3c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure GTO/PROD_G = [Real Act_G]/(CALCULATE(SUM(gd_financiero_general_gt[val_saldo_balance]),gd_financiero_general_gt[id_cuenta_contable] = "51") + CALCULATE(SUM(gd_financiero_general_gt[val_saldo_balance]),gd_financiero_general_gt[id_cuenta_contable] = "45"))
+		displayFolder: MEDIDAS
+		lineageTag: 97bc88e0-95ca-4c7d-b90b-89650433ec3a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ppto_G_1000 = COALESCE(DIVIDE([Ppto_G],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 19ba023b-5b06-4371-b26e-48f8cf565d10
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Real Act_G_1000' = COALESCE(DIVIDE([Real Act_G],1000,0),0)
+		formatString: #,0
+		displayFolder: MEDIDAS
+		lineageTag: 1c7c218c-dc2c-405e-aa65-c9ac3697115b
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column cta_des_bg_n2
+		dataType: string
+		lineageTag: f6c92db1-42f0-4d2c-8514-0b22328c95f5
+		summarizeBy: none
+		sourceColumn: cta_des_bg_n2
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des_bg_n1
+		dataType: string
+		lineageTag: 680e2135-b055-4c5b-b84a-593acc2b5920
+		summarizeBy: none
+		sourceColumn: cta_des_bg_n1
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des
+		dataType: string
+		lineageTag: 79e3dba2-956b-48c2-876a-409d85cc216d
+		summarizeBy: none
+		sourceColumn: cta_des
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_gerencia
+		dataType: string
+		lineageTag: 2161d842-c484-4896-8c6f-12d746f7ab5f
+		summarizeBy: none
+		sourceColumn: des_gerencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column fec_periodo
+		dataType: string
+		lineageTag: 1bbf2052-3692-49e1-86f5-00fbf30dd777
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_empresa
+		dataType: string
+		lineageTag: bbe417e6-161d-46e1-821d-f9a1e31c7a38
+		summarizeBy: none
+		sourceColumn: id_empresa
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: 7bf5fd7f-be66-4c95-a3a8-c661dbf1e906
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 88d2035d-17c3-4b20-830b-caed98d82b5a
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_nivel_cuenta
+		dataType: string
+		lineageTag: 898691b4-cd6d-4921-8a57-3af72d23d32f
+		summarizeBy: none
+		sourceColumn: cod_nivel_cuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_anterior
+		dataType: double
+		lineageTag: f842622f-5781-4098-aca7-e97b0cf10a39
+		summarizeBy: sum
+		sourceColumn: val_saldo_anterior
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_debito
+		dataType: double
+		lineageTag: 2dcad2c4-a40a-4acc-b02a-21ac21d96708
+		summarizeBy: sum
+		sourceColumn: val_saldo_debito
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_credito
+		dataType: double
+		lineageTag: cc7af39c-9fb2-4370-aecc-3774530c6b3e
+		summarizeBy: sum
+		sourceColumn: val_saldo_credito
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance
+		dataType: double
+		lineageTag: 11d661ab-8ab6-4886-89f1-f36b8592eff3
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes
+		dataType: double
+		lineageTag: 7c37ff35-9b46-4f41-a37c-d074ae788889
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_anualizado
+		dataType: double
+		lineageTag: 9b753b9f-306e-4942-8896-8e2c259afd7f
+		summarizeBy: sum
+		sourceColumn: val_saldo_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto
+		dataType: double
+		lineageTag: 5350cec7-53e7-41c8-9695-333a4a14dd92
+		summarizeBy: sum
+		sourceColumn: val_presupuesto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast
+		dataType: double
+		lineageTag: 7c5b5b6f-56fe-498b-bd71-d60a1fc280ad
+		summarizeBy: sum
+		sourceColumn: val_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado
+		dataType: double
+		lineageTag: ced4a620-47cd-4991-b1d0-4e0406286b3c
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_anualizado
+		dataType: double
+		lineageTag: 52e4971a-dc28-49b3-aea5-868f700031f4
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_calculo
+		dataType: double
+		lineageTag: 90a62548-a127-4108-8651-219e107cb689
+		summarizeBy: sum
+		sourceColumn: val_saldo_calculo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_calculo_anualizado
+		dataType: double
+		lineageTag: a042a0c1-77ce-4364-b8ab-8e2665999696
+		summarizeBy: sum
+		sourceColumn: val_saldo_calculo_anualizado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_corte
+		dataType: string
+		lineageTag: 0e142b4f-d9f9-45d8-8261-af6f4f1a4175
+		summarizeBy: none
+		sourceColumn: fec_corte
+
+		annotation SummarizationSetBy = Automatic
+
+	column particion
+		dataType: string
+		lineageTag: 813fe124-2580-417e-bef6-4ff865f78daf
+		summarizeBy: none
+		sourceColumn: particion
+
+		annotation SummarizationSetBy = Automatic
+
+	column fec_periodo_y_1
+		dataType: string
+		lineageTag: d2897f0d-2b2d-4b09-860d-9918427792e7
+		summarizeBy: none
+		sourceColumn: fec_periodo_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_balance_acumulado
+		dataType: double
+		lineageTag: 6cc51554-47c1-405b-a9a7-32a2fdc610b5
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_acumulado
+		dataType: double
+		lineageTag: a3420595-7d74-4224-b118-53da419f6b74
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_acumulado
+		dataType: double
+		lineageTag: a3c65a44-a627-4a05-94dc-b0db9fc4eab7
+		summarizeBy: sum
+		sourceColumn: val_forecast_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes_acumulado
+		dataType: double
+		lineageTag: d58106ae-e6fc-427c-a762-d91cbdcd4dfa
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_calculo_acumulado
+		dataType: double
+		lineageTag: 3b86a7c6-ead0-4010-8348-5ec0b17bd3fb
+		summarizeBy: sum
+		sourceColumn: val_saldo_calculo_acumulado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance_y_1
+		dataType: double
+		lineageTag: 4fee471e-d659-4a30-8452-098ad53d1b3d
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_anualizado_y_1
+		dataType: double
+		lineageTag: ede504a9-ec4a-41cd-b4e9-c4a87034e46c
+		summarizeBy: sum
+		sourceColumn: val_saldo_anualizado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_y_1
+		dataType: double
+		lineageTag: 0f418287-c1e1-4de7-b901-8c11800472a2
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_anualizado_y_1
+		dataType: double
+		lineageTag: 94f8400a-62d3-485f-b6db-bad3a63c9c1a
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_anualizado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_y_1
+		dataType: double
+		lineageTag: c14e4185-8dc9-46d1-a5cb-cff07a5c1062
+		summarizeBy: sum
+		sourceColumn: val_forecast_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_anualizado_y_1
+		dataType: double
+		lineageTag: b9c7f58a-9c5a-4e0c-bee7-dfa4f98dd570
+		summarizeBy: sum
+		sourceColumn: val_forecast_anualizado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes_y_1
+		dataType: double
+		lineageTag: 0c28a647-6ab8-4f46-bf28-7228d4697514
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_calculo_y_1
+		dataType: double
+		lineageTag: e564651a-5f54-4786-bb70-a6ba3ce22fd4
+		summarizeBy: sum
+		sourceColumn: val_saldo_calculo_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance_acumulado_y_1
+		dataType: double
+		lineageTag: 00d911ea-3cdc-4357-b6ee-fc4eaac5dd0d
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_acumulado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto_acumulado_y_1
+		dataType: double
+		lineageTag: 2995d23e-c530-4cba-b47d-fd513f7d4f74
+		summarizeBy: sum
+		sourceColumn: val_presupuesto_acumulado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_forecast_acumulado_y_1
+		dataType: double
+		lineageTag: 2d6fecd6-26cc-42bb-97d6-ed77e834c61d
+		summarizeBy: sum
+		sourceColumn: val_forecast_acumulado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_mes_acumulado_y_1
+		dataType: double
+		lineageTag: d1b8f445-0375-4049-88af-c90b5b896d00
+		summarizeBy: sum
+		sourceColumn: val_saldo_mes_acumulado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_calculo_acumulado_y_1
+		dataType: double
+		lineageTag: c143f5b4-dd04-4ac7-9278-703e6f745435
+		summarizeBy: sum
+		sourceColumn: val_saldo_calculo_acumulado_y_1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cta_ida_n1
+		dataType: string
+		lineageTag: 10d20722-9980-4cf5-9da1-91803f7b7b72
+		summarizeBy: none
+		sourceColumn: cta_ida_n1
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_ida_n2
+		dataType: string
+		lineageTag: 32da217e-a80d-41cb-8f1e-cd11762c73d3
+		summarizeBy: none
+		sourceColumn: cta_ida_n2
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_ida_n3
+		dataType: string
+		lineageTag: 759d5215-349d-4a6e-b98a-083dd81117bf
+		summarizeBy: none
+		sourceColumn: cta_ida_n3
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_ida_n4
+		dataType: string
+		lineageTag: 6bd10abe-6cc8-4ce7-8f7a-f68f1af9b410
+		summarizeBy: none
+		sourceColumn: cta_ida_n4
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_saldo_balance_real
+		dataType: double
+		lineageTag: 25fae2c5-071a-461f-a79d-283b71962fad
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_real
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance_acumulado_real
+		dataType: double
+		lineageTag: f35ef2f4-b4e2-45ee-b58f-c90bb3bedc35
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_acumulado_real
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance_y_1_real
+		dataType: double
+		lineageTag: 0fe32e48-9b9c-4f95-9ce5-9bcae5cbcbd5
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_y_1_real
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_saldo_balance_acumulado_y_1_real
+		dataType: double
+		lineageTag: 3baa9bb7-82a9-49cf-9d61-73f570440c14
+		summarizeBy: sum
+		sourceColumn: val_saldo_balance_acumulado_y_1_real
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_entero_GT =
+			
+			VALUE(gd_financiero_general_gt[fec_periodo] & "01")
+		displayFolder: Columnas
+		lineageTag: 2d695c31-745b-4146-9ee2-96aa84689e4e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_fecha_GT = ```
+			
+			DATE(
+			    LEFT(gd_financiero_general_gt[fec_periodo], 4),            
+			    MID(gd_financiero_general_gt[fec_periodo], 5, 2),          
+			    1                                               
+			)
+			```
+		formatString: General Date
+		displayFolder: Columnas
+		lineageTag: bbfaf4c9-afba-4fc6-8e4b-4c6127489488
+		summarizeBy: none
+
+		variation Variación
+			isDefault
+			relationship: ab11e65b-f808-4931-ab35-8129868cd84e
+			defaultHierarchy: LocalDateTable_f4364477-2baf-4251-bc4a-aeec6130fdf1.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gd_financiero_general_gt = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", [Catalog="ctlfinanciero", Database="schgold", QueryTags=null, EnableAutomaticProxyDiscovery=null, Implementation=null]),
+				    gd_financiero_general_schgold_ctlfinanciero = Origen{[Item="vw_gd_financiero_general",Schema="schgold",Catalog="ctlfinanciero"]}[Data],
+				    #"Columnas quitadas" = Table.RemoveColumns(gd_financiero_general_schgold_ctlfinanciero,{"fec_periodo_ultimo_dia"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

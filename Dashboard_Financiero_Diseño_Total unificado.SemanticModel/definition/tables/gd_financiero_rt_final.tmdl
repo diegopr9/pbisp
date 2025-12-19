@@ -1,0 +1,231 @@
+table gd_financiero_rt_final
+	lineageTag: 7f6a376d-d0a1-4124-ab3b-58ed4d7ed2ec
+
+	column tipo_valor
+		dataType: string
+		lineageTag: 9e4d4ff5-360d-4df5-98be-cbcc7eee6878
+		summarizeBy: none
+		sourceColumn: tipo_valor
+
+		annotation SummarizationSetBy = Automatic
+
+	column fec_periodo
+		dataType: string
+		lineageTag: 41574da3-ef6e-4332-b1a1-52c400c83a43
+		summarizeBy: none
+		sourceColumn: fec_periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_ramo
+		dataType: string
+		lineageTag: 4e2f0354-267b-43a3-ba22-dd23b58a762b
+		summarizeBy: none
+		sourceColumn: des_tipo_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_agencia
+		dataType: string
+		lineageTag: c5a060f3-5f28-443f-89a3-73d4172a2955
+		summarizeBy: none
+		sourceColumn: des_agencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_grupo
+		dataType: string
+		lineageTag: e43a6ef5-d0bd-4066-995a-1c9a11f9233d
+		summarizeBy: none
+		sourceColumn: des_grupo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_tipo_riesgo
+		dataType: string
+		lineageTag: 78c76990-807a-4615-b46c-709d279fe263
+		summarizeBy: none
+		sourceColumn: des_tipo_riesgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_grupo_comercial
+		dataType: string
+		lineageTag: c71d998f-d20f-4140-836f-00e5039bc7c9
+		summarizeBy: none
+		sourceColumn: des_grupo_comercial
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_canal
+		dataType: string
+		lineageTag: c7c0c728-e0f6-445e-9d95-5de49021771c
+		summarizeBy: none
+		sourceColumn: des_canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_subcanal
+		dataType: string
+		lineageTag: abed9b34-3fb5-442b-b031-646fd414c630
+		summarizeBy: none
+		sourceColumn: des_subcanal
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_ramo
+		dataType: string
+		lineageTag: 109b1e5e-8d15-44ff-ba76-0e18f848652c
+		summarizeBy: none
+		sourceColumn: des_ramo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cod_asegurado
+		dataType: string
+		lineageTag: a8264327-c857-41cc-8211-4dc28bf79651
+		summarizeBy: none
+		sourceColumn: cod_asegurado
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_asegurado
+		dataType: string
+		lineageTag: e57d40d7-229f-4491-bf82-983b6d15c133
+		summarizeBy: none
+		sourceColumn: des_asegurado
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_origen_negocio
+		dataType: string
+		lineageTag: 72255887-f94f-48b3-be6c-2c41a515fd86
+		summarizeBy: none
+		sourceColumn: des_origen_negocio
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des_n1
+		dataType: string
+		lineageTag: ed0450c1-a1a0-41c3-8565-09ef6f44a59c
+		summarizeBy: none
+		sourceColumn: cta_des_n1
+
+		annotation SummarizationSetBy = Automatic
+
+	column cta_des_n2
+		dataType: string
+		lineageTag: 52c5432a-c9fb-4023-ba18-bb66b65c4341
+		summarizeBy: none
+		sourceColumn: cta_des_n2
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n2
+		dataType: string
+		lineageTag: 514d8bfa-b18f-4a75-a784-20d63ea035af
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n2
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n3
+		dataType: string
+		lineageTag: 8c77cc3d-8f16-42ed-990c-4cf6237d5ff1
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n3
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n4
+		dataType: string
+		lineageTag: 3d2a14c9-2822-400e-aea7-e025521ea168
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n4
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n5
+		dataType: string
+		lineageTag: 87ebd5e1-33bb-448e-b11a-2064c76c3962
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n5
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable_n6
+		dataType: string
+		lineageTag: 96479fb6-f364-42df-b270-2e6dc5f7c910
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable_n6
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_cuenta_contable
+		dataType: string
+		lineageTag: 891f68ef-fa44-4cfe-9e33-95ab6ace24d6
+		summarizeBy: none
+		sourceColumn: id_cuenta_contable
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_broker
+		dataType: string
+		lineageTag: 7e16da8f-92a2-4a6d-91bd-1e0f4fe471fa
+		summarizeBy: none
+		sourceColumn: des_broker
+
+		annotation SummarizationSetBy = Automatic
+
+	column des_contratante
+		dataType: string
+		lineageTag: ef82dd59-ec04-4787-bb92-9c290ba29f25
+		summarizeBy: none
+		sourceColumn: des_contratante
+
+		annotation SummarizationSetBy = Automatic
+
+	column val_prima_emitida
+		dataType: double
+		lineageTag: be78f57b-4f29-41a8-b381-06459a34d9f1
+		summarizeBy: sum
+		sourceColumn: val_prima_emitida
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column val_presupuesto
+		dataType: double
+		lineageTag: dcc061ce-2a0f-44d5-aea0-65d900331f2e
+		summarizeBy: sum
+		sourceColumn: val_presupuesto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fec_periodo_id = VALUE(gd_financiero_rt_final[fec_periodo] & "01")
+		lineageTag: cc0dff04-c963-42b6-8ee0-27a942b2eede
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition gd_financiero_rt_final = m
+		mode: import
+		source =
+				let
+				    Origen = Databricks.Catalogs("adb-2683128165517039.19.azuredatabricks.net", "/sql/1.0/warehouses/7d4c90cb72eed782", null),
+				    ctlfinanciero_Database = Origen{[Name="ctlfinanciero",Kind="Database"]}[Data],
+				    schgold_Schema = ctlfinanciero_Database{[Name="schgold",Kind="Schema"]}[Data],
+				    gd_financiero_rt_Table = schgold_Schema{[Name="gd_financiero_rt_final",Kind="Table"]}[Data],
+				    #"Filas filtradas" = Table.SelectRows(gd_financiero_rt_Table, each ([cta_des_n2] = "RESULTADO TÉCNICO"))
+				in
+				    #"Filas filtradas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

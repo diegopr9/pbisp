@@ -110,7 +110,7 @@ table LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf
 
 	partition LocalDateTable_422da6ed-ea69-4179-8024-b05c15249abf = calculated
 		mode: import
-		source = Calendar(Date(Year(MIN('gd_financiero_gastos'[fec_periodo_fecha_G])), 1, 1), Date(Year(MAX('gd_financiero_gastos'[fec_periodo_fecha_G])), 12, 31))
+		source = Calendar(Date(Year(MIN('gd_financiero_general_gastos'[fec_periodo_fecha_G])), 1, 1), Date(Year(MAX('gd_financiero_general_gastos'[fec_periodo_fecha_G])), 12, 31))
 
 	annotation __PBI_LocalDateTable = true
 
